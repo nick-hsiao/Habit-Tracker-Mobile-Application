@@ -17,6 +17,8 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+
+
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
