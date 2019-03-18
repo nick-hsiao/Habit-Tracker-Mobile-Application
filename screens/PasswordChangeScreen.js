@@ -73,7 +73,7 @@ export default class PasswordChangeScreen extends React.Component {
           <Button style = {styles.button}
           disabled = {isInvalid}
             onPress = {this.onSubmit}
-            title="Reset My Password"
+            title="Confirm Change"
           />
 
 
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   },
   helloText: {
     fontFamily: 'System',
-    fontSize: 60,
+    fontSize: 30,
     fontWeight: '200',
     flexDirection: 'row',
     textAlign: 'center',

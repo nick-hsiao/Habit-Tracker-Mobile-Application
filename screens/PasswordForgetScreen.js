@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   helloText: {
     fontFamily: 'System',
-    fontSize: 60,
+    fontSize: 30,
     fontWeight: '200',
     flexDirection: 'row',
     textAlign: 'center',

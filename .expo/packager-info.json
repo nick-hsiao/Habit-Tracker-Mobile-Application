@@ -3,8 +3,8 @@
   "webpackServerPort": null,
   "expoServerNgrokUrl": "https://hz-vzc.anonymous.habittracker.exp.direct",
   "packagerNgrokUrl": "https://packager.hz-vzc.anonymous.habittracker.exp.direct",
-  "ngrokPid": 5603,
-  "devToolsPort": 19002,
-  "packagerPort": 19001,
-  "packagerPid": 5521
+  "ngrokPid": 27000,
+  "devToolsPort": 19005,
+  "packagerPort": 19006,
+  "packagerPid": 26989
 }
