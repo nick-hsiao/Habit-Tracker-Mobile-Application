@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Text, StyleSheet, ScrollView, View, Alert,TextInput} from 'react-native';
+import { sanFranciscoWeights } from 'react-native-typography'
 import { Button } from 'react-native-elements';
 import * as firebase from 'firebase';
 
@@ -98,7 +99,7 @@ export default class SignUpScreen extends React.Component {
     return (
       <View style={{ flex: 1 }}>
 
-<Text style = {styles.helloText}> Sign Up </Text>
+<Text style = {styles.helloText}> SIGN UP </Text>
         <ScrollView contentContainerStyle={styles.container}>
 
           <TextInput
@@ -169,13 +170,18 @@ export default class SignUpScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    fontFamily: 'System',
+    fontWeight: '200',
     flexGrow: 1,
   },
   helloText: {
-    fontSize: 80,
+    fontFamily: 'System',
+    fontSize: 60,
+    fontWeight: '200',
     flexDirection: 'row',
     textAlign: 'center',
-    justifyContent: 'space-between',
+    paddingTop: 30,
+    paddingBottom: 20
 
   },
   button: {
@@ -187,6 +193,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginLeft: 60,
     marginRight: 60,
+    marginBottom: 10,
     fontSize: 25,
     borderWidth: 0.5,
     paddingTop: 5,
