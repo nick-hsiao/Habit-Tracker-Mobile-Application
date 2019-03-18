@@ -1,10 +1,10 @@
 {
-  "expoServerPort": 19000,
+  "expoServerPort": null,
   "webpackServerPort": null,
-  "expoServerNgrokUrl": "https://4d-hgt.anonymous.habittracker.exp.direct",
-  "packagerNgrokUrl": "https://packager.4d-hgt.anonymous.habittracker.exp.direct",
-  "ngrokPid": 24597,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "devToolsPort": 19002,
-  "packagerPort": 19004,
-  "packagerPid": 24583
+  "packagerPort": null,
+  "packagerPid": null
 }
