@@ -6,7 +6,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-//import SignUpScreen from '../screens/SignUpScreen';
+import SignUpScreen from '../screens/SignUpScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -55,7 +55,6 @@ SettingsStack.navigationOptions = {
 };
 
 // Signup Screen
-/** 
 const SignUpStack = createStackNavigator({
   SignUp: SignUpScreen,
 });
@@ -69,11 +68,11 @@ SignUpStack.navigationOptions = {
     />
   ),
 };
-**/
+
 
 export default createBottomTabNavigator({
   HomeStack,
   HabitStack,
   SettingsStack,
-  //SignUpStack,
+  SignUpStack,
 });
