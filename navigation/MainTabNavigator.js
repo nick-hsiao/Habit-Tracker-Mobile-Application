@@ -7,6 +7,8 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import SignUpScreen from '../screens/SignUpScreen';
+import PasswordChangeScreen from '../screens/PasswordChangeScreen';
+import PasswordForgetScreen from '../screens/PasswordForgetScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -69,10 +71,42 @@ SignUpStack.navigationOptions = {
   ),
 };
 
+// Password Change Screen
+const PasswordChangeStack = createStackNavigator({
+  PasswordChange: PasswordChangeScreen,
+});
+
+PasswordChangeStack.navigationOptions = {
+  tabBarLabel: 'Change Password',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+    />
+  ),
+};
+
+// Password Forget Screen
+const PasswordForgetStack = createStackNavigator({
+  PasswordForget: PasswordForgetScreen,
+});
+
+PasswordForgetStack.navigationOptions = {
+  tabBarLabel: 'Forgot Password',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+    />
+  ),
+};
+
 
 export default createBottomTabNavigator({
   HomeStack,
   HabitStack,
   SettingsStack,
   SignUpStack,
+  PasswordChangeStack,
+  PasswordForgetStack,
 });
