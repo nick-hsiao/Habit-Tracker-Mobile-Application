@@ -7,6 +7,8 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import SignUpScreen from '../screens/SignUpScreen';
+import PasswordChangeScreen from '../screens/PasswordChangeScreen';
+import PasswordForgetScreen from '../screens/PasswordForgetScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -19,8 +21,8 @@ HomeStack.navigationOptions = {
       focused={focused}
       name={
         Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
+          ? 'ios-home'
+          : 'md-home'
       }
     />
   ),
@@ -35,7 +37,7 @@ HabitStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+      name={Platform.OS === 'ios' ? 'ios-list-box' : 'md-list-box'}
     />
   ),
 };
@@ -64,10 +66,41 @@ SignUpStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+      name={Platform.OS === 'ios' ? 'ios-add' : 'md-add'}
     />
   ),
 };
+
+// Password Change Screen
+const PasswordChangeStack = createStackNavigator({
+  PasswordChange: PasswordChangeScreen,
+});
+
+PasswordChangeStack.navigationOptions = {
+  tabBarLabel: 'Change Password',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-refresh' : 'md-refresh'}
+    />
+  ),
+};
+
+// Password Forget Screen
+const PasswordForgetStack = createStackNavigator({
+  PasswordForget: PasswordForgetScreen,
+});
+
+PasswordForgetStack.navigationOptions = {
+  tabBarLabel: 'Forgot Password',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help'}
+    />
+  ),
+};
+
 
 
 export default createBottomTabNavigator({
@@ -75,4 +108,6 @@ export default createBottomTabNavigator({
   HabitStack,
   SettingsStack,
   SignUpStack,
+  PasswordChangeStack,
+  PasswordForgetStack,
 });

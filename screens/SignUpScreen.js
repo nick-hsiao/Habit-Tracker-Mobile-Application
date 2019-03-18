@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Text, StyleSheet, ScrollView, View, Alert,TextInput} from 'react-native';
-import { sanFranciscoWeights } from 'react-native-typography'
+//import { sanFranciscoWeights } from 'react-native-typography'
 import { Button } from 'react-native-elements';
 import * as firebase from 'firebase';
 
@@ -29,7 +29,7 @@ export default class SignUpScreen extends React.Component {
   onSubmit = event => {
     const { username, firstName, lastName, email, passwordOne } = this.state;
 
-   //this.props.firebase
+   
       if(!email.includes('@') || !email.includes('.'))
       {
         Alert.alert("Email is badly formatted");
@@ -39,6 +39,7 @@ export default class SignUpScreen extends React.Component {
         Alert.alert("Password must have minimum of 8 characters");
       }
       else{
+        this.props.firebase
         firebase.auth().createUserWithEmailAndPassword(email, passwordOne)
         .then(authUser => {
           // Create a user in your Firebase realtime database
@@ -51,10 +52,16 @@ export default class SignUpScreen extends React.Component {
           this.setState({ ...INITIAL_STATE });
           this.props.history.push(ROUTES.HOME);
         })
+  
         .catch(error => {
           this.setState({ error });
+          Alert.alert(error.message);
         });
+
         Alert.alert("Account created");
+        
+        
+        
       }
   
   };
@@ -154,6 +161,7 @@ export default class SignUpScreen extends React.Component {
             onPress = {this.onSubmit}
             title="Submit"
           />
+
 
           
 

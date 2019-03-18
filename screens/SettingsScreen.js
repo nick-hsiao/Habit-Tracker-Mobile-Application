@@ -1,12 +1,20 @@
 import React from 'react';
-import { Text, StyleSheet, ScrollView, View, Alert,TextInput} from 'react-native';
+import { Text, StyleSheet, ScrollView, View, Alert,TextInput,TouchableOpacity} from 'react-native';
 import { Button } from 'react-native-elements';
+import Modal from "react-native-modal";
 
 
 export default class SettingsScreen extends React.Component {
   state = {
     name: ''
   }
+
+  state = {
+    isModalVisible: false,
+  };
+
+  _toggleModal = () =>
+    this.setState({ isModalVisible: !this.state.isModalVisible });
   _onPressButton() {
     Alert.alert('Hello!')
   }
@@ -59,6 +67,25 @@ export default class SettingsScreen extends React.Component {
             title="Hello"
           />
 
+          <Button style = {styles.button}
+            onPress={this._toggleModal}
+            title = "Show Modal"
+          />
+          <Modal style = {styles.modal}
+          contentContainerStyle = {styles.modalContent} 
+          isVisible={this.state.isModalVisible}
+          onSwipeComplete={() => this.setState({ isModalVisible: false })}
+          swipeDirection="up">
+          <View style={{height: 500, backgroundColor: 'white',borderRadius: 15}}>
+         
+            <Text style = {styles.modalText}>Hello!</Text>
+            <Button style = {styles.modalButton}
+            onPress={this._toggleModal}
+            title = "Hide Modal"
+            />
+    
+          </View>
+          </Modal>
 
 
       <Text style = {styles.helloText}> h </Text>
@@ -105,5 +132,23 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 5,
     justifyContent: 'space-around'
+  },
+  modalContent: {
+    fontSize: 30,
+    fontFamily: 'System',
+  },
+  modal:{
+    animationType: 'slide',
+
+  },
+  modalButton: {
+    paddingTop: 350,
+    marginLeft: 100,
+    marginRight: 100
+  },
+  modalText:{
+    fontSize: 30,
+    paddingTop: 50,
+    textAlign: 'center',
   }
 });
