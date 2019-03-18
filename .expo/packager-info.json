@@ -1,10 +1,10 @@
 {
   "expoServerPort": 19000,
   "webpackServerPort": null,
-  "expoServerNgrokUrl": "https://hu-h6v.anonymous.habittracker.exp.direct",
-  "packagerNgrokUrl": "https://packager.hu-h6v.anonymous.habittracker.exp.direct",
-  "ngrokPid": 18275,
+  "expoServerNgrokUrl": "https://4d-hgt.anonymous.habittracker.exp.direct",
+  "packagerNgrokUrl": "https://packager.4d-hgt.anonymous.habittracker.exp.direct",
+  "ngrokPid": 2942,
   "devToolsPort": 19002,
-  "packagerPort": 19003,
-  "packagerPid": 18264
+  "packagerPort": 19001,
+  "packagerPid": 2884
 }
