@@ -1,7 +1,18 @@
 import React from 'react';
-import { ScrollView, View, Text, StyleSheet,TextInput } from 'react-native';
-import { Button, CheckBox, Input, ButtonGroup} from 'react-native-elements';
+import { ScrollView, View, Text, StyleSheet,TextInput, TouchableOpacity} from 'react-native';
+import { Button, CheckBox, Input, ButtonGroup, ButtonToolbar} from 'react-native-elements';
+import {Container} from "native-base";
 import Modal from "react-native-modal";
+import * as firebase from 'firebase';
+
+const INITIAL_STATE = {
+  habitName: "",
+  goalPeriod: "",
+  timesPerPeriod: "",
+  days: [0,0,0,0,0,0,0],
+  error: null
+};
+
 
 export default class HabitScreen extends React.Component {
   constructor () {
@@ -49,7 +60,7 @@ export default class HabitScreen extends React.Component {
 
     return (
       <View style = {{flex:1}}>
-      <ScrollView contentContainerStyle = {StyleSheet.container}>
+      <ScrollView contentContainerStyle = {StyleSheet.scrollContainer}>
         <Button style = {styles.button}
             onPress={this._toggleModal}
             title = "Create Habit"
@@ -84,12 +95,68 @@ export default class HabitScreen extends React.Component {
             />  
 
             <Text style = {styles.titleText}> Track Which Days?: </Text>
+
+    {/*
             <ButtonGroup
             onPress={this.updateDayIndex}
             selectedIndex={dayIndex}
             buttons={days}
             containerStyle={{height: 35}}
-            />
+            /> 
+    */}
+
+        
+              <Container style = {{flexDirection: 'row', flex: 1, height: 100, marginLeft: 7}}>
+                <TouchableOpacity  value = 'sun' style = {styles.cbutton} > 
+                  <Text>SUN</Text>
+                </TouchableOpacity>
+                <TouchableOpacity  value = 'mon' style = {styles.cbutton} > 
+                  <Text>MON</Text>
+                </TouchableOpacity>
+                <TouchableOpacity  value = 'mon' style = {styles.cbutton} > 
+                  <Text>TUE</Text>
+                </TouchableOpacity>
+                <TouchableOpacity  value = 'mon' style = {styles.cbutton} > 
+                  <Text>WED</Text>
+                </TouchableOpacity>
+                <TouchableOpacity  value = 'mon' style = {styles.cbutton} > 
+                  <Text>THU</Text>
+                </TouchableOpacity>
+                <TouchableOpacity  value = 'mon' style = {styles.cbutton} > 
+                  <Text>FRI</Text>
+                </TouchableOpacity>
+                <TouchableOpacity  value = 'mon' style = {styles.cbutton} > 
+                  <Text>SAT</Text>
+                </TouchableOpacity>
+
+                {/*
+                <TouchableOpacity title = "SUN" value = 'tue' style = {styles.cbutton} > 
+                  <Text>TUE</Text>
+                </TouchableOpacity>
+                <TouchableOpacity title = "SUN" value = 'wed' style = {styles.cbutton} > 
+                  <Text>WED</Text>
+                </TouchableOpacity>
+                <TouchableOpacity title = "SUN" value = 'thu' style = {styles.cbutton} > 
+                  <Text>THU</Text>
+                </TouchableOpacity>
+                <TouchableOpacity title = "SUN" value = 'fri' style = {styles.cbutton} > 
+                  <Text>FRI</Text>
+                </TouchableOpacity>
+                <TouchableOpacity title = "SUN" value = 'sat' style = {styles.cbutton} > 
+                  <Text>SAT</Text>
+                </TouchableOpacity> */}
+                {/*
+                <Button title = "SUN" style = {styles.cbutton}></Button>
+                <Button title = "MON" style = {styles.cbutton}></Button>
+                <Button title = "TUE" style = {styles.cbutton}></Button>
+                <Button title = "WED" style = {styles.cbutton}></Button>
+                <Button title = "THU" style = {styles.cbutton}></Button>
+                <Button title = "FRI" style = {styles.cbutton} ></Button>
+                <Button title = "SAT" style = {styles.cbutton}></Button> */}
+              </Container>
+               
+            
+
 
             <Text style = {styles.titleText}> Reminders: </Text>
             <CheckBox
@@ -101,6 +168,13 @@ export default class HabitScreen extends React.Component {
             onPress={this._toggleCheck}
             />
             
+      
+            
+            <Text style = {styles.titleText}> </Text>
+            <Text style = {styles.titleText}> </Text>
+
+            <Button style = {styles.button} title = "Save"> </Button>
+
             
     
           </View>
@@ -111,10 +185,20 @@ export default class HabitScreen extends React.Component {
   }
 }
 
+
+
 const styles = StyleSheet.create({
-  container: {
+  
+  scrollContainer: {
     flexGrow: 1
   },
+  
+ container: {
+  paddingTop: 5,
+  flex: 1,
+  flexDirection: 'row',
+  marginLeft: 5,
+},
   titleText: {
     fontFamily: 'System',
     fontSize: 18,
@@ -126,6 +210,16 @@ const styles = StyleSheet.create({
     margin: 10,
     marginLeft: 100,
     marginRight: 100
+  },
+  cbutton:{
+    borderWidth : 0.5,
+    borderRadius: 100,
+    borderColor: 'gray',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 50,
+    height : 50,
+    
   },
   modalContent: {
     fontSize: 30,
