@@ -106,7 +106,7 @@ export default class HabitScreen extends React.Component {
     */}
 
         
-              <Container style = {{flexDirection: 'row', flex: 1, height: 100, marginLeft: 7}}>
+              <Container style = {{flexDirection: 'row', flex: 1, height: 100}}>
                 <TouchableOpacity  value = 'sun' style = {styles.cbutton} > 
                   <Text>SUN</Text>
                 </TouchableOpacity>
@@ -217,8 +217,9 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 50,
-    height : 50,
+    width: 45,
+    height : 45,
+    marginRight: 3,
     
   },
   modalContent: {
