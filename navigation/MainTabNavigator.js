@@ -4,7 +4,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import HabitScreen from '../screens/HabitScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import PasswordChangeScreen from '../screens/PasswordChangeScreen';
@@ -29,7 +29,7 @@ HomeStack.navigationOptions = {
 };
 
 const HabitStack = createStackNavigator({
-  Links: LinksScreen,
+  Links: HabitScreen,
 });
 
 HabitStack.navigationOptions = {

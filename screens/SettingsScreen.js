@@ -15,6 +15,7 @@ export default class SettingsScreen extends React.Component {
 
   _toggleModal = () =>
     this.setState({ isModalVisible: !this.state.isModalVisible });
+    
   _onPressButton() {
     Alert.alert('Hello!')
   }
