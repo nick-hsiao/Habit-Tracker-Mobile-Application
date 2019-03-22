@@ -19,7 +19,14 @@ export default class HabitScreen extends React.Component {
     super()
     this.state = {
       selectedIndex: 0,
-      dayIndex: 0
+      dayIndex: 0,
+      sunP: 0,
+      monP: 0,
+      tueP: 0,
+      wedP: 0,
+      thuP: 0,
+      friP: 0,
+      satP: 0
     }
     this.updateIndex = this.updateIndex.bind(this)
     this.updateDayIndex = this.updateDayIndex.bind(this)
@@ -50,6 +57,29 @@ export default class HabitScreen extends React.Component {
   _handleName = (text) => {
     this.setState({ habitName: text })
   }
+
+  _onSunPress = () =>
+    this.setState({ sunP: this.state.sunP === 0 ? 1:0});
+
+  _onMonPress = () =>
+    this.setState({ monP: this.state.monP === 0 ? 1:0});
+
+  _onTuePress = () =>
+    this.setState({ tueP: this.state.tueP === 0 ? 1:0});
+
+  _onWedPress = () =>
+    this.setState({ wedP: this.state.wedP === 0 ? 1:0});
+
+  _onThuPress = () =>
+    this.setState({ thuP: this.state.thuP === 0 ? 1:0});
+
+  _onFriPress = () =>
+    this.setState({ friP: this.state.friP === 0 ? 1:0});
+
+  _onSatPress = () =>
+    this.setState({ satP: this.state.satP === 0 ? 1:0});
+  
+
 
   render() {
 
@@ -94,65 +124,46 @@ export default class HabitScreen extends React.Component {
             leftIcon={{ type: 'feather', name: 'edit', marginRight: 5}}
             />  
 
-            <Text style = {styles.titleText}> Track Which Days?: </Text>
-
-    {/*
-            <ButtonGroup
-            onPress={this.updateDayIndex}
-            selectedIndex={dayIndex}
-            buttons={days}
-            containerStyle={{height: 35}}
-            /> 
-    */}
-
+            <Text style = {styles.trackText}> Track Which Days?: </Text>
         
-              <Container style = {{flexDirection: 'row', flex: 1, height: 100}}>
-                <TouchableOpacity  value = 'sun' style = {styles.cbutton} > 
-                  <Text>SUN</Text>
+              <Container style = {{flexDirection: 'row', flex: 1, height: 50}}>
+                <TouchableOpacity  value = 'sun' 
+                onPress = {this._onSunPress}
+                style = {this.state.sunP === 0 ? styles.cButton: styles.cButtonPressed} > 
+                  <Text style = {styles.dayText} >SUN</Text>
                 </TouchableOpacity>
-                <TouchableOpacity  value = 'mon' style = {styles.cbutton} > 
-                  <Text>MON</Text>
+                <TouchableOpacity  value = 'mon' 
+                onPress = {this._onMonPress}
+                style = {this.state.monP === 0 ? styles.cButton: styles.cButtonPressed} > 
+                  <Text style = {styles.dayText} >MON</Text>
                 </TouchableOpacity>
-                <TouchableOpacity  value = 'mon' style = {styles.cbutton} > 
-                  <Text>TUE</Text>
+                <TouchableOpacity  value = 'tue'
+                 onPress = {this._onTuePress}
+                 style = {this.state.tueP === 0 ? styles.cButton: styles.cButtonPressed} > 
+                  <Text style = {styles.dayText} >TUE</Text>
                 </TouchableOpacity>
-                <TouchableOpacity  value = 'mon' style = {styles.cbutton} > 
-                  <Text>WED</Text>
+                <TouchableOpacity  value = 'wed'
+                onPress = {this._onWedPress}
+                style = {this.state.wedP === 0 ? styles.cButton: styles.cButtonPressed} > 
+                  <Text style = {styles.dayText} >WED</Text>
                 </TouchableOpacity>
-                <TouchableOpacity  value = 'mon' style = {styles.cbutton} > 
-                  <Text>THU</Text>
+                <TouchableOpacity  value = 'thu'
+                onPress = {this._onThuPress}
+                style = {this.state.thuP === 0 ? styles.cButton: styles.cButtonPressed} > 
+                  <Text style = {styles.dayText} >THU</Text>
                 </TouchableOpacity>
-                <TouchableOpacity  value = 'mon' style = {styles.cbutton} > 
-                  <Text>FRI</Text>
+                <TouchableOpacity  value = 'fri' 
+                onPress = {this._onFriPress}
+                style = {this.state.friP === 0 ? styles.cButton: styles.cButtonPressed} > 
+                  <Text style = {styles.dayText} >FRI</Text>
                 </TouchableOpacity>
-                <TouchableOpacity  value = 'mon' style = {styles.cbutton} > 
-                  <Text>SAT</Text>
+                <TouchableOpacity  value = 'sat'
+                onPress = {this._onSatPress}
+                style = {this.state.satP === 0 ? styles.cButton: styles.cButtonPressed} > 
+                  <Text style = {styles.dayText} >SAT</Text>
                 </TouchableOpacity>
 
-                {/*
-                <TouchableOpacity title = "SUN" value = 'tue' style = {styles.cbutton} > 
-                  <Text>TUE</Text>
-                </TouchableOpacity>
-                <TouchableOpacity title = "SUN" value = 'wed' style = {styles.cbutton} > 
-                  <Text>WED</Text>
-                </TouchableOpacity>
-                <TouchableOpacity title = "SUN" value = 'thu' style = {styles.cbutton} > 
-                  <Text>THU</Text>
-                </TouchableOpacity>
-                <TouchableOpacity title = "SUN" value = 'fri' style = {styles.cbutton} > 
-                  <Text>FRI</Text>
-                </TouchableOpacity>
-                <TouchableOpacity title = "SUN" value = 'sat' style = {styles.cbutton} > 
-                  <Text>SAT</Text>
-                </TouchableOpacity> */}
-                {/*
-                <Button title = "SUN" style = {styles.cbutton}></Button>
-                <Button title = "MON" style = {styles.cbutton}></Button>
-                <Button title = "TUE" style = {styles.cbutton}></Button>
-                <Button title = "WED" style = {styles.cbutton}></Button>
-                <Button title = "THU" style = {styles.cbutton}></Button>
-                <Button title = "FRI" style = {styles.cbutton} ></Button>
-                <Button title = "SAT" style = {styles.cbutton}></Button> */}
+  
               </Container>
                
             
@@ -205,22 +216,46 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     marginLeft: 5,
   },
+  trackText: {
+    fontFamily: 'System',
+    fontSize: 18,
+    paddingTop: 10,
+    marginLeft: 5,
+    paddingBottom: 5,
+  },
+  dayText: {
+    fontSize: 10
+  },
   button: {
     borderRadius: 5,
     margin: 10,
     marginLeft: 100,
     marginRight: 100
   },
-  cbutton:{
+  cButton:{
     borderWidth : 0.5,
     borderRadius: 100,
     borderColor: 'gray',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 45,
-    height : 45,
-    marginRight: 3,
+    width: 40,
+    height : 40,
+    marginRight: 4,
+    marginLeft: 4,
     
+  },
+
+  cButtonPressed:{
+    borderWidth : 0.5,
+    borderRadius: 100,
+    borderColor: 'gray',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 40,
+    height : 40,
+    marginRight: 4,
+    marginLeft: 4,
+    backgroundColor: '#E3E3E3'
   },
   modalContent: {
     fontSize: 30,
