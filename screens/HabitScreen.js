@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, Text, StyleSheet,TextInput, TouchableOpacity} from 'react-native';
+import { ScrollView, View, Text, StyleSheet,TextInput, TouchableOpacity,Alert} from 'react-native';
 import { Button, CheckBox, Input, ButtonGroup, ButtonToolbar} from 'react-native-elements';
 import {Container} from "native-base";
 import Modal from "react-native-modal";
@@ -9,9 +9,18 @@ const INITIAL_STATE = {
   habitName: "",
   goalPeriod: "",
   timesPerPeriod: "",
-  days: [0,0,0,0,0,0,0],
+  sunP: 0,
+  monP: 0,
+  tueP: 0,
+  wedP: 0,
+  thuP: 0,
+  friP: 0,
+  satP: 0,
+  saved: 'false',
   error: null
 };
+
+
 
 
 export default class HabitScreen extends React.Component {
@@ -20,28 +29,20 @@ export default class HabitScreen extends React.Component {
     this.state = {
       selectedIndex: 0,
       dayIndex: 0,
-      sunP: 0,
-      monP: 0,
-      tueP: 0,
-      wedP: 0,
-      thuP: 0,
-      friP: 0,
-      satP: 0
+      ...INITIAL_STATE,
     }
     this.updateIndex = this.updateIndex.bind(this)
-    this.updateDayIndex = this.updateDayIndex.bind(this)
+ 
   }
 
   updateIndex (selectedIndex) {
     this.setState({selectedIndex})
   }
-  updateDayIndex (dayIndex) {
-    this.setState({dayIndex})
-  }
 
   static navigationOptions = {
     title: '',
   };
+
   state = {
     habitName: '',
     isModalVisible: false,
@@ -58,9 +59,9 @@ export default class HabitScreen extends React.Component {
     this.setState({ habitName: text })
   }
 
-  _onSunPress = () =>
+  _onSunPress = () =>{
     this.setState({ sunP: this.state.sunP === 0 ? 1:0});
-
+  }
   _onMonPress = () =>
     this.setState({ monP: this.state.monP === 0 ? 1:0});
 
@@ -79,14 +80,38 @@ export default class HabitScreen extends React.Component {
   _onSatPress = () =>
     this.setState({ satP: this.state.satP === 0 ? 1:0});
   
+  _printHabit = () =>{
+    console.log(this.state.sunP);
+    console.log(this.state.monP);
+    console.log(this.state.tueP);
+    console.log(this.state.wedP);
+    console.log(this.state.thuP);
+    console.log(this.state.friP);
+    console.log(this.state.satP);
+  }
 
-
+  writeHabitData = (habitName) => {
+    firebase.database().ref('habit/').set({
+        habitName
+    }).then((data)=>{
+        //success callback
+        console.log('data ' , data)
+    }).catch((error)=>{
+        //error callback
+        console.log('error ' , error)
+    })
+    this._toggleModal();
+  
+}
+ 
+    
   render() {
 
   const buttons = ['Daily', 'Weekly', 'Monthly']
   const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']
-  const { selectedIndex } = this.state
-  const { dayIndex } = this.state
+  const isInvalid = this.state.habitName.length < 4;
+  
+  
 
     return (
       <View style = {{flex:1}}>
@@ -95,7 +120,7 @@ export default class HabitScreen extends React.Component {
             onPress={this._toggleModal}
             title = "Create Habit"
           />
-          <Modal style = {styles.modal}
+          <Modal
           contentContainerStyle = {styles.modalContent} 
           isVisible={this.state.isModalVisible}
           onSwipeComplete={() => this.setState({ isModalVisible: false })}
@@ -107,13 +132,13 @@ export default class HabitScreen extends React.Component {
             
             placeholder='  EX: DRINK WATER '
             leftIcon={{ type: 'feather', name: 'edit',marginRight: 5}}
-            onChangeText = {(text) => this.setState({name:text})}
+            onChangeText = {(habitName) => this.setState({habitName})}
             />  
             
             <Text style = {styles.titleText}> Goal Period: </Text>
             <ButtonGroup
             onPress={this.updateIndex}
-            selectedIndex={selectedIndex}
+            selectedIndex={this.state.selectedIndex}
             buttons={buttons}
             containerStyle={{height: 30}}
             />
@@ -122,6 +147,7 @@ export default class HabitScreen extends React.Component {
             <Input style = {styles.textInput}
             placeholder='  EX: 2 (TIMES PER DAY)'
             leftIcon={{ type: 'feather', name: 'edit', marginRight: 5}}
+            onChangeText = {(timesPerPeriod) => this.setState({timesPerPeriod})}
             />  
 
             <Text style = {styles.trackText}> Track Which Days?: </Text>
@@ -184,7 +210,14 @@ export default class HabitScreen extends React.Component {
             <Text style = {styles.titleText}> </Text>
             <Text style = {styles.titleText}> </Text>
 
-            <Button style = {styles.button} title = "Save"> </Button>
+               <Button 
+            disabled = {isInvalid}
+            onPress = {()=>this.writeHabitData(this.state.habitName)}
+          
+            style = {styles.button} 
+            title = "Save"> 
+            </Button>
+
 
             
     
@@ -260,10 +293,6 @@ const styles = StyleSheet.create({
   modalContent: {
     fontSize: 30,
     fontFamily: 'System',
-  },
-  modal:{
-    animationType: 'slide',
-
   },
   modalButton: {
     paddingTop: 350,

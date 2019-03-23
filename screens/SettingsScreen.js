@@ -72,7 +72,7 @@ export default class SettingsScreen extends React.Component {
             onPress={this._toggleModal}
             title = "Show Modal"
           />
-          <Modal style = {styles.modal}
+          <Modal
           contentContainerStyle = {styles.modalContent} 
           isVisible={this.state.isModalVisible}
           onSwipeComplete={() => this.setState({ isModalVisible: false })}
@@ -138,10 +138,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontFamily: 'System',
   },
-  modal:{
-    animationType: 'slide',
 
-  },
   modalButton: {
     paddingTop: 350,
     marginLeft: 100,

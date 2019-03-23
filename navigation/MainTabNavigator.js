@@ -96,7 +96,7 @@ PasswordForgetStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help'}
+      name={Platform.OS === 'ios' ? 'ios-help' : 'md-help'}
     />
   ),
 };
