@@ -12,8 +12,10 @@ const INITIAL_STATE = {
   email: "",
   passwordOne: "",
   passwordTwo: "",
+  userID: 1234,
   error: null
 };
+
 
 
 
@@ -42,6 +44,15 @@ export default class SignUpScreen extends React.Component {
         this.props.firebase
         firebase.auth().createUserWithEmailAndPassword(email, passwordOne)
         .then(authUser => {
+
+          firebase.database().ref('UsersList/').push({
+            username,
+            firstName,
+            lastName,
+            uid: authUser.user.uid.substring(0, 5)
+          })
+          
+
           // Create a user in your Firebase realtime database
           return this.props.firebase.user(authUser.user.uid).set({
             username,
@@ -58,13 +69,12 @@ export default class SignUpScreen extends React.Component {
           Alert.alert(error.message);
         });
 
-        Alert.alert("Account created");
-        
-        
-        
+        Alert.alert("Account created");        
       }
   
   };
+
+
 
   _onPressButton() {
     Alert.alert('Hello!')
@@ -206,6 +216,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     paddingTop: 5,
     paddingBottom: 5,
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    borderRadius: 5,
   }
 });

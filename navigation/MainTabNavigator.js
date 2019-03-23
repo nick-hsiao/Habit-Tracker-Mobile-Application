@@ -9,6 +9,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import PasswordChangeScreen from '../screens/PasswordChangeScreen';
 import PasswordForgetScreen from '../screens/PasswordForgetScreen';
+import SignInScreen from '../screens/SignInScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -101,6 +102,25 @@ PasswordForgetStack.navigationOptions = {
   ),
 };
 
+// Signup Screen
+const SignInStack = createStackNavigator({
+  SignIn: SignInScreen,
+});
+
+
+  SignInStack.navigationOptions = {
+    tabBarLabel: 'Sign In',
+    tabBarIcon: ({ focused }) => (
+      <TabBarIcon
+        focused={focused}
+        name={Platform.OS === 'ios' ? 'ios-add' : 'md-add'}
+      />
+    ),
+  };
+
+
+
+
 
 
 export default createBottomTabNavigator({
@@ -110,4 +130,6 @@ export default createBottomTabNavigator({
   SignUpStack,
   PasswordChangeStack,
   PasswordForgetStack,
+  SignInStack,
 });
+
