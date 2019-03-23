@@ -1,10 +1,10 @@
 {
-  "devToolsPort": 19005,
+  "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19008,
-  "packagerPid": 50793,
+  "packagerPort": 19001,
+  "packagerPid": 6497,
   "expoServerNgrokUrl": "https://hz-vzc.anonymous.habittracker.exp.direct",
   "packagerNgrokUrl": "https://packager.hz-vzc.anonymous.habittracker.exp.direct",
-  "ngrokPid": 50807,
+  "ngrokPid": 6517,
   "webpackServerPort": null
 }
