@@ -45,11 +45,13 @@ export default class SignUpScreen extends React.Component {
         firebase.auth().createUserWithEmailAndPassword(email, passwordOne)
         .then(authUser => {
 
-          firebase.database().ref('UsersList/').push({
+          uid= authUser.user.uid;
+
+          firebase.database().ref(`UsersList/${uid}`).set({
             username,
             firstName,
             lastName,
-            uid: authUser.user.uid.substring(0, 5)
+            userID: uid
           })
           
 

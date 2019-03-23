@@ -17,7 +17,7 @@ const INITIAL_STATE = {
   friP: 0,
   satP: 0,
   saved: 'false',
-  error: null
+  error: null,
 };
 
 
@@ -34,6 +34,9 @@ export default class HabitScreen extends React.Component {
     this.updateIndex = this.updateIndex.bind(this)
  
   }
+
+  user = firebase.auth().currentUser;
+  uid = this.user.uid;
 
   updateIndex (selectedIndex) {
     this.setState({selectedIndex})
@@ -88,10 +91,15 @@ export default class HabitScreen extends React.Component {
     console.log(this.state.thuP);
     console.log(this.state.friP);
     console.log(this.state.satP);
-  }
+  }       
+
 
   writeHabitData = (habitName) => {
-    firebase.database().ref('habit/').set({
+
+    //var uid = authUser.user.uid;
+    
+
+    firebase.database().ref(`UsersList/${this.uid}/_habit/`).set({
         habitName
     }).then((data)=>{
         //success callback

@@ -1,11 +1,10 @@
-
 {
-    "devToolsPort": 19005,
-    "expoServerPort": 19000,
-    "packagerPort": 19008,
-    "packagerPid": 58040,
-    "expoServerNgrokUrl": "https://dw-tha.anonymous.habittracker.exp.direct",
-    "packagerNgrokUrl": "https://packager.dw-tha.anonymous.habittracker.exp.direct",
-    "ngrokPid": 58054,
-    "webpackServerPort": null
-  }
+  "devToolsPort": 19003,
+  "expoServerPort": 19000,
+  "packagerPort": 19004,
+  "packagerPid": 7424,
+  "expoServerNgrokUrl": "https://qa-9wz.anonymous.habittracker.exp.direct",
+  "packagerNgrokUrl": "https://packager.qa-9wz.anonymous.habittracker.exp.direct",
+  "ngrokPid": 7444,
+  "webpackServerPort": null
+}
