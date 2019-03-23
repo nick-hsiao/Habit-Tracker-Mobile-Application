@@ -99,7 +99,7 @@ export default class HabitScreen extends React.Component {
     //var uid = authUser.user.uid;
     
 
-    firebase.database().ref(`UsersList/${this.uid}/_habit/`).set({
+    firebase.database().ref(`UsersList/${this.uid}/_habits/${this.state.habitName}`).set({
         habitName
     }).then((data)=>{
         //success callback
@@ -117,7 +117,7 @@ export default class HabitScreen extends React.Component {
 
   const buttons = ['Daily', 'Weekly', 'Monthly']
   const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']
-  const isInvalid = this.state.habitName.length < 4;
+  const isInvalid = this.state.habitName.length < 2;
   
   
 
