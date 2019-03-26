@@ -47,7 +47,6 @@ export default class HabitScreen extends React.Component {
   };
 
   state = {
-    habitName: '',
     isModalVisible: false,
     checked: false,
   };
@@ -94,16 +93,24 @@ export default class HabitScreen extends React.Component {
   }       
 
 
-  writeHabitData = (habitName) => {
+  writeHabitData = (habitName,sunP,monP,tueP,wedP,thuP,friP,satP) => {
 
     //var uid = authUser.user.uid;
     
 
     firebase.database().ref(`UsersList/${this.uid}/_habits/${this.state.habitName}`).set({
-        habitName
+        habitName,
+        sunP,
+        monP,
+        tueP,
+        wedP,
+        thuP,
+        friP,
+        satP
+
     }).then((data)=>{
         //success callback
-        console.log('data ' , data)
+        //console.log('data ' , data)
     }).catch((error)=>{
         //error callback
         console.log('error ' , error)
@@ -220,7 +227,9 @@ export default class HabitScreen extends React.Component {
 
                <Button 
             disabled = {isInvalid}
-            onPress = {()=>this.writeHabitData(this.state.habitName)}
+            onPress = {()=>this.writeHabitData(this.state.habitName,this.state.sunP,this.state.monP,
+                                              this.state.tueP, this.state.wedP, this.state.thuP, this.state.friP,
+                                            this.state.satP)}
           
             style = {styles.button} 
             title = "Save"> 
