@@ -8,9 +8,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Button, CheckBox, Input, ButtonGroup, ButtonToolbar} from 'react-native-elements';
+import { Button, Header,CheckBox, Input, ButtonGroup, ButtonToolbar} from 'react-native-elements';
 import { WebBrowser } from 'expo';
 import * as firebase from 'firebase';
+import logo from '../assets/images/logo.png';
+
+const habit = {
+    1: "habitName",
+};
 
 
 export default class HomeScreen extends React.Component {
@@ -22,7 +27,9 @@ export default class HomeScreen extends React.Component {
     this.state = {
       currentUser: '',
       uid: '',
-      habitName: ''
+      habitName: '',
+      ...habit,
+      habitList: []
 
     }
   }
@@ -52,11 +59,26 @@ export default class HomeScreen extends React.Component {
         //Get list of entries, got help from https://stackoverflow.com/questions/49106987/how-to-retrieve-all-the-names-of-file-in-firebase-folder
         firebase.database().ref(`UsersList/${this.state.uid}/_habits`).on('value', function (snapshot) {
           snapshot.forEach(function(child) {
-            var files=child.val().habitName;
-            console.log(files);
-    
+            var name=child.val().habitName;
+
+            
+            console.log(name);
           });
-      });
+      },
+      console.log(" hello " + this.state.habitList)
+    
+    );
+      
+}
+
+AddItemsToArray=()=>{
+ 
+  //Adding Items To Array.
+  habitList.push( this.state.Holder.toString() );
+
+  // Showing the complete Array on Screen Using Alert.
+  Alert.alert(habitList.toString());
+
 }
 
 storeData(){
@@ -73,10 +95,14 @@ storeData(){
      //Get list of entries, got help from https://stackoverflow.com/questions/49106987/how-to-retrieve-all-the-names-of-file-in-firebase-folder
      firebase.database().ref(`UsersList/${uid}/_habits`).on('value', function (snapshot) {
       snapshot.forEach(function(child) {
-        var files=child.val().habitName;
-        console.log(files);
+        var name=child.val().habitName;
+        habit[1] = name;
+        
+        console.log(habit);
+        //console.log(name);
       });
   });
+  console.log(" hello " + this.state.habitList)
 
   user.providerData.forEach(function (profile) {
     console.log("user email" + profile.email);
@@ -92,6 +118,12 @@ storeData(){
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+          <Header
+          backgroundColor = 'white'
+          leftComponent={{ icon: 'menu', color: 'black' }}
+          
+          rightComponent={{ icon: 'home', color: 'black' }}
+          />
           <View style={styles.welcomeContainer}>
             <Image
               source={
