@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19004,
-  "packagerPid": 99825,
-  "expoServerNgrokUrl": "https://xg-s77.anonymous.habittracker.exp.direct",
-  "packagerNgrokUrl": "https://packager.xg-s77.anonymous.habittracker.exp.direct",
-  "ngrokPid": 99840,
+  "packagerPort": 19001,
+  "packagerPid": 2637,
+  "expoServerNgrokUrl": "https://3v-muj.anonymous.habittracker.exp.direct",
+  "packagerNgrokUrl": "https://packager.3v-muj.anonymous.habittracker.exp.direct",
+  "ngrokPid": 2659,
   "webpackServerPort": null
 }

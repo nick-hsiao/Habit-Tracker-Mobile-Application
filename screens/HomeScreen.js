@@ -43,22 +43,47 @@ export default class HomeScreen extends React.Component {
 
   readUserData() {
     this.setUser()
+    /** 
     firebase.database().ref(`UsersList/${this.state.uid}/`).on('value', function (snapshot) {
         console.log(snapshot.val());
     });
+    **/
+
+        //Get list of entries, got help from https://stackoverflow.com/questions/49106987/how-to-retrieve-all-the-names-of-file-in-firebase-folder
+        firebase.database().ref(`UsersList/${this.state.uid}/_habits`).on('value', function (snapshot) {
+          snapshot.forEach(function(child) {
+            var files=child.val().habitName;
+            console.log(files);
+    
+          });
+      });
 }
 
 storeData(){
   user = firebase.auth().currentUser;
   uid = user.uid;
+
   if (user!= null){
+/**     
       firebase.database().ref(`UsersList/${uid}/_habits`).on('value', function (snapshot) {
       console.log(snapshot.val());
   });
+  **/
+
+     //Get list of entries, got help from https://stackoverflow.com/questions/49106987/how-to-retrieve-all-the-names-of-file-in-firebase-folder
+     firebase.database().ref(`UsersList/${uid}/_habits`).on('value', function (snapshot) {
+      snapshot.forEach(function(child) {
+        var files=child.val().habitName;
+        console.log(files);
+      });
+  });
+
   user.providerData.forEach(function (profile) {
     console.log("user email" + profile.email);
 
   });
+
+  
   }
 }
 
