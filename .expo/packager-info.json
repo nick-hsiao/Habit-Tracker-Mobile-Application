@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19004,
-  "packagerPid": 77369,
-  "expoServerNgrokUrl": "https://qa-9wz.anonymous.habittracker.exp.direct",
-  "packagerNgrokUrl": "https://packager.qa-9wz.anonymous.habittracker.exp.direct",
-  "ngrokPid": 77380,
+  "packagerPid": 99825,
+  "expoServerNgrokUrl": "https://xg-s77.anonymous.habittracker.exp.direct",
+  "packagerNgrokUrl": "https://packager.xg-s77.anonymous.habittracker.exp.direct",
+  "ngrokPid": 99840,
   "webpackServerPort": null
 }

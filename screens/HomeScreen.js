@@ -17,19 +17,25 @@ export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
-  state = {
-    user: null,
-    uid: null
+  constructor () {
+    super()
+    this.state = {
+      currentUser: '',
+      uid: '',
+      habitName: ''
 
+    }
   }
+
   setUser(){
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      console.log(user);
-      this.state.user = user;
-      this.state.uid = user.uid;
+      console.log(firebase.auth().currentUser);
+      this.setState({currentUser: firebase.auth().currentUser});
+      this.setState({uid: this.state.currentUser.uid});
+      console.log(" hello " + this.state.currentUser);
     } else {
-   
+      console.log("no user found");
     }
   });
 }
@@ -37,10 +43,26 @@ export default class HomeScreen extends React.Component {
 
   readUserData() {
     this.setUser()
-    firebase.database().ref(`UsersList/${this.state.uid}`).on('value', function (snapshot) {
-        console.log(snapshot.val())
+    firebase.database().ref(`UsersList/${this.state.uid}/`).on('value', function (snapshot) {
+        console.log(snapshot.val());
     });
 }
+
+storeData(){
+  user = firebase.auth().currentUser;
+  uid = user.uid;
+  if (user!= null){
+      firebase.database().ref(`UsersList/${uid}/_habits`).on('value', function (snapshot) {
+      console.log(snapshot.val());
+  });
+  user.providerData.forEach(function (profile) {
+    console.log("user email" + profile.email);
+
+  });
+  }
+}
+
+
   render() {
     return (
       <View style={styles.container}>
@@ -57,7 +79,7 @@ export default class HomeScreen extends React.Component {
           </View>
         </ScrollView>
         <Button
-          onPress = {()=> this.readUserData()}
+          onPress = {()=> this.storeData()}
           style = {styles.button}
           title = "Read">
         </Button>
