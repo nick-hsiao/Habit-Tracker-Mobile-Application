@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator} from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
@@ -10,6 +10,7 @@ import SignUpScreen from '../screens/SignUpScreen';
 import PasswordChangeScreen from '../screens/PasswordChangeScreen';
 import PasswordForgetScreen from '../screens/PasswordForgetScreen';
 import SignInScreen from '../screens/SignInScreen';
+import SettingsScreen2 from '../screens/SettingsScreen2';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -118,8 +119,20 @@ const SignInStack = createStackNavigator({
     ),
   };
 
+// Test Setting
+const SettingsStack2 = createStackNavigator({
+  Settings2: SettingsScreen2,
+});
 
-
+SettingsStack2.navigationOptions = {
+  tabBarLabel: 'Settings2',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+    />
+  ),
+};
 
 
 
@@ -131,5 +144,6 @@ export default createBottomTabNavigator({
   PasswordChangeStack,
   PasswordForgetStack,
   SignInStack,
+  SettingsStack2
 });
 
