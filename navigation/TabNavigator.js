@@ -12,13 +12,6 @@ import PasswordForgetScreen from '../screens/PasswordForgetScreen';
 import SignInScreen from '../screens/SignInScreen';
 import SettingsScreen2 from '../screens/SettingsScreen2';
 
-/* 
-This file is not needed anymore
-Kept for your convience
-*/
-
-
-
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
 });
@@ -70,54 +63,9 @@ const SignUpStack = createStackNavigator({
   SignUp: SignUpScreen,
 });
 
-SignUpStack.navigationOptions = {
-  tabBarLabel: 'Sign Up',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-add' : 'md-add'}
-    />
-  ),
-};
 
-// Password Change Screen
-const PasswordChangeStack = createStackNavigator({
-  PasswordChange: PasswordChangeScreen,
-});
-
-PasswordChangeStack.navigationOptions = {
-  tabBarLabel: 'Change Password',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-refresh' : 'md-refresh'}
-    />
-  ),
-};
-
-// Password Forget Screen
-const PasswordForgetStack = createStackNavigator({
-  PasswordForget: PasswordForgetScreen,
-});
-
-PasswordForgetStack.navigationOptions = {
-  tabBarLabel: 'Forgot Password',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-help' : 'md-help'}
-    />
-  ),
-};
-
-// Signup Screen
-const SignInStack = createStackNavigator({
-  SignIn: SignInScreen,
-});
-
-
-  SignInStack.navigationOptions = {
-    tabBarLabel: 'Sign In',
+  SignUpStack.navigationOptions = {
+    tabBarLabel: 'Sign Up',
     tabBarIcon: ({ focused }) => (
       <TabBarIcon
         focused={focused}
@@ -127,9 +75,17 @@ const SignInStack = createStackNavigator({
   };
 
 // Test Setting
-const SettingsStack2 = createStackNavigator({
+const SettingsStack2 = createStackNavigator(
+  {
   Settings2: SettingsScreen2,
-});
+  SignIn: SignInScreen,
+  PasswordChange: PasswordChangeScreen,
+  PasswordForget: PasswordForgetScreen,
+  },
+  {
+    initialRouteName: 'Settings2',
+  }
+);
 
 SettingsStack2.navigationOptions = {
   tabBarLabel: 'Settings2',
@@ -141,16 +97,10 @@ SettingsStack2.navigationOptions = {
   ),
 };
 
-
-
 export default createBottomTabNavigator({
   HomeStack,
   HabitStack,
   SettingsStack,
   SignUpStack,
-  PasswordChangeStack,
-  PasswordForgetStack,
-  SignInStack,
   SettingsStack2
 });
-
