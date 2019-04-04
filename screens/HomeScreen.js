@@ -81,6 +81,7 @@ AddItemsToArray=()=>{
 
 }
 
+<<<<<<< Updated upstream
 storeData(){
   user = firebase.auth().currentUser;
   uid = user.uid;
@@ -97,6 +98,61 @@ storeData(){
       snapshot.forEach(function(child) {
         var name=child.val().habitName;
         habit[1] = name;
+=======
+       if (this.state.currentUser) {
+         uid = user.uid;
+         // User is signed in.
+ 
+         //Get list of entries, got help from https://stackoverflow.com/questions/49106987/how-to-retrieve-all-the-names-of-file-in-firebase-folder
+         firebase.database().ref(`UsersList/${uid}/_habits`).on('value', function (snapshot) {
+           snapshot.forEach(function(child) {
+             //var name=child.val().habitName;
+             //habit[1] = name;
+             addHabit(child);
+             console.log(habits);
+          }); 
+         });
+
+         
+ 
+         
+         return (
+           <View style={styles.container}>
+            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+               <Header
+               backgroundColor = 'white'
+               leftComponent={{ icon: 'menu', color: 'black' }}
+           
+               rightComponent={{ icon: 'home', color: 'black' }}
+               />
+               <View style={styles.welcomeContainer}>
+                 <Image
+                   source={
+                    __DEV__
+                       ? require('../assets/images/logo.png')
+                       : require('../assets/images/logo.png')
+                  }
+                  style={styles.welcomeImage}
+                 />
+               </View>
+
+              {//Print items, https://www.pusher.com/tutorials/build-to-do-app-react-native-expo/
+              }
+              <View>
+                 {Object.values(habits)
+                  .reverse()
+                   .map(theHabit => (
+                    <View>
+                      <Text>Hi {theHabit}</Text>
+                      </View>
+                   ))}
+               </View>
+
+             </ScrollView>
+
+           </View>
+        );
+>>>>>>> Stashed changes
         
         console.log(habit);
         //console.log(name);

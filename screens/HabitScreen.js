@@ -1,14 +1,14 @@
 import React from 'react';
 import { ScrollView, View, Text, StyleSheet,TextInput, TouchableOpacity,Alert} from 'react-native';
-import { Button, CheckBox, Input, ButtonGroup, ButtonToolbar} from 'react-native-elements';
+import { Button, CheckBox, Input, ButtonGroup, Slider,ButtonToolbar} from 'react-native-elements';
 import {Container} from "native-base";
 import Modal from "react-native-modal";
 import * as firebase from 'firebase';
 
 const INITIAL_STATE = {
   habitName: "",
-  goalPeriod: "",
-  timesPerPeriod: "",
+  goalPeriod: 0,
+  timesPerPeriod: 1,
   sunP: 0,
   monP: 0,
   tueP: 0,
@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   friP: 0,
   satP: 0,
   saved: 'false',
+  reminders: false,
   error: null,
 };
 
@@ -27,9 +28,12 @@ export default class HabitScreen extends React.Component {
   constructor () {
     super()
     this.state = {
-      selectedIndex: 0,
+     
       dayIndex: 0,
       ...INITIAL_STATE,
+      isModalVisible: false,
+      checked: false,
+    
     }
     this.updateIndex = this.updateIndex.bind(this)
  
@@ -38,25 +42,22 @@ export default class HabitScreen extends React.Component {
   user = firebase.auth().currentUser;
   uid = this.user.uid;
 
-  updateIndex (selectedIndex) {
-    this.setState({selectedIndex})
+  updateIndex (goalPeriod) {
+    this.setState({goalPeriod})
   }
 
   static navigationOptions = {
     title: '',
   };
 
-  state = {
-    isModalVisible: false,
-    checked: false,
-  };
 
   _toggleModal = () =>
     this.setState({ isModalVisible: !this.state.isModalVisible });
   
-  _toggleCheck = () =>
+  _toggleCheck = () =>{
     this.setState({ checked: !this.state.checked });
-
+    this.setState({reminders: !this.state.reminders});
+}
   _handleName = (text) => {
     this.setState({ habitName: text })
   }
@@ -93,7 +94,7 @@ export default class HabitScreen extends React.Component {
   }       
 
 
-  writeHabitData = (habitName,sunP,monP,tueP,wedP,thuP,friP,satP) => {
+  writeHabitData = (habitName,sunP,monP,tueP,wedP,thuP,friP,satP,timesPerPeriod,reminders,goalPeriod) => {
 
     //var uid = authUser.user.uid;
     
@@ -106,11 +107,25 @@ export default class HabitScreen extends React.Component {
         wedP,
         thuP,
         friP,
-        satP
+        satP,
+        timesPerPeriod,
+        reminders,
+        goalPeriod
 
     }).then((data)=>{
-        //success callback
-        //console.log('data ' , data)
+        //reset
+       this.setState({timesPerPeriod: 1});
+       this.setState({sunP: 0});
+       this.setState({monP: 0});
+       this.setState({tueP: 0});
+       this.setState({wedP: 0});
+       this.setState({thuP: 0});
+       this.setState({friP: 0});
+       this.setState({satP: 0});
+       this.setState({timesPerPeriod: 1});
+       this.setState({reminders: false});
+       this.setState({checked: false});
+       this.setState({goalPeriod: 0});
     }).catch((error)=>{
         //error callback
         console.log('error ' , error)
@@ -153,18 +168,23 @@ export default class HabitScreen extends React.Component {
             <Text style = {styles.titleText}> Goal Period: </Text>
             <ButtonGroup
             onPress={this.updateIndex}
-            selectedIndex={this.state.selectedIndex}
+            selectedIndex={this.state.goalPeriod}
             buttons={buttons}
             containerStyle={{height: 30}}
             />
 
-            <Text style = {styles.titleText}> Times Per Period: </Text>
-            <Input style = {styles.textInput}
-            placeholder='  EX: 2 (TIMES PER DAY)'
-            leftIcon={{ type: 'feather', name: 'edit', marginRight: 5}}
-            onChangeText = {(timesPerPeriod) => this.setState({timesPerPeriod})}
-            />  
-
+            <Text style = {styles.titleText}> Times Per Period: {this.state.timesPerPeriod} </Text>
+            <Slider style = {styles.Slider}
+              thumbStyle = {{backgroundColor: 'black', width: 15, height: 15}}
+              value = {1}
+              maximumValue = {10}
+              minimumValue = {1}
+              step = {1}
+              timesPerPeriod={this.state.timesPerPeriod}
+              onValueChange={timesPerPeriod => this.setState({ timesPerPeriod})}
+            />
+          
+    
             <Text style = {styles.trackText}> Track Which Days?: </Text>
         
               <Container style = {{flexDirection: 'row', flex: 1, height: 50}}>
@@ -229,7 +249,7 @@ export default class HabitScreen extends React.Component {
             disabled = {isInvalid}
             onPress = {()=>this.writeHabitData(this.state.habitName,this.state.sunP,this.state.monP,
                                               this.state.tueP, this.state.wedP, this.state.thuP, this.state.friP,
-                                            this.state.satP)}
+                                            this.state.satP, this.state.timesPerPeriod, this.state.reminders,this.state.goalPeriod)}
           
             style = {styles.button} 
             title = "Save"> 
@@ -331,5 +351,9 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 5,
     justifyContent: 'space-around'
+  },
+  Slider:{
+    marginLeft: 10,
+    marginRight: 10
   },
 });
