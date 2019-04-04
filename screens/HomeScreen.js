@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   Image,
@@ -6,7 +7,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { Button, Header,CheckBox, Input, ButtonGroup, ButtonToolbar} from 'react-native-elements';
 import { WebBrowser } from 'expo';
@@ -17,6 +18,27 @@ const habit = {
     1: "habitName",
 };
 
+var habits = ["SDJIDJAODDAS", "SJDAIOJDOAJD"];
+var count = 0;
+
+//The commented lines of code (the console log) in this function will work if you declare 
+//habits (from previous lines) as an empty array (var habits = [];)
+function addHabit(value)
+{
+  console.log("SUCCESS "+value);
+  habits.push(value);
+  //console.log("MORE SUCCESS " + habits[count].val().habitName);
+  //console.log("MONDAY " + habits[count].val().monP);
+  //console.log("TUESDAY " + habits[count].val().tueP);
+  //console.log("WEDNESDAY " + habits[count].val().wedP);
+  //console.log("THURSDAY " + habits[count].val().thuP);
+  //console.log("FRIDAY " + habits[count].val().friP);
+  //console.log("SATURDAY " + habits[count].val().satP);
+  //console.log("SUNDAY " + habits[count].val().sunP);
+  count++;
+  console.log("ARRAY LENGTH IS "+habits.length);
+}
+
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -25,13 +47,24 @@ export default class HomeScreen extends React.Component {
   constructor () {
     super()
     this.state = {
-      currentUser: '',
+      currentUser: null,
       uid: '',
       habitName: '',
-      ...habit,
-      habitList: []
+      habitList: [],
+      habit
 
     }
+  }
+
+  //Rerender when user state is loaded, helped by https://stackoverflow.com/questions/48529910/why-firebase-user-is-not-authenticated-anymore-when-refreshing
+  componentDidMount() {
+    this.unsubscribe = firebase.auth().onAuthStateChanged(currentUser => {
+      this.setState({ currentUser })
+    })
+  }
+  //Rerender when user state is loaded, helped by https://stackoverflow.com/questions/48529910/why-firebase-user-is-not-authenticated-anymore-when-refreshing
+  componentWillUnmount() {
+    this.unsubscribe()
   }
 
   setUser(){
@@ -46,59 +79,14 @@ export default class HomeScreen extends React.Component {
     }
   });
 }
-  //user = firebase.auth().currentUser;
 
-  readUserData() {
-    this.setUser()
-    /** 
-    firebase.database().ref(`UsersList/${this.state.uid}/`).on('value', function (snapshot) {
-        console.log(snapshot.val());
-    });
-    **/
+  render() {
+    var user = firebase.auth().currentUser;
 
-        //Get list of entries, got help from https://stackoverflow.com/questions/49106987/how-to-retrieve-all-the-names-of-file-in-firebase-folder
-        firebase.database().ref(`UsersList/${this.state.uid}/_habits`).on('value', function (snapshot) {
-          snapshot.forEach(function(child) {
-            var name=child.val().habitName;
+    console.log("TEST " + user);
 
-            
-            console.log(name);
-          });
-      },
-      console.log(" hello " + this.state.habitList)
-    
-    );
-      
-}
+      //https://firebase.google.com/docs/auth/web/manage-users
 
-AddItemsToArray=()=>{
- 
-  //Adding Items To Array.
-  habitList.push( this.state.Holder.toString() );
-
-  // Showing the complete Array on Screen Using Alert.
-  Alert.alert(habitList.toString());
-
-}
-
-<<<<<<< Updated upstream
-storeData(){
-  user = firebase.auth().currentUser;
-  uid = user.uid;
-
-  if (user!= null){
-/**     
-      firebase.database().ref(`UsersList/${uid}/_habits`).on('value', function (snapshot) {
-      console.log(snapshot.val());
-  });
-  **/
-
-     //Get list of entries, got help from https://stackoverflow.com/questions/49106987/how-to-retrieve-all-the-names-of-file-in-firebase-folder
-     firebase.database().ref(`UsersList/${uid}/_habits`).on('value', function (snapshot) {
-      snapshot.forEach(function(child) {
-        var name=child.val().habitName;
-        habit[1] = name;
-=======
        if (this.state.currentUser) {
          uid = user.uid;
          // User is signed in.
@@ -109,11 +97,8 @@ storeData(){
              //var name=child.val().habitName;
              //habit[1] = name;
              addHabit(child);
-             console.log(habits);
           }); 
          });
-
-         
  
          
          return (
@@ -152,56 +137,12 @@ storeData(){
 
            </View>
         );
->>>>>>> Stashed changes
         
-        console.log(habit);
-        //console.log(name);
-      });
-  });
-  console.log(" hello " + this.state.habitList)
-
-  user.providerData.forEach(function (profile) {
-    console.log("user email" + profile.email);
-
-  });
-
-  
-  }
-}
+   } 
+   else return (<View style={styles.container}>
+    </View>);
 
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <Header
-          backgroundColor = 'white'
-          leftComponent={{ icon: 'menu', color: 'black' }}
-          
-          rightComponent={{ icon: 'home', color: 'black' }}
-          />
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/logo.png')
-                  : require('../assets/images/logo.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
-        </ScrollView>
-        <Button
-          onPress = {()=> this.storeData()}
-          style = {styles.button}
-          title = "Read">
-        </Button>
-        
-
-    
-    
-      </View>
-    );
   }
 
 
@@ -306,3 +247,9 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
 });
+
+
+
+
+
+
