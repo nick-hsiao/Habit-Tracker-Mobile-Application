@@ -9,16 +9,16 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { Button, Header,CheckBox, Input, ButtonGroup, ButtonToolbar} from 'react-native-elements';
+import { Button, Header,CheckBox, Input, ButtonGroup, ButtonToolbar, Card} from 'react-native-elements';
 import { WebBrowser } from 'expo';
 import * as firebase from 'firebase';
-import logo from '../assets/images/logo.png';
+//import logo from '../assets/images/logo.png';
 
 const habit = {
     1: "habitName",
 };
 
-var habits = ["SDJIDJAODDAS", "SJDAIOJDOAJD"];
+var habits = [];// ["SDJIDJAODDAS", "SJDAIOJDOAJD"];
 var count = 0;
 
 //The commented lines of code (the console log) in this function will work if you declare 
@@ -52,33 +52,86 @@ export default class HomeScreen extends React.Component {
       habitName: '',
       habitList: [],
       habit
-
     }
   }
+
 
   //Rerender when user state is loaded, helped by https://stackoverflow.com/questions/48529910/why-firebase-user-is-not-authenticated-anymore-when-refreshing
   componentDidMount() {
     this.unsubscribe = firebase.auth().onAuthStateChanged(currentUser => {
-      this.setState({ currentUser })
+
+      while(habits.length == 0)
+      { 
+
+        //dummy value in array to be removed later
+        addHabit(null);
+         
+        var user = firebase.auth().currentUser;
+        uid = user.uid;
+        // User is signed in.
+
+        //Get list of entries, got help from https://stackoverflow.com/questions/49106987/how-to-retrieve-all-the-names-of-file-in-firebase-folder
+        firebase.database().ref(`UsersList/${uid}/_habits`).on('value', function (snapshot) {
+          snapshot.forEach(function(child) {
+            //var name=child.val().habitName;
+            //habit[1] = name;
+            addHabit(child);
+         }); 
+
+         //Remove value from array, https://stackoverflow.com/questions/5767325/how-do-i-remove-a-particular-element-from-an-array-in-javascript
+         var index = habits.indexOf(null);
+          if (index > -1) {
+            habits.splice(index, 1);
+          }
+        });
+      }
+      if(habits.length > 0){
+
+        //Got help from https://www.youtube.com/watch?v=gvicrj31JOM, at 2:11
+        //Value is used to run a function inside setTimeout
+        const value = this;
+
+        value.set = function()
+        {
+          //Set user state after a delay time
+          this.setState({ currentUser });
+        }
+
+        //Wait for data to be loaded before setting user
+        setTimeout(function(){value.set();}, 1000);
+
+      }
+
+
+
+/** 
+      while(habits.length >2){
+        console.log("NO");
+        var user = firebase.auth().currentUser;
+        uid = user.uid;
+        // User is signed in.
+
+        //Get list of entries, got help from https://stackoverflow.com/questions/49106987/how-to-retrieve-all-the-names-of-file-in-firebase-folder
+        firebase.database().ref(`UsersList/${uid}/_habits`).on('value', function (snapshot) {
+          snapshot.forEach(function(child) {
+            //var name=child.val().habitName;
+            //habit[1] = name;
+            addHabit(child);
+         }); 
+        });
+      }
+      if(habits.length > 2)
+      {
+        this.setState({ currentUser });
+      }
+      **/
+
     })
   }
   //Rerender when user state is loaded, helped by https://stackoverflow.com/questions/48529910/why-firebase-user-is-not-authenticated-anymore-when-refreshing
   componentWillUnmount() {
     this.unsubscribe()
   }
-
-  setUser(){
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      console.log(firebase.auth().currentUser);
-      this.setState({currentUser: firebase.auth().currentUser});
-      this.setState({uid: this.state.currentUser.uid});
-      console.log(" hello " + this.state.currentUser);
-    } else {
-      console.log("no user found");
-    }
-  });
-}
 
   render() {
     var user = firebase.auth().currentUser;
@@ -91,6 +144,7 @@ export default class HomeScreen extends React.Component {
          uid = user.uid;
          // User is signed in.
  
+         /** 
          //Get list of entries, got help from https://stackoverflow.com/questions/49106987/how-to-retrieve-all-the-names-of-file-in-firebase-folder
          firebase.database().ref(`UsersList/${uid}/_habits`).on('value', function (snapshot) {
            snapshot.forEach(function(child) {
@@ -99,6 +153,7 @@ export default class HomeScreen extends React.Component {
              addHabit(child);
           }); 
          });
+         **/
  
          
          return (
@@ -127,11 +182,13 @@ export default class HomeScreen extends React.Component {
                  {Object.values(habits)
                   .reverse()
                    .map(theHabit => (
-                    <View>
-                      <Text>Hi {theHabit}</Text>
-                      </View>
+                    <Card header button onPress={() => alert("This is Card Header")}>
+                    <Text>{theHabit.val().habitName}</Text>
+                  </Card>
                    ))}
                </View>
+
+
 
              </ScrollView>
 
@@ -139,10 +196,9 @@ export default class HomeScreen extends React.Component {
         );
         
    } 
-   else return (<View style={styles.container}>
-    </View>);
-
-
+   else {
+     return (<View style={styles.container}>
+    </View>);}
   }
 
 
@@ -247,6 +303,7 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
 });
+
 
 
 
