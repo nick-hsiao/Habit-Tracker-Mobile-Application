@@ -254,10 +254,9 @@ export default class HabitScreen extends React.Component {
             style = {styles.button} 
             title = "Save"> 
             </Button>
-
-
+            {//<Button onPress={this._toggleModal} style = {styles.button}  title="Cancel"></Button>
+            }
             
-    
           </View>
           </Modal>
       </ScrollView>
