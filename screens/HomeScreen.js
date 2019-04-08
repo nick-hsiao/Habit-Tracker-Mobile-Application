@@ -135,8 +135,16 @@ export default class HomeScreen extends React.Component {
 
   writeHabitData = (habitName,sunP,monP,tueP,wedP,thuP,friP,satP,timesPerPeriod,reminders,goalPeriod) => {
     
+    /** 
+    //Remove old habit from array and replace it, https://stackoverflow.com/questions/5767325/how-do-i-remove-a-particular-element-from-an-array-in-javascript
+     var index = habits.indexOf(habitName);
+     if (index > -1) {
+      habits.splice(index, 1);
+     }
+     **/
+     
 
-    firebase.database().ref(`UsersList/${this.uid}/_habits/${this.state.habitName}`).set({
+    firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/_habits/${habitName}`).set({
       habitName,
       sunP,
       monP,
@@ -146,7 +154,7 @@ export default class HomeScreen extends React.Component {
       friP,
       satP,
       timesPerPeriod,
-      //reminders,
+      reminders,
       goalPeriod
 
     }).then((data)=>{
@@ -207,8 +215,9 @@ removeChild(child)
    console.log("DELETING "+child.val().habitName);
   
    //Remove??
-  firebase.database().ref(`UsersList/${this.uid}/_habits/${child.val().habitName}/friP`).remove();
-  
+  //firebase.database().ref(`UsersList/${this.uid}/_habits/${child.val().habitName}/friP`).remove();
+ 
+  firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/_habits/${child.val().habitName}`).set(null);
 
 
   //Close modal
@@ -368,7 +377,7 @@ removeChild(child)
                 <Text style = {styles.titleText}> </Text>
 
                   <Button 
-                onPress = {()=>this.writeHabitData(this.state.habitName,this.state.sunP,this.state.monP,
+                onPress = {()=>this.writeHabitData(theHabit.val().habitName,this.state.sunP,this.state.monP,
                                               this.state.tueP, this.state.wedP, this.state.thuP, this.state.friP,
                                             this.state.satP, this.state.timesPerPeriod, this.state.reminders,this.state.goalPeriod)}
           
