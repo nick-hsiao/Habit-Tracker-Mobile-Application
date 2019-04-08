@@ -275,10 +275,7 @@ removeChild(child)
                     swipeDirection="up">
 
                       <View style={{height: 500, backgroundColor: 'white',borderRadius: 15}}>
-                        <Text style = {styles.titleText}> Do you wish to delete {theHabit.val().habitName}? </Text>
-                        {//<Button style = {styles.button} onPress={this.removeChild(theChild)} title="Delete"></Button>
-                         //the child is maybe theHabit.val()??
-                        }
+                        <Text style = {styles.titleText}> Do you wish to delete {theHabit.val().habitName}? Warning: once a habit is removed, its data can not be recovered or restored.</Text>
                         
                         <Button style = {styles.button} onPress={()=>(this.removeChild(theHabit))} title="Delete"></Button>
 
