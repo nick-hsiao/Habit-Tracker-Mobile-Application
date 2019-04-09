@@ -10,6 +10,7 @@ import {
   View
 } from 'react-native';
 import { Button, Header,CheckBox, Input, ButtonGroup, Slider, ButtonToolbar, Card} from 'react-native-elements';
+import Icon from "react-native-vector-icons/Ionicons";
 import { WebBrowser } from 'expo';
 import * as firebase from 'firebase';
 import Modal from "react-native-modal";
@@ -239,12 +240,12 @@ removeChild(child)
          return (
            <View style={styles.container}>
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-               <Header
+             {/*   <Header
                backgroundColor = 'white'
                leftComponent={{ icon: 'menu', color: 'black' }}
            
                rightComponent={{ icon: 'home', color: 'black' }}
-               />
+               /> */}
                <View style={styles.welcomeContainer}>
                  <Image
                    source={
@@ -262,12 +263,32 @@ removeChild(child)
                  {Object.values(habits)
                   .reverse()
                    .map(theHabit => (
-                    <Card header button onPress={() => alert("This is Card Header")}>
-                    <Text>{theHabit.val().habitName}</Text>
+                  
+                    <Card 
+                    header button onPress={() => alert("This is Card Header")}>
                     
-                    <Button style = {styles.button} onPress={()=>(this._toggleHabitModal(theHabit))} title="Edit"></Button>
-                    <Button style = {styles.button} onPress={()=>(this._toggleModal(theHabit))} title="Delete"></Button>
-
+                    
+                    <View containerStyle = {{flexDirection: 'row'}}> 
+                    <Text style = {styles.cardtext}> {theHabit.val().habitName}</Text>
+                    <Button style = {styles.editbutton} onPress={()=>(this._toggleHabitModal(theHabit))} 
+                    icon={
+                      <Icon
+                      name={Platform.OS === "ios" ? "ios-create" : "md-create"}
+                      color='black'
+                      size={25}
+                    />
+                      }
+                      type = 'clear'>
+                    </Button>
+                    <Button style = {styles.deletebutton} onPress={()=>(this._toggleModal(theHabit))} icon={
+                      <Icon
+                      name={Platform.OS === "ios" ? "ios-trash" : "md-trash"}
+                      color='black'
+                      size={25}
+                    />
+                      }
+                      type = 'clear' ></Button>
+                    </View>
                     <Modal
                     contentContainerStyle = {styles.modalContent} 
                     isVisible={this.state.isModalVisible == theHabit.val().habitName }
@@ -280,6 +301,7 @@ removeChild(child)
                         <Button style = {styles.button} onPress={()=>(this.removeChild(theHabit))} title="Delete"></Button>
 
                         <Button style = {styles.button} onPress={this._toggleModalNull} title="Cancel"></Button>
+                        
                       </View>
                    </Modal>
 
@@ -357,9 +379,10 @@ removeChild(child)
                     </TouchableOpacity>
 
                  </Container>
-
+                
                 <Text style = {styles.titleText}> Reminders: </Text>
                 <CheckBox
+              
                 left
                 fontFamily = 'System'
                 title='REMINDERS'
@@ -367,26 +390,29 @@ removeChild(child)
                 checkedColor = 'green'
                 onPress={this._toggleCheck}
                 />
+                <Text style = {{height: 70}}> </Text>
             
       
             
-                <Text style = {styles.titleText}> </Text>
-                <Text style = {styles.titleText}> </Text>
-
+                
+                  <View style = {{flexDirection: 'row',justifyContent: 'center'}}>
+                  
                   <Button 
                 onPress = {()=>this.writeHabitData(theHabit.val().habitName,this.state.sunP,this.state.monP,
                                               this.state.tueP, this.state.wedP, this.state.thuP, this.state.friP,
                                             this.state.satP, this.state.timesPerPeriod, this.state.reminders,this.state.goalPeriod)}
           
-               style = {styles.button} 
+               style = {styles.savebutton} 
                 title = "Save"> 
                 </Button>
-                <Button onPress={this._toggleHabitModalNull} style = {styles.button}  title="Cancel"></Button>
+                <Button onPress={this._toggleHabitModalNull} style = {styles.cancelbutton}  title="Cancel"></Button>
+                </View>
               </View>
              </Modal>
 
 
                   </Card>
+                  
                    ))}
                </View>
              </ScrollView>
@@ -408,11 +434,52 @@ removeChild(child)
 }
 
 const styles = StyleSheet.create({
+  titleText: {
+    fontFamily: 'System',
+    fontSize: 18,
+    paddingTop: 10,
+    marginLeft: 5,
+  },
   button: {
     borderRadius: 5,
     margin: 10,
     marginLeft: 100,
     marginRight: 100
+  },
+  cardtext:{
+    fontFamily: 'System',
+    fontWeight: '100',
+    fontSize: 25
+  },
+  savebutton:{
+    paddingRight: 7,
+    borderRadius: 5,
+    paddingBottom: 15,
+   
+  },
+  cancelbutton:{
+    paddingLeft: 7,
+    borderRadius: 5,
+    paddingBottom: 15,
+    
+    
+  },
+  deletebutton:{
+    position: 'absolute',
+    borderRadius: 5,
+
+    bottom: -7,
+    left: 280,
+    paddingLeft: 5
+  },
+  editbutton:{
+    position: 'absolute',
+    
+    borderRadius: 5,
+   
+    bottom: -7,
+    left: 250,
+    paddingLeft: 5
   },
   container: {
     flex: 1,
@@ -524,6 +591,10 @@ const styles = StyleSheet.create({
   helpLinkText: {
     fontSize: 14,
     color: '#2e78b7',
+  },
+  Slider:{
+    marginLeft: 10,
+    marginRight: 10
   },
   
 });
