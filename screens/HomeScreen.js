@@ -440,6 +440,13 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     marginLeft: 5,
   },
+  trackText: {
+    fontFamily: 'System',
+    fontSize: 18,
+    paddingTop: 10,
+    marginLeft: 5,
+    paddingBottom: 5,
+  },
   button: {
     borderRadius: 5,
     margin: 10,

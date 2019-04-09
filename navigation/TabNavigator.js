@@ -44,7 +44,7 @@ HabitStack.navigationOptions = {
   ),
 };
 
-const SettingsStack = createStackNavigator({
+/* const SettingsStack = createStackNavigator({
   Settings: SettingsScreen,
 });
 
@@ -56,7 +56,7 @@ SettingsStack.navigationOptions = {
       name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
     />
   ),
-};
+}; */
 
 // Signup Screen
 const SignUpStack = createStackNavigator({
@@ -75,20 +75,20 @@ const SignUpStack = createStackNavigator({
   };
 
 // Test Setting
-const SettingsStack2 = createStackNavigator(
+const SettingsStack = createStackNavigator(
   {
-  Settings2: SettingsScreen2,
+  Settings: SettingsScreen2,
   SignIn: SignInScreen,
   PasswordChange: PasswordChangeScreen,
   PasswordForget: PasswordForgetScreen,
   },
   {
-    initialRouteName: 'Settings2',
+    initialRouteName: 'Settings',
   }
 );
 
-SettingsStack2.navigationOptions = {
-  tabBarLabel: 'Settings2',
+SettingsStack.navigationOptions = {
+  tabBarLabel: 'Settings',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -102,5 +102,5 @@ export default createBottomTabNavigator({
   HabitStack,
   SettingsStack,
   SignUpStack,
-  SettingsStack2
+  //SettingsStack2
 });

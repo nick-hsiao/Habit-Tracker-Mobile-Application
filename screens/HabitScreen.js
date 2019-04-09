@@ -279,12 +279,7 @@ const styles = StyleSheet.create({
   flexDirection: 'row',
   marginLeft: 5,
 },
-  titleText: {
-    fontFamily: 'System',
-    fontSize: 18,
-    paddingTop: 10,
-    marginLeft: 5,
-  },
+ 
   trackText: {
     fontFamily: 'System',
     fontSize: 18,
