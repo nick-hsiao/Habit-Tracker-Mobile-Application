@@ -268,7 +268,12 @@ export default class HabitScreen extends React.Component {
 
 
 const styles = StyleSheet.create({
-  
+  titleText: {
+    fontFamily: 'System',
+    fontSize: 18,
+    paddingTop: 10,
+    marginLeft: 5,
+  },
   scrollContainer: {
     flexGrow: 1
   },

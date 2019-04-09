@@ -7,14 +7,15 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  TouchableWithoutFeedback
 } from 'react-native';
-import { Button, Header,CheckBox, Input, ButtonGroup, Slider, ButtonToolbar, Card} from 'react-native-elements';
+import { Button,CheckBox, Input, ButtonGroup, Slider, ButtonToolbar, Card} from 'react-native-elements';
 import Icon from "react-native-vector-icons/Ionicons";
 import { WebBrowser } from 'expo';
 import * as firebase from 'firebase';
 import Modal from "react-native-modal";
-import {Container} from "native-base";
+import {Container,Header,Left,Right,Body,Title} from "native-base";
 //import logo from '../assets/images/logo.png';
 
 const habit = {
@@ -61,6 +62,8 @@ export default class HomeScreen extends React.Component {
       dayIndex: 0,
       checked: false,
       error: null,
+      cardcolor: 'white'
+
     }
 
     this.updateIndex = this.updateIndex.bind(this);
@@ -82,6 +85,16 @@ export default class HomeScreen extends React.Component {
   _toggleHabitModalNull = () =>
   this.setState({ isHabitModalVisible: null });
 
+  lastTap = null;
+  handleDoubleTap = () => {
+    const now = Date.now();
+    const DOUBLE_PRESS_DELAY = 300;
+    if (this.lastTap && (now - this.lastTap) < DOUBLE_PRESS_DELAY) {
+      this.setState({cardcolor: this.state.cardcolor === 'white' ? '#EAEAEA':'white'})
+    } else {
+      this.lastTap = now;
+    }
+  }
 
   //Rerender when user state is loaded, helped by https://stackoverflow.com/questions/48529910/why-firebase-user-is-not-authenticated-anymore-when-refreshing
   componentDidMount() {
@@ -246,8 +259,19 @@ removeChild(child)
            
                rightComponent={{ icon: 'home', color: 'black' }}
                /> */}
-               <View style={styles.welcomeContainer}>
-                 <Image
+               <View>
+                <Header transparent>
+                  <Left>
+                    <Button icon={
+                      <Icon
+                      name={Platform.OS === "ios" ? "ios-cog" : "md-cog"}
+                      color='black'
+                    size={30}/>}
+                    type = 'clear' >
+                    </Button>
+                  </Left>
+                  <Body>
+                  <Image
                    source={
                     __DEV__
                        ? require('../assets/images/logo.png')
@@ -255,6 +279,21 @@ removeChild(child)
                   }
                   style={styles.welcomeImage}
                  />
+                  </Body>
+                
+                  <Right>
+                  <Button icon={
+                      <Icon
+                      name={Platform.OS === "ios" ? "ios-add" : "md-add"}
+                      color='black'
+                    size={30}/>}
+                    type = 'clear' >
+                    </Button>
+                  </Right>
+                  </Header>
+                </View>
+               <View style={styles.welcomeContainer}>
+                 
                </View>
 
               {//Print items, https://www.pusher.com/tutorials/build-to-do-app-react-native-expo/
@@ -263,8 +302,8 @@ removeChild(child)
                  {Object.values(habits)
                   .reverse()
                    .map(theHabit => (
-                  
-                    <Card 
+                    <TouchableWithoutFeedback onPress={this.handleDoubleTap}>
+                    <Card containerStyle = {{backgroundColor: this.state.cardcolor}}
                     header button onPress={() => alert("This is Card Header")}>
                     
                     
@@ -412,6 +451,7 @@ removeChild(child)
 
 
                   </Card>
+                  </TouchableWithoutFeedback>
                   
                    ))}
                </View>
