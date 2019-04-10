@@ -36,7 +36,7 @@ export default class SignInScreen extends React.Component {
           if (error.code == 'auth/invalid-email'){
             Alert.alert("Invalid Email","Please Try Again");
           }
-          else{
+          else if(error.code == 'auth/wrong-password') {
             Alert.alert("Invalid Password","Please Try Again");
           }
           //Alert.alert(error.code);
@@ -190,7 +190,8 @@ const styles = StyleSheet.create({
   },
   inputStyle:{
     fontFamily: 'System',
-    width: 20,
+    paddingLeft: 10,
+    
 
   },
   containerStyle:{
