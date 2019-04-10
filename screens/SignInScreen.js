@@ -2,7 +2,7 @@
 import React from 'react';
 import { Text, StyleSheet, ScrollView, View, Alert,TextInput} from 'react-native';
 //import { sanFranciscoWeights } from 'react-native-typography'
-import { Button } from 'react-native-elements';
+import { Button,Input } from 'react-native-elements';
 import * as firebase from 'firebase';
 
 const INITIAL_STATE = {
@@ -33,6 +33,12 @@ export default class SignInScreen extends React.Component {
           
         .catch(error => {
           this.setState({ error });
+          if (error.code == 'auth/invalid-email'){
+            Alert.alert("Invalid Email","Please Try Again");
+          }
+          else{
+            Alert.alert("Invalid Password","Please Try Again");
+          }
           //Alert.alert(error.code);
           //Alert.alert(error.message);
           
@@ -113,15 +119,22 @@ if (user) {
 <Text style = {styles.helloText}> SIGN IN </Text>
         <ScrollView contentContainerStyle={styles.container}>
 
-<TextInput
-          style={styles.textInput}
+          <Input
+          inputStyle = {styles.inputStyle}
+          errorStyle = {styles.errorStyle}
+          //errorMessage = {isInvalid ? "Invalid Email" : ""}
+          containerStyle = {styles.containerStyle}
+          inputContainerStyle={styles.inputContainer}
           placeholder="Email"
           returnKeyLabel = {"next"}
           onChange={this.onChange}
           onChangeText = {(text) => this.setState({email:text})}
           />
-                              <TextInput
-          style={styles.textInput}
+          <Input
+          inputStyle = {styles.inputStyle}
+          
+          containerStyle = {styles.containerStyle}
+          inputContainerStyle={styles.inputContainer}
           secureTextEntry={true}
           placeholder="Password"
           returnKeyLabel = {"next"}
@@ -134,7 +147,7 @@ if (user) {
           <Button style = {styles.button}
           disabled = {isInvalid}
             onPress = {this.onSubmit}
-            title="Submit"
+            title="Log In"
           />
 
 
@@ -154,7 +167,7 @@ const styles = StyleSheet.create({
   },
   helloText: {
     fontFamily: 'System',
-    fontSize: 60,
+    fontSize: 40,
     fontWeight: '200',
     flexDirection: 'row',
     textAlign: 'center',
@@ -164,21 +177,31 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 10,
-    marginLeft: 100,
-    marginRight: 100,
+    marginLeft: 130,
+    marginRight: 130,
     borderRadius: 5,
   },
-  textInput: {
+  inputContainer: {
     textAlign: 'center',
-    marginLeft: 60,
-    marginRight: 60,
-    marginBottom: 10,
-    fontSize: 25,
-    borderWidth: 0.5,
-    paddingTop: 5,
-    paddingBottom: 5,
-    justifyContent: 'space-around'
+    marginLeft: 40,
+    marginRight: 40,
+    
+    
+  },
+  inputStyle:{
+    fontFamily: 'System',
+    width: 20,
+
+  },
+  containerStyle:{
+    paddingBottom: 15
+  },
+  errorStyle:{
+    marginLeft: 40,
+    marginRight: 40,
+    color: 'red'
   }
+
 });
 
 

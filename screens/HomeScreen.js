@@ -8,7 +8,9 @@ import {
   Text,
   TouchableOpacity,
   View,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Alert,
+  RefreshControl,
 } from 'react-native';
 import { Button,CheckBox, Input, ButtonGroup, Slider, ButtonToolbar, Card} from 'react-native-elements';
 import Icon from "react-native-vector-icons/Ionicons";
@@ -62,7 +64,8 @@ export default class HomeScreen extends React.Component {
       dayIndex: 0,
       checked: false,
       error: null,
-      cardcolor: 'white'
+      cardcolor: 'white',
+      refreshing: false,
 
     }
 
@@ -73,8 +76,16 @@ export default class HomeScreen extends React.Component {
     this.setState({goalPeriod})
   }
 
-  _toggleModal = (child) =>
-  this.setState({ isModalVisible: child.val().habitName});
+  _toggleModal = (child) =>{
+  this.setState({ isModalVisible: child.val().habitName})
+  };
+
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this.forceUpdate();
+    this.setState({refreshing: false});
+    
+  }
 
   _toggleModalNull = () =>
   this.setState({ isModalVisible: null, sunP: 0, monP: 0, tueP: 0, wedP: 0, thuP: 0, friP: 0, satP: 0, reminders: false});
@@ -192,10 +203,14 @@ export default class HomeScreen extends React.Component {
     this._toggleHabitModalNull();
   }
 
+_refresh = () =>{
+  this.forceUpdate();
+}
 _toggleCheck = () =>{
     this.setState({ checked: !this.state.checked });
     this.setState({reminders: !this.state.reminders});
 }
+
 
 _onSunPress = () =>{
   this.setState({ sunP: this.state.sunP === 0 ? 1:0});
@@ -234,8 +249,7 @@ removeChild(child)
   firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/_habits/${child.val().habitName}`).set(null);
 
 
-  //Close modal
-  this._toggleModalNull();
+  this._refresh();
 
 }
  
@@ -252,13 +266,13 @@ removeChild(child)
          
          return (
            <View style={styles.container}>
-            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-             {/*   <Header
-               backgroundColor = 'white'
-               leftComponent={{ icon: 'menu', color: 'black' }}
-           
-               rightComponent={{ icon: 'home', color: 'black' }}
-               /> */}
+            <ScrollView refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
+              />}
+              style={styles.container} contentContainerStyle={styles.contentContainer}>
+          
                <View>
                 <Header transparent>
                   <Left>
@@ -319,7 +333,19 @@ removeChild(child)
                       }
                       type = 'clear'>
                     </Button>
-                    <Button style = {styles.deletebutton} onPress={()=>(this._toggleModal(theHabit))} icon={
+                    <Button style = {styles.deletebutton} onPress={()=>Alert.alert(
+                      'Are You Sure?',
+                      'Data Cannot Be Recovered',
+                      [
+                        {text: 'Confirm', onPress: () => (this.removeChild(theHabit))},
+                        {
+                          text: 'Cancel',
+                          style: 'cancel',
+                        },
+                        
+                      ],
+                      {cancelable: false},)} 
+                      icon={
                       <Icon
                       name={Platform.OS === "ios" ? "ios-trash" : "md-trash"}
                       color='black'
@@ -328,10 +354,10 @@ removeChild(child)
                       }
                       type = 'clear' ></Button>
                     </View>
-                    <Modal
+                    {/* <Modal
                     contentContainerStyle = {styles.modalContent} 
                     isVisible={this.state.isModalVisible == theHabit.val().habitName }
-                    onSwipeComplete={() => this.setState({ isModalVisible: false })}
+                    onSwipeComplete={()=>(this._toggleHabitModal(theHabit))}
                     swipeDirection="up">
 
                       <View style={{height: 500, backgroundColor: 'white',borderRadius: 15}}>
@@ -342,7 +368,7 @@ removeChild(child)
                         <Button style = {styles.button} onPress={this._toggleModalNull} title="Cancel"></Button>
                         
                       </View>
-                   </Modal>
+                   </Modal> */}
 
                    <Modal
                     contentContainerStyle = {styles.modalContent} 
@@ -461,8 +487,9 @@ removeChild(child)
         
    } 
    else {
-     return (<View style={styles.container}>
-    </View>);}
+     return (<Container>
+     <Text style = {{paddingTop: 100,alignSelf: 'center'}}> put sign in screen here </Text>
+    </Container>);}
   }
 
 
@@ -502,12 +529,13 @@ const styles = StyleSheet.create({
     paddingRight: 7,
     borderRadius: 5,
     paddingBottom: 15,
-   
+    width: 100
   },
   cancelbutton:{
     paddingLeft: 7,
     borderRadius: 5,
     paddingBottom: 15,
+    width: 100
     
     
   },

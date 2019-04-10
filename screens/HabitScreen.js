@@ -114,6 +114,7 @@ export default class HabitScreen extends React.Component {
 
     }).then((data)=>{
         //reset
+       this.setState({habitName: ''});
        this.setState({timesPerPeriod: 1});
        this.setState({sunP: 0});
        this.setState({monP: 0});
