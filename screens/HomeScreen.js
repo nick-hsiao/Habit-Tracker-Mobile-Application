@@ -107,51 +107,80 @@ export default class HomeScreen extends React.Component {
     }
   }
 
-  //Rerender when user state is loaded, helped by https://stackoverflow.com/questions/48529910/why-firebase-user-is-not-authenticated-anymore-when-refreshing
-  componentDidMount() {
-    this.unsubscribe = firebase.auth().onAuthStateChanged(currentUser => {
+ //Rerender when user state is loaded, helped by https://stackoverflow.com/questions/48529910/why-firebase-user-is-not-authenticated-anymore-when-refreshing
+ componentDidMount(){
+  this.unsubscribe = firebase.auth().onAuthStateChanged(currentUser => {
 
-      while(habits.length == 0)
-      { 
+    while(habits.length == 0)
+    { 
 
-        //dummy value in array to be removed later
-        addHabit(null);
-         
-        var user = firebase.auth().currentUser;
-        uid = user.uid;
-        // User is signed in.
+      
 
-        //Get list of entries, got help from https://stackoverflow.com/questions/49106987/how-to-retrieve-all-the-names-of-file-in-firebase-folder
-        firebase.database().ref(`UsersList/${uid}/_habits`).on('value', function (snapshot) {
-          snapshot.forEach(function(child) {
-            addHabit(child);
-         }); 
-        });
-      }
+      //dummy value in array to be removed later
+      addHabit(null);
+       
+      var user = firebase.auth().currentUser;
+      uid = user.uid;
+      // User is signed in.
 
-      if(habits.length > 0){
-        //Remove dummy value from array, https://stackoverflow.com/questions/5767325/how-do-i-remove-a-particular-element-from-an-array-in-javascript
-        var index = habits.indexOf(null);
-        if (index > -1) {
-          habits.splice(index, 1);
-         }
+      //Get list of entries, got help from https://stackoverflow.com/questions/49106987/how-to-retrieve-all-the-names-of-file-in-firebase-folder
+      firebase.database().ref(`UsersList/${uid}/_habits`).on('value', function (snapshot) {
+        snapshot.forEach(function(child) {
 
-        //Got help from https://www.youtube.com/watch?v=gvicrj31JOM, at 2:11
-        //Value is used to run a function inside setTimeout
-        const value = this;
+          var edited = false;
 
-        value.set = function()
+          //Check if something is edited. If not, load into database. 
+          var oldIndex;
+        for( i = 0; i < habits.length; i++)
         {
-          //Set user state after a delay time
-          this.setState({ currentUser });
+          //If name matches, edited is true
+          
+          if (child.val().habitName == habits[i].val().habitName)
+          {
+            edited = true;
+            oldIndex = i;
+          }
+          
         }
+        if(edited == false)
+        {
+          addHabit(child);
+        }
+        else
+        {
+          //replace old index
+           habits[oldIndex] = child;
 
-        //Wait for data to be loaded before setting user
-        setTimeout(function(){value.set();}, 1000);
+        }
+          
+       }); 
+      });
+    }
 
+    if(habits.length > 0){
+      //Remove dummy value from array, https://stackoverflow.com/questions/5767325/how-do-i-remove-a-particular-element-from-an-array-in-javascript
+      var index = habits.indexOf(null);
+      if (index > -1) {
+        habits.splice(index, 1);
+       }
+
+      //Got help from https://www.youtube.com/watch?v=gvicrj31JOM, at 2:11
+      //Value is used to run a function inside setTimeout
+      const value = this;
+
+      value.set = function()
+      {
+        //Set user state after a delay time
+        this.setState({ currentUser });
       }
-    })
-  }
+
+      //Wait for data to be loaded before setting user
+      setTimeout(function(){value.set();}, 1000);
+
+    }
+  })
+}
+
   //Rerender when user state is loaded, helped by https://stackoverflow.com/questions/48529910/why-firebase-user-is-not-authenticated-anymore-when-refreshing
   componentWillUnmount() {
     this.unsubscribe()
