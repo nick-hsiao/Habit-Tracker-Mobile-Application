@@ -262,6 +262,7 @@ _onFriPress = () =>
 _onSatPress = () =>
   this.setState({ satP: this.state.satP === 0 ? 1:0});
 
+
 removeChild(child)
 {
   //Delete child from array, https://stackoverflow.com/questions/5767325/how-do-i-remove-a-particular-element-from-an-array-in-javascript
@@ -332,7 +333,7 @@ removeChild(child)
                       color='black'
                     size={30}/>}
                     type = 'clear' 
-                    onPress={() => this.props.navigation.navigate('HabitScreen')} > //goes to HabitScreen
+                    onPress={() => this.props.navigation.navigate('HabitScreen')}> 
                     </Button>
                   </Right>
                   </Header>
