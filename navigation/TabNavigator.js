@@ -5,6 +5,7 @@ import { createStackNavigator, createBottomTabNavigator} from 'react-navigation'
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import HabitScreen from '../screens/HabitScreen';
+import HabitScreen2 from '../screens/HabitScreen2';
 import SettingsScreen from '../screens/SettingsScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import PasswordChangeScreen from '../screens/PasswordChangeScreen';
@@ -14,7 +15,16 @@ import SettingsScreen2 from '../screens/SettingsScreen2';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
-});
+  Settings: SettingsScreen2,
+  SignIn: SignInScreen,
+  PasswordChange: PasswordChangeScreen,
+  PasswordForget: PasswordForgetScreen,
+  HabitScreen: HabitScreen2,
+  },
+  {
+    initialRouteName: 'Home',
+  }
+);
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
@@ -44,7 +54,7 @@ HabitStack.navigationOptions = {
   ),
 };
 
-const SettingsStack = createStackNavigator({
+/* const SettingsStack = createStackNavigator({
   Settings: SettingsScreen,
 });
 
@@ -56,7 +66,7 @@ SettingsStack.navigationOptions = {
       name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
     />
   ),
-};
+}; */
 
 // Signup Screen
 const SignUpStack = createStackNavigator({
@@ -75,24 +85,24 @@ const SignUpStack = createStackNavigator({
   };
 
 // Test Setting
-const SettingsStack2 = createStackNavigator(
+const SettingsStack = createStackNavigator(
   {
-  Settings2: SettingsScreen2,
+  Settings: SettingsScreen2,
   SignIn: SignInScreen,
   PasswordChange: PasswordChangeScreen,
   PasswordForget: PasswordForgetScreen,
   },
   {
-    initialRouteName: 'Settings2',
+    initialRouteName: 'Settings',
   }
 );
 
-SettingsStack2.navigationOptions = {
-  tabBarLabel: 'Settings2',
+SettingsStack.navigationOptions = {
+  tabBarLabel: 'Settings',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+      name={Platform.OS === 'ios' ? 'ios-cog' : 'md-cog'}
     />
   ),
 };
@@ -100,7 +110,7 @@ SettingsStack2.navigationOptions = {
 export default createBottomTabNavigator({
   HomeStack,
   HabitStack,
-  SettingsStack,
+  //SettingsStack,
   SignUpStack,
-  SettingsStack2
+  //SettingsStack2
 });

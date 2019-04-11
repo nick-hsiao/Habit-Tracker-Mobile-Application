@@ -114,6 +114,7 @@ export default class HabitScreen extends React.Component {
 
     }).then((data)=>{
         //reset
+       this.setState({habitName: ''});
        this.setState({timesPerPeriod: 1});
        this.setState({sunP: 0});
        this.setState({monP: 0});
@@ -254,10 +255,9 @@ export default class HabitScreen extends React.Component {
             style = {styles.button} 
             title = "Save"> 
             </Button>
-
-
+            {//<Button onPress={this._toggleModal} style = {styles.button}  title="Cancel"></Button>
+            }
             
-    
           </View>
           </Modal>
       </ScrollView>
@@ -269,7 +269,12 @@ export default class HabitScreen extends React.Component {
 
 
 const styles = StyleSheet.create({
-  
+  titleText: {
+    fontFamily: 'System',
+    fontSize: 18,
+    paddingTop: 10,
+    marginLeft: 5,
+  },
   scrollContainer: {
     flexGrow: 1
   },
@@ -280,12 +285,7 @@ const styles = StyleSheet.create({
   flexDirection: 'row',
   marginLeft: 5,
 },
-  titleText: {
-    fontFamily: 'System',
-    fontSize: 18,
-    paddingTop: 10,
-    marginLeft: 5,
-  },
+ 
   trackText: {
     fontFamily: 'System',
     fontSize: 18,

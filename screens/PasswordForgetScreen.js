@@ -107,10 +107,12 @@ const styles = StyleSheet.create({
   button: {
     margin: 10,
     marginLeft: 100,
-    marginRight: 100
+    marginRight: 100,
+    borderRadius: 5,
   },
   textInput: {
     textAlign: 'center',
+    borderRadius: 5,
     marginLeft: 60,
     marginRight: 60,
     marginBottom: 10,
