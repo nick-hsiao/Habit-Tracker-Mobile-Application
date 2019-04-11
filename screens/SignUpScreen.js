@@ -2,7 +2,7 @@
 import React from 'react';
 import { Text, StyleSheet, ScrollView, View, Alert,TextInput} from 'react-native';
 //import { sanFranciscoWeights } from 'react-native-typography'
-import { Button } from 'react-native-elements';
+import { Button,Input } from 'react-native-elements';
 import * as firebase from 'firebase';
 
 const INITIAL_STATE = {
@@ -118,48 +118,72 @@ export default class SignUpScreen extends React.Component {
     return (
       <View style={{ flex: 1 }}>
 
-<Text style = {styles.helloText}> SIGN UP </Text>
+<Text style = {styles.titleText}> SIGN UP :D</Text>
         <ScrollView contentContainerStyle={styles.container}>
 
-          <TextInput
-          style={styles.textInput}
+          <Input
+          inputStyle = {styles.inputStyle}
+          errorStyle = {styles.errorStyle}
+          
+          containerStyle = {styles.containerStyle}
+          inputContainerStyle={styles.inputContainer}
           placeholder="Username"
           returnKeyLabel = {"next"}
           onChange={this.onChange}
           onChangeText = {(text) => this.setState({username:text})}
           />
-                    <TextInput
-          style={styles.textInput}
+          <Input
+          inputStyle = {styles.inputStyle}
+          errorStyle = {styles.errorStyle}
+          
+          containerStyle = {styles.containerStyle}
+          inputContainerStyle={styles.inputContainer}
           placeholder="First Name"
           returnKeyLabel = {"next"}
           onChange={this.onChange}
           onChangeText = {(text) => this.setState({firstName:text})}
           />
-                    <TextInput
-          style={styles.textInput}
+                    <Input
+          inputStyle = {styles.inputStyle}
+          errorStyle = {styles.errorStyle}
+          
+          containerStyle = {styles.containerStyle}
+          inputContainerStyle={styles.inputContainer}
           placeholder="Last Name"
           returnKeyLabel = {"next"}
           onChange={this.onChange}
           onChangeText = {(text) => this.setState({lastName:text})}
           />
 
-<TextInput
-          style={styles.textInput}
+          <Input
+          inputStyle = {styles.inputStyle}
+          errorStyle = {styles.errorStyle}
+          
+          containerStyle = {styles.containerStyle}
+          inputContainerStyle={styles.inputContainer}
           placeholder="Email"
           returnKeyLabel = {"next"}
           onChange={this.onChange}
           onChangeText = {(text) => this.setState({email:text})}
           />
-                              <TextInput
-          style={styles.textInput}
+                             <Input
+          inputStyle = {styles.inputStyle}
+          errorStyle = {styles.errorStyle}
+          
+          containerStyle = {styles.containerStyle}
+          inputContainerStyle={styles.inputContainer}
           secureTextEntry={true}
           placeholder="Password"
           returnKeyLabel = {"next"}
           onChange={this.onChange}
           onChangeText = {(text) => this.setState({passwordOne:text})}
           />
-                              <TextInput
-          style={styles.textInput}
+                           <Input
+          inputStyle = {styles.inputStyle}
+          errorStyle = {styles.errorStyle}
+          
+          containerStyle = {styles.containerStyle}
+          inputContainerStyle={styles.inputContainer}
           secureTextEntry={true}
           placeholder="Confirm Password"
           returnKeyLabel = {"next"}
@@ -194,6 +218,15 @@ const styles = StyleSheet.create({
     fontWeight: '200',
     flexGrow: 1,
   },
+  titleText:{
+    fontSize: 30,
+    fontFamily: 'System',
+    paddingTop: 30,
+    paddingBottom: 10,
+    marginLeft: 45,
+    marginRight: 45,
+    flexDirection: 'row',
+  },
   helloText: {
     fontFamily: 'System',
     fontSize: 60,
@@ -222,5 +255,22 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     justifyContent: 'space-around',
     borderRadius: 5,
-  }
+  },
+  inputContainer: {
+    textAlign: 'center',
+    marginLeft: 40,
+    marginRight: 40,
+  },
+  inputStyle:{
+    fontFamily: 'System',
+    paddingLeft: 10,
+  },
+  containerStyle:{
+    paddingBottom: 15
+  },
+  errorStyle:{
+    marginLeft: 40,
+    marginRight: 40,
+    color: 'red'
+  },
 });

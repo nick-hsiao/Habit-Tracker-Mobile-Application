@@ -105,7 +105,7 @@ if (user) {
       {
           return (
             <View style={{ flex: 1 }}>
-            <Text style = {styles.helloText}> You are already signed in </Text>
+            <Text style = {styles.otherText}> You are already signed in </Text>
             <Button style = {styles.button}
   onPress = {this.onSubmit2}
   title="Sign Out"
@@ -116,7 +116,7 @@ if (user) {
     else return (
       <View style={{ flex: 1 }}>
 
-<Text style = {styles.helloText}> SIGN IN </Text>
+<Text style = {styles.titleText}> SIGN IN </Text>
         <ScrollView contentContainerStyle={styles.container}>
 
           <Input
@@ -165,6 +165,21 @@ const styles = StyleSheet.create({
     fontWeight: '200',
     flexGrow: 1,
   },
+  otherText:{
+    fontSize: 30,
+    fontFamily: 'System',
+    paddingTop: 30,
+    paddingBottom: 10,
+    textAlign: 'center',
+  },
+  titleText:{
+    fontSize: 30,
+    fontFamily: 'System',
+    paddingTop: 30,
+    paddingBottom: 10,
+    marginLeft: 45,
+    marginRight: 45,
+  },
   helloText: {
     fontFamily: 'System',
     fontSize: 40,
@@ -201,7 +216,7 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginRight: 40,
     color: 'red'
-  }
+  },
 
 });
 

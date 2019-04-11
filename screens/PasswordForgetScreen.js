@@ -2,7 +2,7 @@
 import React from 'react';
 import { Text, StyleSheet, ScrollView, View, Alert,TextInput} from 'react-native';
 //import { sanFranciscoWeights } from 'react-native-typography'
-import { Button } from 'react-native-elements';
+import { Button,Input } from 'react-native-elements';
 import * as firebase from 'firebase';
 
 const INITIAL_STATE = {
@@ -54,12 +54,16 @@ export default class PasswordForgetScreen extends React.Component {
     return (
       <View style={{ flex: 1 }}>
 
-<Text style = {styles.helloText}> FORGOT PASSWORD </Text>
+<Text style = {styles.titleText}> FORGOT PASSWORD </Text>
         <ScrollView contentContainerStyle={styles.container}>
 
 
-<TextInput
-          style={styles.textInput}
+          <Input
+          inputStyle = {styles.inputStyle}
+          errorStyle = {styles.errorStyle}
+          
+          containerStyle = {styles.containerStyle}
+          inputContainerStyle={styles.inputContainer}
           placeholder="Email"
           returnKeyLabel = {"next"}
           onChange={this.onChange}
@@ -94,6 +98,15 @@ const styles = StyleSheet.create({
     fontWeight: '200',
     flexGrow: 1,
   },
+  titleText:{
+    fontSize: 25,
+    fontFamily: 'System',
+    paddingTop: 30,
+    paddingBottom: 10,
+    marginLeft: 45,
+    marginRight: 45,
+    flexDirection: 'row',
+  },
   helloText: {
     fontFamily: 'System',
     fontSize: 30,
@@ -121,5 +134,22 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 5,
     justifyContent: 'space-around'
-  }
+  },
+  inputContainer: {
+    textAlign: 'center',
+    marginLeft: 40,
+    marginRight: 40,
+  },
+  inputStyle:{
+    fontFamily: 'System',
+    paddingLeft: 10,
+  },
+  containerStyle:{
+    paddingBottom: 15
+  },
+  errorStyle:{
+    marginLeft: 40,
+    marginRight: 40,
+    color: 'red'
+  },
 });
