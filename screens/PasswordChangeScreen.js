@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   inputContainer: {
-    textAlign: 'center',
+    
     marginLeft: 40,
     marginRight: 40,
   },

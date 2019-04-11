@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   inputContainer: {
-    textAlign: 'center',
+    
     marginLeft: 40,
     marginRight: 40,
   },

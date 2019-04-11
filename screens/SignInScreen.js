@@ -63,6 +63,7 @@ if (user) {
     firebase.auth().signOut().then(function() {
         // Sign-out successful.
         Alert.alert("You have signed out.");
+        //nav
       }).catch(function(error) {
         // An error happened.
         Alert.alert("Sign Out Error");
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   inputContainer: {
-    textAlign: 'center',
+    
     marginLeft: 40,
     marginRight: 40,
     
