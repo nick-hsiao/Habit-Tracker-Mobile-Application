@@ -17,6 +17,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { WebBrowser } from 'expo';
 import * as firebase from 'firebase';
 import Modal from "react-native-modal";
+import { NavigationEvents } from "react-navigation";
 import {Container,Header,Left,Right,Body,Title} from "native-base";
 //import logo from '../assets/images/logo.png';
 
@@ -186,7 +187,6 @@ export default class HomeScreen extends React.Component {
     this.unsubscribe()
   }
 
-
   writeHabitData = (habitName,sunP,monP,tueP,wedP,thuP,friP,satP,timesPerPeriod,reminders,goalPeriod) => {
     
     /** 
@@ -296,6 +296,11 @@ removeChild(child)
          
          return (
            <View style={styles.container}>
+           <NavigationEvents
+          onWillFocus={() => {
+            this.forceUpdate();
+          }}
+        />
             <ScrollView refreshControl={
               <RefreshControl
                 refreshing={this.state.refreshing}
@@ -521,6 +526,11 @@ removeChild(child)
    else {
      return (<Container>
      <Text style = {{paddingTop: 100,alignSelf: 'center'}}> put sign in screen here </Text>
+     <Button type = 'clear'
+          style = {{paddingTop: 10}}
+          title="Go to Sign-In Screen"
+          onPress={() => this.props.navigation.navigate('SignIn')}
+        />
     </Container>);}
   }
 

@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "21 Habit Tracker",
-    "slug": "21 Habit Tracker",
+    "slug": "habittracker",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
