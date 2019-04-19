@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator} from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
+import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import HomeScreen from '../screens/HomeScreen';
 import HabitScreen from '../screens/HabitScreen';
 import SignUpScreen from '../screens/SignUpScreen';
@@ -15,11 +16,10 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   Settings: SettingsScreen,
-  SignIn: SignInScreen,
   PasswordChange: PasswordChangeScreen,
   PasswordForget: PasswordForgetScreen,
   HabitScreen: HabitScreen,
-  SignUpScreen: SignUpScreen
+  
   },
   {
     initialRouteName: 'Home',
@@ -30,9 +30,24 @@ const HomeStack = createStackNavigator({
     
   }
 );
+const SignInStack = createStackNavigator({ SignIn: SignInScreen,SignUpScreen: SignUpScreen },
+  { defaultNavigationOptions:  {  
+       header: null
+  }
+});
 
-
-export default createAppContainer(createSwitchNavigator({
-  
-  Main: HomeStack,
-}));
+const AuthStack = createStackNavigator({ AuthLoading: AuthLoadingScreen },
+  { defaultNavigationOptions:  {  
+       header: null
+  }
+});
+export default createAppContainer(createSwitchNavigator(
+  {
+    Auth: AuthStack,
+    Home: HomeStack,
+    SignIn: SignInStack,
+  },
+  {
+    initialRouteName: 'Home',
+  }
+));

@@ -294,7 +294,7 @@ removeChild(child)
    
 
        if(!this.state.currentUser) {
-        
+    
         return (
           <View style = {{marginTop: 280}}>
       <TouchableOpacity onPress  ={() => this.props.navigation.navigate('SignIn')}>
