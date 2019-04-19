@@ -292,7 +292,7 @@ removeChild(child)
     //var user = firebase.auth().currentUser;
     
    
-
+/* 
        if(!this.state.currentUser) {
     
         return (
@@ -310,7 +310,7 @@ removeChild(child)
           </View>
          
          )
-        }
+        } */
          return (
            <View style={styles.container}>
            <NavigationEvents
