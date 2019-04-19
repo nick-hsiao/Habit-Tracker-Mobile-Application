@@ -131,7 +131,7 @@ export default class HabitScreen extends React.Component {
         //error callback
         console.log('error ' , error)
     })
-    this._toggleModal();
+    this.props.navigation.navigate('Home');
   
 }
  
@@ -147,22 +147,15 @@ export default class HabitScreen extends React.Component {
     return (
       <View style = {{flex:1}}>
       <ScrollView contentContainerStyle = {StyleSheet.scrollContainer}>
-        <Button style = {styles.button}
-            onPress={this._toggleModal}
-            title = "Create Habit"
-          />
-          <Modal
-          contentContainerStyle = {styles.modalContent} 
-          isVisible={this.state.isModalVisible}
-          onSwipeComplete={() => this.setState({ isModalVisible: false })}
-          swipeDirection="up">
-          <View style={{height: 500, backgroundColor: 'white',borderRadius: 15}}>
+        
+          
+          <View style={{height: 440, backgroundColor: 'white'}}>
             
             <Text style = {styles.titleText}> Habit Name: </Text>
             <Input style = {styles.textInput}
             
-            placeholder='  EX: DRINK WATER '
-            leftIcon={{ type: 'feather', name: 'edit',marginRight: 5}}
+            placeholder='  Ex: Drink Water'
+            //leftIcon={{ type: 'feather', name: 'edit',marginRight: 5}}
             onChangeText = {(habitName) => this.setState({habitName})}
             />  
             
@@ -174,63 +167,73 @@ export default class HabitScreen extends React.Component {
             containerStyle={{height: 30}}
             />
 
-            <Text style = {styles.titleText}> Times Per Period: {this.state.timesPerPeriod} </Text>
-            <Slider style = {styles.Slider}
-              thumbStyle = {{backgroundColor: 'black', width: 15, height: 15}}
-              value = {1}
-              maximumValue = {10}
-              minimumValue = {1}
-              step = {1}
-              timesPerPeriod={this.state.timesPerPeriod}
-              onValueChange={timesPerPeriod => this.setState({ timesPerPeriod})}
-            />
+            <Text style = {styles.titleText}> 
+            Times Per {this.state.goalPeriod === 0? 'Day': this.state.goalPeriod === 1? 'Week':'Month' }: {this.state.timesPerPeriod} </Text>
+            <Slider trackStyle = {{
+             marginLeft: 25,
+             marginRight: 25,
+             
+              }}
+                     
+                      thumbStyle = {{backgroundColor: '#E9765B',
+                      width: 17, 
+                      height: 17,
+                      marginLeft: 25,
+                      marginRight: 25,
+                      
+                      }}
+                      thumbTouchSize = {{width: 50, height: 50}}
+                      value = {1}
+                      maximumValue = {10}
+                      minimumValue = {1}
+                      step = {1}
+                      timesPerPeriod={this.state.timesPerPeriod}
+                      onValueChange={timesPerPeriod => this.setState({ timesPerPeriod})}
+                      
+                      />
           
     
             <Text style = {styles.trackText}> Track Which Days?: </Text>
         
-              <Container style = {{flexDirection: 'row', flex: 1, height: 50}}>
-                <TouchableOpacity  value = 'sun' 
-                onPress = {this._onSunPress}
-                style = {this.state.sunP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                  <Text style = {styles.dayText} >SUN</Text>
-                </TouchableOpacity>
-                <TouchableOpacity  value = 'mon' 
-                onPress = {this._onMonPress}
-                style = {this.state.monP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                  <Text style = {styles.dayText} >MON</Text>
-                </TouchableOpacity>
-                <TouchableOpacity  value = 'tue'
-                 onPress = {this._onTuePress}
-                 style = {this.state.tueP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                  <Text style = {styles.dayText} >TUE</Text>
-                </TouchableOpacity>
-                <TouchableOpacity  value = 'wed'
-                onPress = {this._onWedPress}
-                style = {this.state.wedP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                  <Text style = {styles.dayText} >WED</Text>
-                </TouchableOpacity>
-                <TouchableOpacity  value = 'thu'
-                onPress = {this._onThuPress}
-                style = {this.state.thuP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                  <Text style = {styles.dayText} >THU</Text>
-                </TouchableOpacity>
-                <TouchableOpacity  value = 'fri' 
-                onPress = {this._onFriPress}
-                style = {this.state.friP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                  <Text style = {styles.dayText} >FRI</Text>
-                </TouchableOpacity>
-                <TouchableOpacity  value = 'sat'
-                onPress = {this._onSatPress}
-                style = {this.state.satP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                  <Text style = {styles.dayText} >SAT</Text>
-                </TouchableOpacity>
+            <Container style = {{flexDirection: 'row'}}>
+                    <TouchableOpacity  value = 'sun' 
+                    onPress = {this._onSunPress}
+                    style = {this.state.sunP === 0 ? styles.cButton: styles.cButtonPressed} > 
+                     <Text style = {this.state.sunP === 0 ? styles.dayText: styles.dayTextPressed} >S</Text>
+                    </TouchableOpacity>
+                   <TouchableOpacity  value = 'mon' 
+                    onPress = {this._onMonPress}
+                    style = {this.state.monP === 0 ? styles.cButton: styles.cButtonPressed} > 
+                      <Text style = {this.state.monP === 0 ? styles.dayText: styles.dayTextPressed} >M</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity  value = 'tue'
+                    onPress = {this._onTuePress}
+                    style = {this.state.tueP === 0 ? styles.cButton: styles.cButtonPressed} > 
+                      <Text style = {this.state.tueP === 0 ? styles.dayText: styles.dayTextPressed} >T</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity  value = 'wed'
+                    onPress = {this._onWedPress}
+                    style = {this.state.wedP === 0 ? styles.cButton: styles.cButtonPressed} > 
+                      <Text style = {this.state.wedP === 0 ? styles.dayText: styles.dayTextPressed} >W</Text>
+                    </TouchableOpacity>
+                   <TouchableOpacity  value = 'thu'
+                    onPress = {this._onThuPress}
+                    style = {this.state.thuP === 0 ? styles.cButton: styles.cButtonPressed} > 
+                  <Text style = {this.state.thuP === 0 ? styles.dayText: styles.dayTextPressed} >H</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity  value = 'fri' 
+                    onPress = {this._onFriPress}
+                    style = {this.state.friP === 0 ? styles.cButton: styles.cButtonPressed} > 
+                      <Text style = {this.state.friP === 0 ? styles.dayText: styles.dayTextPressed} >F</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity  value = 'sat'
+                    onPress = {this._onSatPress}
+                    style = {this.state.satP === 0 ? styles.cButton: styles.cButtonPressed} > 
+                     <Text style = {this.state.satP === 0 ? styles.dayText: styles.dayTextPressed} >A</Text>
+                    </TouchableOpacity>
 
+                 </Container>
   
-              </Container>
-               
-            
-
-
             <Text style = {styles.titleText}> Reminders: </Text>
             <CheckBox
             left
@@ -240,12 +243,8 @@ export default class HabitScreen extends React.Component {
             checkedColor = 'green'
             onPress={this._toggleCheck}
             />
-            
-      
-            
-            <Text style = {styles.titleText}> </Text>
-            <Text style = {styles.titleText}> </Text>
-
+          
+          <View style = {{flexDirection: 'row',justifyContent: 'center'}}>
                <Button 
             disabled = {isInvalid}
             onPress = {()=>this.writeHabitData(this.state.habitName,this.state.sunP,this.state.monP,
@@ -255,11 +254,14 @@ export default class HabitScreen extends React.Component {
             style = {styles.button} 
             title = "Save"> 
             </Button>
-            {//<Button onPress={this._toggleModal} style = {styles.button}  title="Cancel"></Button>
-            }
+            <Button style = {styles.button}
+            onPress={() => this.props.navigation.navigate('Home')}  
+            title="Cancel">
+            </Button>
+            </View>
             
           </View>
-          </Modal>
+        
       </ScrollView>
       </View>
     );
@@ -272,8 +274,19 @@ const styles = StyleSheet.create({
   titleText: {
     fontFamily: 'System',
     fontSize: 18,
+    fontWeight: 'bold',
     paddingTop: 10,
     marginLeft: 5,
+    color: '#414042'
+  },
+  trackText: {
+    fontFamily: 'System',
+    fontWeight: 'bold',
+    fontSize: 18,
+    paddingTop: 5,
+    marginLeft: 5,
+    paddingBottom: 8,
+    color: '#414042'
   },
   scrollContainer: {
     flexGrow: 1
@@ -285,22 +298,21 @@ const styles = StyleSheet.create({
   flexDirection: 'row',
   marginLeft: 5,
 },
- 
-  trackText: {
-    fontFamily: 'System',
-    fontSize: 18,
-    paddingTop: 10,
-    marginLeft: 5,
-    paddingBottom: 5,
-  },
-  dayText: {
-    fontSize: 10
-  },
+
+dayText: {
+  fontSize: 17,
+  
+},
+dayTextPressed:{
+  fontSize: 17,
+  
+  color: 'white',
+},
   button: {
     borderRadius: 5,
     margin: 10,
-    marginLeft: 100,
-    marginRight: 100
+    width: 100
+    
   },
   cButton:{
     borderWidth : 0.5,
@@ -310,22 +322,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 40,
     height : 40,
-    marginRight: 4,
-    marginLeft: 4,
+    marginRight: 6,
+    marginLeft: 6,
     
   },
 
   cButtonPressed:{
-    borderWidth : 0.5,
+    
     borderRadius: 100,
-    borderColor: 'gray',
     alignItems: 'center',
     justifyContent: 'center',
     width: 40,
     height : 40,
-    marginRight: 4,
-    marginLeft: 4,
-    backgroundColor: '#E3E3E3'
+    marginRight: 6,
+    marginLeft: 6,
+    backgroundColor: '#4283CF',
+    textDecorationColor: 'white'
   },
   modalContent: {
     fontSize: 30,
@@ -352,8 +364,5 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     justifyContent: 'space-around'
   },
-  Slider:{
-    marginLeft: 10,
-    marginRight: 10
-  },
+  
 });

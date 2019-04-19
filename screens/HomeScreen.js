@@ -354,7 +354,11 @@ removeChild(child)
                   .reverse()
                    .map(theHabit => (
                     <TouchableWithoutFeedback onPress={this.handleDoubleTap}>
-                    <Card containerStyle = {{backgroundColor: this.state.cardcolor}}
+                    <Card containerStyle = {{backgroundColor: this.state.cardcolor,
+                    shadowColor: '#D1D3D4',
+                    shadowOffset: {width: 3, height: 3},
+                    borderRadius: 5,
+                  }}
                     header button onPress={() => alert("This is Card Header")}>
                     
                     
@@ -364,7 +368,7 @@ removeChild(child)
                     icon={
                       <Icon
                       name={Platform.OS === "ios" ? "ios-create" : "md-create"}
-                      color='black'
+                      color='#414042'
                       size={25}
                     />
                       }
@@ -385,7 +389,7 @@ removeChild(child)
                       icon={
                       <Icon
                       name={Platform.OS === "ios" ? "ios-trash" : "md-trash"}
-                      color='black'
+                      color= '#414042'
                       size={25}
                     />
                       }
@@ -417,8 +421,8 @@ removeChild(child)
                      <Text style = {styles.titleText}> Habit Name: </Text>
                       <Input style = {styles.textInput}
             
-                      placeholder='  EX: DRINK WATER '
-                      leftIcon={{ type: 'feather', name: 'edit',marginRight: 5}}
+                      placeholder='  Ex: Drink Water '
+                      //leftIcon={{ type: 'feather', name: 'edit',marginRight: 5}}
                       onChangeText = {(habitName) => this.setState({habitName})}
                      >{theHabit.val().habitName}</Input>  
             
@@ -431,8 +435,14 @@ removeChild(child)
                       />
 
                       <Text style = {styles.titleText}> Times Per Period: {this.state.timesPerPeriod} </Text>
-                     <Slider style = {styles.Slider}
-                      thumbStyle = {{backgroundColor: 'black', width: 15, height: 15}}
+                     <Slider trackStyle = {styles.Slider}
+                     
+                      thumbStyle = {{backgroundColor: '#E9765B',
+                      width: 17, 
+                      height: 17,
+                      marginLeft: 20,
+                      marginRight: 20}}
+
                       value = {1}
                       maximumValue = {10}
                       minimumValue = {1}
@@ -447,37 +457,37 @@ removeChild(child)
                     <TouchableOpacity  value = 'sun' 
                     onPress = {this._onSunPress}
                     style = {this.state.sunP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                     <Text style = {styles.dayText} >SUN</Text>
+                     <Text style = {this.state.sunP === 0 ? styles.dayText: styles.dayTextPressed} >S</Text>
                     </TouchableOpacity>
                    <TouchableOpacity  value = 'mon' 
                     onPress = {this._onMonPress}
                     style = {this.state.monP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                      <Text style = {styles.dayText} >MON</Text>
+                      <Text style = {this.state.monP === 0 ? styles.dayText: styles.dayTextPressed} >M</Text>
                     </TouchableOpacity>
                     <TouchableOpacity  value = 'tue'
                     onPress = {this._onTuePress}
                     style = {this.state.tueP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                      <Text style = {styles.dayText} >TUE</Text>
+                      <Text style = {this.state.tueP === 0 ? styles.dayText: styles.dayTextPressed} >T</Text>
                     </TouchableOpacity>
                     <TouchableOpacity  value = 'wed'
                     onPress = {this._onWedPress}
                     style = {this.state.wedP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                      <Text style = {styles.dayText} >WED</Text>
+                      <Text style = {this.state.wedP === 0 ? styles.dayText: styles.dayTextPressed} >W</Text>
                     </TouchableOpacity>
                    <TouchableOpacity  value = 'thu'
                     onPress = {this._onThuPress}
                     style = {this.state.thuP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                  <Text style = {styles.dayText} >THU</Text>
+                  <Text style = {this.state.thuP === 0 ? styles.dayText: styles.dayTextPressed} >H</Text>
                     </TouchableOpacity>
                     <TouchableOpacity  value = 'fri' 
                     onPress = {this._onFriPress}
                     style = {this.state.friP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                      <Text style = {styles.dayText} >FRI</Text>
+                      <Text style = {this.state.friP === 0 ? styles.dayText: styles.dayTextPressed} >F</Text>
                     </TouchableOpacity>
                     <TouchableOpacity  value = 'sat'
                     onPress = {this._onSatPress}
                     style = {this.state.satP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                     <Text style = {styles.dayText} >SAT</Text>
+                     <Text style = {this.state.satP === 0 ? styles.dayText: styles.dayTextPressed} >A</Text>
                     </TouchableOpacity>
 
                  </Container>
@@ -546,15 +556,19 @@ const styles = StyleSheet.create({
   titleText: {
     fontFamily: 'System',
     fontSize: 18,
+    fontWeight: 'bold',
     paddingTop: 10,
     marginLeft: 5,
+    color: '#414042'
   },
   trackText: {
     fontFamily: 'System',
+    fontWeight: 'bold',
     fontSize: 18,
-    paddingTop: 10,
+    paddingTop: 5,
     marginLeft: 5,
-    paddingBottom: 5,
+    paddingBottom: 8,
+    color: '#414042'
   },
   button: {
     borderRadius: 5,
@@ -564,8 +578,9 @@ const styles = StyleSheet.create({
   },
   cardtext:{
     fontFamily: 'System',
-    fontWeight: '100',
-    fontSize: 25
+    fontWeight: 'bold',
+    fontSize: 25,
+    color: '#414042'
   },
   savebutton:{
     paddingRight: 7,
@@ -618,11 +633,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   welcomeImage: {
-    width: 100,
-    height: 80,
+    width: 80,
+    height: 60,
     resizeMode: 'contain',
     marginTop: 3,
     marginLeft: -10,
+  
   },
   getStartedContainer: {
     alignItems: 'center',
@@ -645,16 +661,16 @@ const styles = StyleSheet.create({
   },
 
   cButtonPressed:{
-    borderWidth : 0.5,
+    
     borderRadius: 100,
-    borderColor: 'gray',
     alignItems: 'center',
     justifyContent: 'center',
     width: 40,
     height : 40,
     marginRight: 4,
     marginLeft: 4,
-    backgroundColor: '#E3E3E3'
+    backgroundColor: '#4283CF',
+    textDecorationColor: 'white'
   },
   codeHighlightText: {
     color: 'rgba(96,100,109, 0.8)',
@@ -710,9 +726,20 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
   Slider:{
-    marginLeft: 10,
-    marginRight: 10
+    marginLeft: 20,
+    marginRight: 20,
+    
   },
+  dayText: {
+    fontSize: 17,
+    
+  },
+  dayTextPressed:{
+    fontSize: 17,
+    
+    color: 'white',
+  }
+  
   
 });
 
