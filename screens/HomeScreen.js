@@ -314,7 +314,7 @@ removeChild(child)
          return (
            <View style={styles.container}>
            <NavigationEvents
-          onWillFocus={() => {
+          onDidFocus={() => {
             this.forceUpdate();
           }}
         />
@@ -377,7 +377,9 @@ removeChild(child)
                     shadowOffset: {width: 3, height: 3},
                     borderRadius: 5,
                   }}
-                    header button onPress={() => alert("This is Card Header")}>
+                    //header button onPress={() => alert("This is Card Header")}
+                    
+                    >
                     
                     
                     <View containerStyle = {{flexDirection: 'row'}}> 
@@ -437,7 +439,9 @@ removeChild(child)
                       containerStyle={{height: 30}}
                       />
 
-                      <Text style = {styles.titleText}> Times Per Period: {this.state.timesPerPeriod} </Text>
+                      <Text style = {styles.titleText}> 
+                      Times Per {this.state.goalPeriod === 0? 'Day': this.state.goalPeriod === 1? 'Week':'Month' }: 
+                      {this.state.timesPerPeriod} </Text>
                      <Slider trackStyle = {styles.Slider}
                      
                       thumbStyle = {{backgroundColor: '#E9765B',

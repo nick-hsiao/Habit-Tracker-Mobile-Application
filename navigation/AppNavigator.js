@@ -1,6 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator} from 'react-navigation';
+import { flipY,fadeIn} from 'react-navigation-transitions';
 
 import TabBarIcon from '../components/TabBarIcon';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
@@ -23,6 +24,7 @@ const HomeStack = createStackNavigator({
   },
   {
     initialRouteName: 'Home',
+    //transitionConfig: () => flipY(700),
     defaultNavigationOptions:  {
       
       header: null
@@ -37,7 +39,9 @@ const SignInStack = createStackNavigator({ SignIn: SignInScreen,SignUpScreen: Si
 });
 
 const AuthStack = createStackNavigator({ AuthLoading: AuthLoadingScreen },
-  { defaultNavigationOptions:  {  
+  { 
+    //transitionConfig: () => flipY(),
+    defaultNavigationOptions:  {  
        header: null
   }
 });
