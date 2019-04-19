@@ -116,9 +116,9 @@ export default class SignUpScreen extends React.Component {
       lastName === "";
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, marginTop: 40 }}>
 
-<Text style = {styles.titleText}> SIGN UP :D</Text>
+<Text style = {styles.titleText}> SIGN UP</Text>
         <ScrollView contentContainerStyle={styles.container}>
 
           <Input
@@ -197,6 +197,15 @@ export default class SignUpScreen extends React.Component {
             onPress = {this.onSubmit}
             title="Submit"
           />
+
+          <Button 
+          type = 'clear'
+          onPress = {() => this.props.navigation.navigate('SignIn')}
+          title = "Have An Account? Sign In!"
+          titleStyle = {{fontSize: 15}}
+          >
+
+          </Button>
 
 
           

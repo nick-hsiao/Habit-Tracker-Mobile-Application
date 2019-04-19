@@ -67,6 +67,7 @@ export default class HomeScreen extends React.Component {
       error: null,
       cardcolor: 'white',
       refreshing: false,
+      timePassed: false,
 
     }
 
@@ -110,6 +111,7 @@ export default class HomeScreen extends React.Component {
 
  //Rerender when user state is loaded, helped by https://stackoverflow.com/questions/48529910/why-firebase-user-is-not-authenticated-anymore-when-refreshing
  componentDidMount(){
+ 
   this.unsubscribe = firebase.auth().onAuthStateChanged(currentUser => {
 
     while(habits.length == 0)
@@ -287,13 +289,28 @@ removeChild(child)
   render() {
 
     const buttons = ['Daily', 'Weekly', 'Monthly']
-    var user = firebase.auth().currentUser;
+    //var user = firebase.auth().currentUser;
+    
+   
 
-      //https://firebase.google.com/docs/auth/web/manage-users
-
-       if (this.state.currentUser) {
-         uid = user.uid;
+       if(!this.state.currentUser) {
+        
+        return (
+          <View style = {{marginTop: 280}}>
+      <TouchableOpacity onPress  ={() => this.props.navigation.navigate('SignIn')}>
+             <Image
+          source={
+           __DEV__
+              ? require('../assets/images/logo.png')
+              : require('../assets/images/logo.png')
+         }
+         style={{alignSelf: 'center',height: 90, width: 90 }}
+        />
+        </TouchableOpacity>
+          </View>
          
+         )
+        }
          return (
            <View style={styles.container}>
            <NavigationEvents
@@ -309,13 +326,14 @@ removeChild(child)
               style={styles.container} contentContainerStyle={styles.contentContainer}>
           
                <View>
-                <Header transparent>
+                <Header  transparent>
                   <Left>
                     <Button icon={
                       <Icon
                       name={Platform.OS === "ios" ? "ios-cog" : "md-cog"}
-                      color='black'
+                      color='#414042'
                     size={30}/>}
+                  
                     type = 'clear' 
                     onPress={() => this.props.navigation.navigate('Settings')} > //goes to Settings2 page
                     </Button>
@@ -335,7 +353,7 @@ removeChild(child)
                   <Button icon={
                       <Icon
                       name={Platform.OS === "ios" ? "ios-add" : "md-add"}
-                      color='black'
+                      color='#414042'
                     size={30}/>}
                     type = 'clear' 
                     onPress={() => this.props.navigation.navigate('HabitScreen')}> 
@@ -395,22 +413,7 @@ removeChild(child)
                       }
                       type = 'clear' ></Button>
                     </View>
-                    {/* <Modal
-                    contentContainerStyle = {styles.modalContent} 
-                    isVisible={this.state.isModalVisible == theHabit.val().habitName }
-                    onSwipeComplete={()=>(this._toggleHabitModal(theHabit))}
-                    swipeDirection="up">
-
-                      <View style={{height: 500, backgroundColor: 'white',borderRadius: 15}}>
-                        <Text style = {styles.titleText}> Do you wish to delete {theHabit.val().habitName}? Warning: once a habit is removed, its data can not be recovered or restored.</Text>
-                        
-                        <Button style = {styles.button} onPress={()=>(this.removeChild(theHabit))} title="Delete"></Button>
-
-                        <Button style = {styles.button} onPress={this._toggleModalNull} title="Cancel"></Button>
-                        
-                      </View>
-                   </Modal> */}
-
+                   
                    <Modal
                     contentContainerStyle = {styles.modalContent} 
                     isVisible={this.state.isHabitModalVisible== theHabit.val().habitName }
@@ -533,23 +536,9 @@ removeChild(child)
         );
         
    } 
-   else {
-     return (<Container>
-     <Text style = {{paddingTop: 100,alignSelf: 'center'}}> put sign in screen here </Text>
-     <Button type = 'clear'
-          style = {{paddingTop: 10}}
-          title="Go to Sign-In Screen"
-          onPress={() => this.props.navigation.navigate('SignIn')}
-        />
-    </Container>);}
-  }
 
 
-  _handleGooglePress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://google.com'
-    );
-  };
+  
 }
 
 const styles = StyleSheet.create({
@@ -633,11 +622,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   welcomeImage: {
-    width: 80,
-    height: 60,
+    width: 65,
+    height: 65,
     resizeMode: 'contain',
     marginTop: 3,
-    marginLeft: -10,
+  
   
   },
   getStartedContainer: {

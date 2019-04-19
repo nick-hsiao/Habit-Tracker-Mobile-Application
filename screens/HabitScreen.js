@@ -149,7 +149,7 @@ export default class HabitScreen extends React.Component {
       <ScrollView contentContainerStyle = {StyleSheet.scrollContainer}>
         
           
-          <View style={{height: 440, backgroundColor: 'white'}}>
+          <View style={{height: 440, backgroundColor: 'white', marginTop: 70}}>
             
             <Text style = {styles.titleText}> Habit Name: </Text>
             <Input style = {styles.textInput}
@@ -182,7 +182,7 @@ export default class HabitScreen extends React.Component {
                       marginRight: 25,
                       
                       }}
-                      thumbTouchSize = {{width: 50, height: 50}}
+                      thumbTouchSize = {{width: 60, height: 60}}
                       value = {1}
                       maximumValue = {10}
                       minimumValue = {1}

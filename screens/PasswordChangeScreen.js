@@ -47,7 +47,7 @@ export default class PasswordChangeScreen extends React.Component {
         const isInvalid = passwordOne !== passwordTwo || passwordOne === "";
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1,marginTop: 50 }}>
 
 <Text style = {styles.titleText}> CHANGE PASSWORD </Text>
         <ScrollView contentContainerStyle={styles.container}>

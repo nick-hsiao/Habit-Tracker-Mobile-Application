@@ -49,13 +49,8 @@ export default class SignInScreen extends React.Component {
 
         var user = firebase.auth().currentUser;
 
-if (user) {
-  // User is signed in.
-  //Alert.alert("You are signed in!");
-} else {
-  // No user is signed in.
-  //Alert.alert("Sign In Error");
-}
+        this.props.navigation.navigate('Home');
+
       
   };
 
@@ -102,7 +97,7 @@ if (user) {
       password === "" ||
       email === "";
 
-      if(firebase.auth().currentUser)
+/*       if(firebase.auth().currentUser)
       {
           return (
             <View style={{ flex: 1 }}>
@@ -114,8 +109,9 @@ if (user) {
             </View>
           );
       }
-    else return (
-      <View style={{ flex: 1 }}>
+    else  */
+    return (
+      <View style={{ flex: 1, marginTop: 45 }}>
 
 <Text style = {styles.titleText}> SIGN IN </Text>
         <ScrollView contentContainerStyle={styles.container}>
@@ -151,6 +147,14 @@ if (user) {
             title="Log In"
           />
 
+          <Button 
+          type = 'clear'
+          onPress = {() => this.props.navigation.navigate('SignUpScreen')}
+          title = "Don't Have An Account? Sign Up!"
+          titleStyle = {{fontSize: 15}}
+          >
+
+          </Button>
 
         </ScrollView>
       </View>

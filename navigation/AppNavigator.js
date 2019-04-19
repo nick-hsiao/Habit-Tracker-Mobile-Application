@@ -12,8 +12,6 @@ import SignInScreen from '../screens/SignInScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 
-//import TabNavigator from './TabNavigator';
-
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   Settings: SettingsScreen,
@@ -25,9 +23,11 @@ const HomeStack = createStackNavigator({
   },
   {
     initialRouteName: 'Home',
-    defaultNavigationOptions: {
-      gesturesEnabled: false
-    }
+    defaultNavigationOptions:  {
+      
+      header: null
+  }
+    
   }
 );
 

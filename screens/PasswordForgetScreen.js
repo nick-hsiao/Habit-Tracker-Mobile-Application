@@ -52,7 +52,7 @@ export default class PasswordForgetScreen extends React.Component {
     const isInvalid = email === "";
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1 , marginTop: 50}}>
 
 <Text style = {styles.titleText}> FORGOT PASSWORD </Text>
         <ScrollView contentContainerStyle={styles.container}>
