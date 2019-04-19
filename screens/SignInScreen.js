@@ -39,6 +39,10 @@ export default class SignInScreen extends React.Component {
           else if(error.code == 'auth/wrong-password') {
             Alert.alert("Invalid Password","Please Try Again");
           }
+          else if(error.code == 'auth/user-not-found'){
+            Alert.alert("User Not Found","Please Try Again");
+          }
+          
           //Alert.alert(error.code);
           //Alert.alert(error.message);
           
@@ -48,8 +52,9 @@ export default class SignInScreen extends React.Component {
         event.preventDefault();
 
         var user = firebase.auth().currentUser;
-
-        this.props.navigation.navigate('Home');
+        
+        if(user!=null)
+        {this.props.navigation.navigate('Home');}
 
       
   };

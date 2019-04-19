@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   friP: 0,
   satP: 0,
   saved: 'false',
+  count: 0,
   reminders: false,
   error: null,
 };
@@ -94,7 +95,7 @@ export default class HabitScreen extends React.Component {
   }       
 
 
-  writeHabitData = (habitName,sunP,monP,tueP,wedP,thuP,friP,satP,timesPerPeriod,reminders,goalPeriod) => {
+  writeHabitData = (habitName,sunP,monP,tueP,wedP,thuP,friP,satP,timesPerPeriod,reminders,goalPeriod,count) => {
 
     //var uid = authUser.user.uid;
     
@@ -110,7 +111,8 @@ export default class HabitScreen extends React.Component {
         satP,
         timesPerPeriod,
         reminders,
-        goalPeriod
+        goalPeriod,
+        count
 
     }).then((data)=>{
         //reset
@@ -250,7 +252,7 @@ export default class HabitScreen extends React.Component {
             disabled = {isInvalid}
             onPress = {()=>this.writeHabitData(this.state.habitName,this.state.sunP,this.state.monP,
                                               this.state.tueP, this.state.wedP, this.state.thuP, this.state.friP,
-                                            this.state.satP, this.state.timesPerPeriod, this.state.reminders,this.state.goalPeriod)}
+                                            this.state.satP, this.state.timesPerPeriod, this.state.reminders,this.state.goalPeriod,this.state.count)}
           
             style = {styles.button} 
             title = "Save"> 

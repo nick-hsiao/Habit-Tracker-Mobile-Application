@@ -51,6 +51,7 @@ export default class HomeScreen extends React.Component {
       isModalVisible: false ,
       isHabitModalVisible: null,
       habitName: "",
+      prevName: "",
       goalPeriod: 0,
       timesPerPeriod: 1,
       sunP: 0,
@@ -65,6 +66,7 @@ export default class HomeScreen extends React.Component {
       dayIndex: 0,
       checked: false,
       error: null,
+      count: 0,
       cardcolor: 'white',
       refreshing: false,
       timePassed: false,
@@ -93,17 +95,37 @@ export default class HomeScreen extends React.Component {
   this.setState({ isModalVisible: null, sunP: 0, monP: 0, tueP: 0, wedP: 0, thuP: 0, friP: 0, satP: 0, reminders: false});
 
   _toggleHabitModal = (child) =>
-  this.setState({ isHabitModalVisible: child.val().habitName, sunP: child.val().sunP, monP: child.val().monP, tueP: child.val().tueP, wedP: child.val().wedP, thuP: child.val().thuP, friP: child.val().friP, satP: child.val().satP, reminders: child.val().reminders});
+  this.setState({ prevName: child.val().habitName, isHabitModalVisible: true, habitName: child.val().habitName, sunP: child.val().sunP, 
+    monP: child.val().monP, tueP: child.val().tueP, wedP: child.val().wedP, thuP: child.val().thuP, 
+    friP: child.val().friP, satP: child.val().satP, reminders: child.val().reminders,
+    goalPeriod: child.val().goalPeriod,timesPerPeriod: child.val().timesPerPeriod});
 
-  _toggleHabitModalNull = () =>
+  _toggleHabitModalNull = () =>{
   this.setState({ isHabitModalVisible: null });
+  this.setState({timesPerPeriod: 1});
+  this.setState({sunP: 0});
+  this.setState({monP: 0});
+  this.setState({tueP: 0});
+  this.setState({wedP: 0});
+  this.setState({thuP: 0});
+  this.setState({friP: 0});
+  this.setState({satP: 0});
+  this.setState({timesPerPeriod: 1});
+  this.setState({reminders: false});
+  this.setState({checked: false});
+  this.setState({goalPeriod: 0});
+  }
 
   lastTap = null;
-  handleDoubleTap = () => {
+  handleDoubleTap = (counter,habitName) => {
     const now = Date.now();
     const DOUBLE_PRESS_DELAY = 300;
     if (this.lastTap && (now - this.lastTap) < DOUBLE_PRESS_DELAY) {
-      this.setState({cardcolor: this.state.cardcolor === 'white' ? '#EAEAEA':'white'})
+      var count1 = counter + 1;
+      firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/_habits/${habitName}`).update({
+        count: count1
+      })
+      this.forceUpdate();
     } else {
       this.lastTap = now;
     }
@@ -189,7 +211,7 @@ export default class HomeScreen extends React.Component {
     this.unsubscribe()
   }
 
-  writeHabitData = (habitName,sunP,monP,tueP,wedP,thuP,friP,satP,timesPerPeriod,reminders,goalPeriod) => {
+  updateHabitData = (prevName,habitName1,sunP1,monP1,tueP1,wedP1,thuP1,friP1,satP1,timesPerPeriod1,reminders1,goalPeriod1,count) => {
     
     /** 
     //Remove old habit from array and replace it, https://stackoverflow.com/questions/5767325/how-do-i-remove-a-particular-element-from-an-array-in-javascript
@@ -200,18 +222,19 @@ export default class HomeScreen extends React.Component {
      **/
      
 
-    firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/_habits/${habitName}`).set({
-      habitName,
-      sunP,
-      monP,
-      tueP,
-      wedP,
-      thuP,
-      friP,
-      satP,
-      timesPerPeriod,
-      reminders,
-      goalPeriod
+    firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/_habits/${prevName}`).update({
+      habitName: habitName1 ,
+      sunP: sunP1,
+      monP: monP1,
+      tueP: tueP1,
+      wedP: wedP1,
+      thuP: thuP1,
+      friP: friP1,
+      satP: satP1,
+      timesPerPeriod: timesPerPeriod1,
+      reminders: reminders1,
+      goalPeriod: goalPeriod1,
+      
 
     }).then((data)=>{
         //reset
@@ -371,11 +394,14 @@ removeChild(child)
                  {Object.values(habits)
                   .reverse()
                    .map(theHabit => (
-                    <TouchableWithoutFeedback onPress={this.handleDoubleTap}>
+                    <TouchableWithoutFeedback onPress={() => this.handleDoubleTap(theHabit.val().count,theHabit.val().habitName)}>
                     <Card containerStyle = {{backgroundColor: this.state.cardcolor,
                     shadowColor: '#D1D3D4',
-                    shadowOffset: {width: 3, height: 3},
-                    borderRadius: 5,
+                    shadowOffset: {width: 2, height: 2},
+                    shadowRadius: 7,
+                    shadowOpacity: 25,
+                    borderRadius:7,
+                    height: 75
                   }}
                     //header button onPress={() => alert("This is Card Header")}
                     
@@ -415,11 +441,13 @@ removeChild(child)
                       }
                       type = 'clear' ></Button>
                     </View>
-                   
+                    <Text style = {styles.todayText}>{theHabit.val().goalPeriod === 0? 'Today:': 
+                    theHabit.val().goalPeriod === 1? 'This Week:':'This Month:' } {theHabit.val().count}/{theHabit.val().timesPerPeriod}
+                      </Text>
                    <Modal
                     contentContainerStyle = {styles.modalContent} 
-                    isVisible={this.state.isHabitModalVisible== theHabit.val().habitName }
-                    onSwipeComplete={() => this.setState({ isModalVisible: false })}
+                    isVisible={this.state.isHabitModalVisible}
+                    onSwipeComplete={() => this.setState({ isHabitModalVisible: false })}
                     swipeDirection="up">
                     <View style={{height: 500, backgroundColor: 'white',borderRadius: 15}}>
             
@@ -428,8 +456,8 @@ removeChild(child)
             
                       placeholder='  Ex: Drink Water '
                       //leftIcon={{ type: 'feather', name: 'edit',marginRight: 5}}
-                      onChangeText = {(habitName) => this.setState({habitName})}
-                     >{theHabit.val().habitName}</Input>  
+                      onChangeText = {(text) => this.setState({habitName: text})}
+                     >{this.state.habitName}</Input>  
             
                       <Text style = {styles.titleText}> Goal Period: </Text>
                      <ButtonGroup
@@ -517,9 +545,9 @@ removeChild(child)
                   <View style = {{flexDirection: 'row',justifyContent: 'center'}}>
                   
                   <Button 
-                onPress = {()=>this.writeHabitData(theHabit.val().habitName,this.state.sunP,this.state.monP,
+                onPress = {()=>this.updateHabitData(this.state.prevName,this.state.habitName,this.state.sunP,this.state.monP,
                                               this.state.tueP, this.state.wedP, this.state.thuP, this.state.friP,
-                                            this.state.satP, this.state.timesPerPeriod, this.state.reminders,this.state.goalPeriod)}
+                                            this.state.satP, this.state.timesPerPeriod, this.state.reminders,this.state.goalPeriod,theHabit.val().count)}
           
                style = {styles.savebutton} 
                 title = "Save"> 
@@ -546,6 +574,11 @@ removeChild(child)
 }
 
 const styles = StyleSheet.create({
+  todayText:{
+    fontSize: 12,
+    color: '#414042',
+    marginLeft: 5
+  },
   titleText: {
     fontFamily: 'System',
     fontSize: 18,
