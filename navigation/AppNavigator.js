@@ -48,6 +48,6 @@ export default createAppContainer(createSwitchNavigator(
     SignIn: SignInStack,
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Auth',
   }
 ));
