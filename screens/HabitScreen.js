@@ -168,7 +168,8 @@ export default class HabitScreen extends React.Component {
             />
 
             <Text style = {styles.titleText}> 
-            Times Per {this.state.goalPeriod === 0? 'Day': this.state.goalPeriod === 1? 'Week':'Month' }: {this.state.timesPerPeriod} </Text>
+            Times Per {this.state.goalPeriod === 0? 'Day': this.state.goalPeriod === 1? 'Week':'Month' }: 
+            {this.state.timesPerPeriod} </Text>
             <Slider trackStyle = {{
              marginLeft: 25,
              marginRight: 25,
