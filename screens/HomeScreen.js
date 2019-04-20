@@ -324,6 +324,13 @@ _changedName(text){
 
 }
 
+_resetCounter(habitid){
+  firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/_habits/${habitid}`).update({
+    count: 0
+  })
+  this.forceUpdate();
+}
+
 
 removeChild(child)
 {
@@ -432,7 +439,20 @@ removeChild(child)
                  {Object.values(habits)
                   .reverse()
                    .map(theHabit => (
-                    <TouchableWithoutFeedback onPress={() => this.handleDoubleTap(theHabit.val().count,theHabit.val().habitid)}>
+                    <TouchableWithoutFeedback onPress={() => this.handleDoubleTap(theHabit.val().count,theHabit.val().habitid)}
+                    onLongPress = {()=>Alert.alert(
+                      'Reset Tracker?',
+                      'Data Cannot Be Recovered',
+                      [
+                        {text: 'Confirm', onPress: () => (this._resetCounter(theHabit.val().habitid))},
+                        {
+                          text: 'Cancel',
+                          style: 'cancel',
+                        },
+                        
+                      ],
+                      {cancelable: false},)} 
+                    >
                     <Card containerStyle = {{backgroundColor: this.state.cardcolor,
                     shadowColor: '#D1D3D4',
                     shadowOffset: {width: 2, height: 2},
