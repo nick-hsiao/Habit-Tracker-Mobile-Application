@@ -43,6 +43,7 @@ export default class HomeScreen extends React.Component {
   };
   constructor () {
     super()
+    
     this.state = {
       currentUser: null,
       uid: '',
@@ -53,6 +54,7 @@ export default class HomeScreen extends React.Component {
       habitName: "",
       
       goalPeriod: 0,
+      prevGoalPeriod: 0,
       timesPerPeriod: 1,
       sunP: 0,
       monP: 0,
@@ -71,6 +73,10 @@ export default class HomeScreen extends React.Component {
       refreshing: false,
       timePassed: false,
       habitid: "",
+      periodChanged: false,
+
+      stateChanged: false,
+      index: 0
 
     }
 
@@ -78,7 +84,8 @@ export default class HomeScreen extends React.Component {
   }
 
   updateIndex (goalPeriod) {
-    this.setState({goalPeriod})
+    this.setState({goalPeriod});
+    this.setState({stateChanged: true});
   }
 
  
@@ -90,13 +97,18 @@ export default class HomeScreen extends React.Component {
     
   }
 
-
+ _checkChange = (goalPeriod1) =>{
+    if (this.state.prevGoalPeriod != goalPeriod1){
+    this.setState({periodChanged: true});
+  }
+ }
 
   _toggleHabitModal = (child) =>
-  this.setState({ habitid: child.val().habitid,isHabitModalVisible: true, habitName: child.val().habitName, sunP: child.val().sunP, 
+  this.setState({ index: habits.indexOf(child),stateChanged: false,count: child.val().count,habitid: child.val().habitid,isHabitModalVisible: true, 
+    habitName: child.val().habitName, sunP: child.val().sunP, 
     monP: child.val().monP, tueP: child.val().tueP, wedP: child.val().wedP, thuP: child.val().thuP, 
     friP: child.val().friP, satP: child.val().satP, reminders: child.val().reminders,
-    goalPeriod: child.val().goalPeriod,timesPerPeriod: child.val().timesPerPeriod});
+    goalPeriod: child.val().goalPeriod, prevGoalPeriod: child.val().goalPeriod,timesPerPeriod: child.val().timesPerPeriod});
 
   _toggleHabitModalNull = () =>{
   this.setState({ isHabitModalVisible: null });
@@ -112,7 +124,9 @@ export default class HomeScreen extends React.Component {
   this.setState({reminders: false});
   this.setState({checked: false});
   this.setState({goalPeriod: 0});
-  this.setState({habitid: ""})
+  this.setState({habitid: ""});
+  this.setState({count: 0});
+  this.setState({stateChanged: false});
   }
 
   lastTap = null;
@@ -159,7 +173,7 @@ export default class HomeScreen extends React.Component {
         {
           //If name matches, edited is true
           
-          if (child.val().habitName == habits[i].val().habitName)
+          if (child.val().habitid == habits[i].val().habitid)
           {
             edited = true;
             oldIndex = i;
@@ -210,21 +224,21 @@ export default class HomeScreen extends React.Component {
     this.unsubscribe()
   }
 
-  updateHabitData = (child,prevName,habitName1,sunP1,monP1,tueP1,wedP1,thuP1,friP1,satP1,timesPerPeriod1,reminders1,goalPeriod1,count1,id) => {
+  updateHabitData = (child,habitName1,sunP1,monP1,tueP1,wedP1,thuP1,friP1,satP1,timesPerPeriod1,reminders1,goalPeriod1,count1,id) => {
     
     /** 
     //Remove old habit from array and replace it, https://stackoverflow.com/questions/5767325/how-do-i-remove-a-particular-element-from-an-array-in-javascript
      var index = habits.indexOf(habitName);
-     if (index > -1) {
+     
+     **/
+    var index = this.state.index;
+    if (index > -1) {
       habits.splice(index, 1);
      }
-     **/
-    var index = habits.indexOf(child);
-      if (index > -1) {
-        habits.splice(index, 1);
-      }
-     
-    console.log(this.state.habitid);
+    //console.log(habits.indexOf(child));
+    console.log(habits);
+    //console.log(this.state.index);
+    
     firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/_habits/${this.state.habitid}`).update({
       habitName: habitName1 ,
       sunP: sunP1,
@@ -237,12 +251,13 @@ export default class HomeScreen extends React.Component {
       timesPerPeriod: timesPerPeriod1,
       reminders: reminders1,
       goalPeriod: goalPeriod1,
-      count: count1
+      count: 0
       
 
     }).then((data)=>{
         //reset
-       this.setState({timesPerPeriod: 1});
+      this.setState({ isHabitModalVisible: null });
+      /*  this.setState({timesPerPeriod: 1});
        this.setState({sunP: 0});
        this.setState({monP: 0});
        this.setState({tueP: 0});
@@ -254,6 +269,12 @@ export default class HomeScreen extends React.Component {
        this.setState({reminders: false});
        this.setState({checked: false});
        this.setState({goalPeriod: 0});
+       this.setState({periodChanged: false}); */
+       var index = this.state.index;
+       console.log(index);
+       
+       
+       
     }).catch((error)=>{
         //error callback
         console.log('error ' , error)
@@ -266,31 +287,37 @@ _refresh = () =>{
   this.forceUpdate();
 }
 _toggleCheck = () =>{
-    this.setState({ checked: !this.state.checked });
-    this.setState({reminders: !this.state.reminders});
+    //this.setState({ checked: !this.state.checked });
+    this.setState({reminders: !this.state.reminders, stateChanged: true});
 }
 
 
 _onSunPress = () =>{
-  this.setState({ sunP: this.state.sunP === 0 ? 1:0});
+  this.setState({ sunP: this.state.sunP === 0 ? 1:0, stateChanged: true });
 }
 _onMonPress = () =>
-  this.setState({ monP: this.state.monP === 0 ? 1:0});
+  this.setState({ monP: this.state.monP === 0 ? 1:0, stateChanged: true});
 
 _onTuePress = () =>
-  this.setState({ tueP: this.state.tueP === 0 ? 1:0});
+  this.setState({ tueP: this.state.tueP === 0 ? 1:0, stateChanged: true});
 
 _onWedPress = () =>
-  this.setState({ wedP: this.state.wedP === 0 ? 1:0});
+  this.setState({ wedP: this.state.wedP === 0 ? 1:0, stateChanged: true});
 
 _onThuPress = () =>
-  this.setState({ thuP: this.state.thuP === 0 ? 1:0});
+  this.setState({ thuP: this.state.thuP === 0 ? 1:0, stateChanged: true});
 
 _onFriPress = () =>
-  this.setState({ friP: this.state.friP === 0 ? 1:0});
+  this.setState({ friP: this.state.friP === 0 ? 1:0, stateChanged: true});
 
 _onSatPress = () =>
-  this.setState({ satP: this.state.satP === 0 ? 1:0});
+  this.setState({ satP: this.state.satP === 0 ? 1:0, stateChanged: true});
+
+_changedName(text){
+  this.setState({habitName: text});
+  this.setState({stateChanged: true});
+
+}
 
 
 removeChild(child)
@@ -306,7 +333,7 @@ removeChild(child)
    //Remove??
   //firebase.database().ref(`UsersList/${this.uid}/_habits/${child.val().habitName}/friP`).remove();
  
-  firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/_habits/${child.val().habitName}`).set(null);
+  firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/_habits/${child.val().habitid}`).set(null);
 
 
   this._refresh();
@@ -318,6 +345,7 @@ removeChild(child)
 
     const buttons = ['Daily', 'Weekly', 'Monthly']
     //var user = firebase.auth().currentUser;
+    const isInvalid = this.state.stateChanged === false;
     
    
 /* 
@@ -461,7 +489,8 @@ removeChild(child)
             
                       placeholder='  Ex: Drink Water '
                       //leftIcon={{ type: 'feather', name: 'edit',marginRight: 5}}
-                      onChangeText = {(text) => this.setState({habitName: text})}
+                      onChangeText = {(text) => this.setState({habitName: text, stateChanged: true})}
+                     
                      >{this.state.habitName}</Input>  
             
                       <Text style = {styles.titleText}> Goal Period: </Text>
@@ -483,12 +512,13 @@ removeChild(child)
                       marginLeft: 20,
                       marginRight: 20}}
 
-                      value = {1}
+                      thumbTouchSize = {{width: 70, height: 70}}
+                      value = {this.state.timesPerPeriod}
                       maximumValue = {10}
                       minimumValue = {1}
                       step = {1}
                       timesPerPeriod={this.state.timesPerPeriod}
-                      onValueChange={timesPerPeriod => this.setState({ timesPerPeriod})}
+                      onValueChange={timesPerPeriod => this.setState({ timesPerPeriod, stateChanged: true})}
                       />
           
                     <Text style = {styles.trackText}> Track Which Days?: </Text>
@@ -538,7 +568,7 @@ removeChild(child)
                 left
                 fontFamily = 'System'
                 title='REMINDERS'
-                checked={this.state.checked}
+                checked={this.state.reminders}
                 checkedColor = 'green'
                 onPress={this._toggleCheck}
                 />
@@ -550,12 +580,28 @@ removeChild(child)
                   <View style = {{flexDirection: 'row',justifyContent: 'center'}}>
                   
                   <Button 
-                onPress = {()=>this.updateHabitData(theHabit,this.state.prevName,this.state.habitName,this.state.sunP,this.state.monP,
+                  onPress={()=>Alert.alert(
+                    'Are You Sure?',
+                    'Tracker Will Be Reset',
+                    [
+                      {text: 'Confirm', onPress: () => this.updateHabitData(theHabit,this.state.habitName,this.state.sunP,this.state.monP,
+                        this.state.tueP, this.state.wedP, this.state.thuP, this.state.friP,
+                      this.state.satP, this.state.timesPerPeriod, this.state.reminders,this.state.goalPeriod,theHabit.val().count,
+                    theHabit.val().habitid)},
+                      {
+                        text: 'Cancel',
+                        style: 'cancel',
+                      },
+                      
+                    ],
+                    {cancelable: false},)} 
+                /* onPress = {()=>this.updateHabitData(theHabit,this.state.habitName,this.state.sunP,this.state.monP,
                                               this.state.tueP, this.state.wedP, this.state.thuP, this.state.friP,
                                             this.state.satP, this.state.timesPerPeriod, this.state.reminders,this.state.goalPeriod,theHabit.val().count,
-                                          theHabit.val().habitid)}
+                                          theHabit.val().habitid)} */
           
                style = {styles.savebutton} 
+               disabled = {isInvalid}
                 title = "Save"> 
                 </Button>
                 <Button onPress={this._toggleHabitModalNull} style = {styles.cancelbutton}  title="Cancel"></Button>

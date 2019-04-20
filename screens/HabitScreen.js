@@ -188,7 +188,7 @@ export default class HabitScreen extends React.Component {
                       marginRight: 25,
                       
                       }}
-                      thumbTouchSize = {{width: 60, height: 60}}
+                      thumbTouchSize = {{width: 70, height: 70}}
                       value = {1}
                       maximumValue = {10}
                       minimumValue = {1}
