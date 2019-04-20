@@ -1,8 +1,9 @@
 
 import React from 'react';
-import { Text, StyleSheet, ScrollView, View, Alert,TextInput} from 'react-native';
+import { Text, StyleSheet, ScrollView, View, Alert,TextInput,Image} from 'react-native';
 //import { sanFranciscoWeights } from 'react-native-typography'
 import { Button,Input } from 'react-native-elements';
+import {Container,Header,Left,Right,Body,Title} from "native-base";
 import * as firebase from 'firebase';
 
 const INITIAL_STATE = {
@@ -31,13 +32,24 @@ export default class PasswordForgetScreen extends React.Component {
           firebase.auth().sendPasswordResetEmail(email)
           .then(() => {
             this.setState({ ...INITIAL_STATE });
+            this.props.navigation.navigate('Home');
           })
           .catch(error => {
             this.setState({ error });
-            Alert.alert(error);
+            if (error.code == 'auth/invalid-email'){
+              Alert.alert("Invalid Email","Please Try Again");
+            }
+            else if(error.code == 'auth/user-not-found'){
+              Alert.alert("User Not Found","Please Try Again");
+            }
+            
+            
+            console.log(error.code);
+            //Alert.alert(error);
           });
     
         event.preventDefault();
+        
         
       };
     
@@ -52,9 +64,25 @@ export default class PasswordForgetScreen extends React.Component {
     const isInvalid = email === "";
 
     return (
-      <View style={{ flex: 1 , marginTop: 50}}>
+      <View>
 
-<Text style = {styles.titleText}> FORGOT PASSWORD </Text>
+         <Header  transparent>
+                 
+                 <Body>
+                 <Image
+                  source={
+                   __DEV__
+                      ? require('../assets/images/forgot.png')
+                      : require('../assets/images/forgot.png')
+                 }
+                 style={styles.welcomeImage}
+                />
+                 </Body>
+               
+               
+                 </Header>
+
+
         <ScrollView contentContainerStyle={styles.container}>
 
 
@@ -143,6 +171,7 @@ const styles = StyleSheet.create({
   inputStyle:{
     fontFamily: 'System',
     paddingLeft: 10,
+    marginTop: 40
   },
   containerStyle:{
     paddingBottom: 15
@@ -151,5 +180,17 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginRight: 40,
     color: 'red'
+  },
+  welcomeImage: {
+    width: 340,
+    height: 340,
+    resizeMode: 'contain',
+    marginTop: 45,
+    
+    
+    
+    
+  
+  
   },
 });

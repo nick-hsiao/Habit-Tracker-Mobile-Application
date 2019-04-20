@@ -10,6 +10,7 @@ import HabitScreen from '../screens/HabitScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import PasswordChangeScreen from '../screens/PasswordChangeScreen';
 import PasswordForgetScreen from '../screens/PasswordForgetScreen';
+import AuthPasswordForgetScreen from '../screens/AuthPasswordForgetScreen';
 import SignInScreen from '../screens/SignInScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
@@ -32,7 +33,7 @@ const HomeStack = createStackNavigator({
     
   }
 );
-const SignInStack = createStackNavigator({ SignIn: SignInScreen,SignUpScreen: SignUpScreen },
+const SignInStack = createStackNavigator({ SignIn: SignInScreen,SignUpScreen: SignUpScreen, AuthPasswordForgetScreen: AuthPasswordForgetScreen },
   { defaultNavigationOptions:  {  
        header: null
   }

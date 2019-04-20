@@ -181,7 +181,7 @@ export default class SignInScreen extends React.Component {
           <Button 
           
           type = 'clear'
-          onPress = {() => this.props.navigation.navigate('PasswordForget')}
+          onPress = {() => this.props.navigation.navigate('AuthPasswordForgetScreen')}
           title = "Forgot Password?"
           titleStyle = {{fontSize: 15}}
           />

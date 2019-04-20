@@ -1,21 +1,20 @@
 
 import React from 'react';
 import { Text, StyleSheet, ScrollView, View, Alert,TextInput,Image} from 'react-native';
-import {Container,Header,Left,Right,Body,Title} from "native-base";
 //import { sanFranciscoWeights } from 'react-native-typography'
-import { Button,Input} from 'react-native-elements';
+import { Button,Input } from 'react-native-elements';
+import {Container,Header,Left,Right,Body,Title} from "native-base";
 import * as firebase from 'firebase';
 
 const INITIAL_STATE = {
-    passwordOne: "",
-    passwordTwo: "",
+    email: "",
     error: null
   };
   
 
 
 
-export default class PasswordChangeScreen extends React.Component {
+export default class PasswordForgetScreen extends React.Component {
 
     constructor(props) {
         super(props);
@@ -24,43 +23,57 @@ export default class PasswordChangeScreen extends React.Component {
       }
     
       onSubmit = event => {
-        const { passwordOne } = this.state;
+        const { email } = this.state;
+
+        
     
+        
         this.props.firebase
-          firebase.auth().currentUser.updatePassword(passwordOne)
+          firebase.auth().sendPasswordResetEmail(email)
           .then(() => {
             this.setState({ ...INITIAL_STATE });
-            this.props.navigation.navigate('Home');
+            this.props.navigation.navigate('SignIn');
           })
           .catch(error => {
             this.setState({ error });
+            if (error.code == 'auth/invalid-email'){
+              Alert.alert("Invalid Email","Please Try Again");
+            }
+            else if(error.code == 'auth/user-not-found'){
+              Alert.alert("User Not Found","Please Try Again");
+            }
+            
+            
+            console.log(error.code);
+            //Alert.alert(error);
           });
     
         event.preventDefault();
-
+        
         
       };
     
       onChange = event => {
         this.setState({ [event.target.name]: event.target.value });
       };
-    
-      render() {
-        const { passwordOne, passwordTwo, error } = this.state;
-    
-        const isInvalid = passwordOne !== passwordTwo || passwordOne.length < 8;
+
+  render() {
+
+    const { email, error } = this.state;
+
+    const isInvalid = email === "";
 
     return (
       <View>
 
-        <Header  transparent>
+         <Header  transparent>
                  
                  <Body>
                  <Image
                   source={
                    __DEV__
-                      ? require('../assets/images/reset.png')
-                      : require('../assets/images/reset.png')
+                      ? require('../assets/images/forgot.png')
+                      : require('../assets/images/forgot.png')
                  }
                  style={styles.welcomeImage}
                 />
@@ -70,40 +83,27 @@ export default class PasswordChangeScreen extends React.Component {
                  </Header>
 
 
-
         <ScrollView contentContainerStyle={styles.container}>
 
-                             <Input
-          inputStyle = {styles.inputStyle1}
-          errorStyle = {styles.errorStyle}
-          
-          containerStyle = {styles.containerStyle}
-          inputContainerStyle={styles.inputContainer}
-          secureTextEntry={true}
-          placeholder="New Password"
-          returnKeyLabel = {"next"}
-          onChange={this.onChange}
-          onChangeText = {(text) => this.setState({passwordOne:text})}
-          />
-                              <Input
+
+          <Input
           inputStyle = {styles.inputStyle}
           errorStyle = {styles.errorStyle}
-          errorMessage = {isInvalid ? "Passwords Don't Match" : ""}
           
           containerStyle = {styles.containerStyle}
           inputContainerStyle={styles.inputContainer}
-          secureTextEntry={true}
-          placeholder="Confirm New Password"
+          placeholder="Email"
           returnKeyLabel = {"next"}
           onChange={this.onChange}
-          onChangeText = {(text) => this.setState({passwordTwo:text})}
+          onChangeText = {(text) => this.setState({email:text})}
           />
+                             
 
 
           <Button style = {styles.button}
           disabled = {isInvalid}
             onPress = {this.onSubmit}
-            title="Confirm Change"
+            title="Reset My Password"
           />
 
 
@@ -146,10 +146,10 @@ const styles = StyleSheet.create({
 
   },
   button: {
-    borderRadius: 5,
     margin: 10,
     marginLeft: 100,
-    marginRight: 100
+    marginRight: 100,
+    borderRadius: 5,
   },
   textInput: {
     textAlign: 'center',
@@ -171,17 +171,13 @@ const styles = StyleSheet.create({
   inputStyle:{
     fontFamily: 'System',
     paddingLeft: 10,
-  },
-  inputStyle1:{
-    fontFamily: 'System',
-    paddingLeft: 10,
-    marginTop: 50
+    marginTop: 40
   },
   containerStyle:{
     paddingBottom: 15
   },
   errorStyle:{
-    marginLeft: 45,
+    marginLeft: 40,
     marginRight: 40,
     color: 'red'
   },
