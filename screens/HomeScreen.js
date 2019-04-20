@@ -127,6 +127,7 @@ export default class HomeScreen extends React.Component {
   this.setState({habitid: ""});
   this.setState({count: 0});
   this.setState({stateChanged: false});
+  //this.forceUpdate();
   }
 
   lastTap = null;
@@ -153,7 +154,7 @@ export default class HomeScreen extends React.Component {
     { 
 
       
-
+      this.habits = [];
       //dummy value in array to be removed later
       addHabit(null);
        
@@ -194,11 +195,12 @@ export default class HomeScreen extends React.Component {
        }); 
       });
     }
-
+    
     if(habits.length > 0){
       //Remove dummy value from array, https://stackoverflow.com/questions/5767325/how-do-i-remove-a-particular-element-from-an-array-in-javascript
       var index = habits.indexOf(null);
       if (index > -1) {
+        //console.log(habits[index]);
         habits.splice(index, 1);
        }
 
@@ -216,7 +218,9 @@ export default class HomeScreen extends React.Component {
       setTimeout(function(){value.set();}, 1000);
 
     }
+
   })
+  //console.log(habits);
 }
 
   //Rerender when user state is loaded, helped by https://stackoverflow.com/questions/48529910/why-firebase-user-is-not-authenticated-anymore-when-refreshing
@@ -231,10 +235,10 @@ export default class HomeScreen extends React.Component {
      var index = habits.indexOf(habitName);
      
      **/
-    var index = this.state.index;
+   /*  var index = this.state.index;
     if (index > -1) {
       habits.splice(index, 1);
-     }
+     } */ //dont use this code fks it up
     //console.log(habits.indexOf(child));
     console.log(habits);
     //console.log(this.state.index);
@@ -272,6 +276,7 @@ export default class HomeScreen extends React.Component {
        this.setState({periodChanged: false}); */
        var index = this.state.index;
        console.log(index);
+       
        
        
        
