@@ -99,8 +99,10 @@ export default class HabitScreen extends React.Component {
 
     //var uid = authUser.user.uid;
     
+    var key =firebase.database().ref().push().key;
+    
 
-    firebase.database().ref(`UsersList/${this.uid}/_habits/${this.state.habitName}`).set({
+    firebase.database().ref(`UsersList/${this.uid}/_habits/${key}`).set({
         habitName,
         sunP,
         monP,
@@ -112,7 +114,8 @@ export default class HabitScreen extends React.Component {
         timesPerPeriod,
         reminders,
         goalPeriod,
-        count
+        count,
+        habitid: key
 
     }).then((data)=>{
         //reset
