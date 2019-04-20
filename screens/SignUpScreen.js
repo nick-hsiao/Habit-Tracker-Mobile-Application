@@ -1,8 +1,9 @@
 
 import React from 'react';
-import { Text, StyleSheet, ScrollView, View, Alert,TextInput} from 'react-native';
+import { Text, StyleSheet, ScrollView, View, Alert,TextInpu,Image} from 'react-native';
 //import { sanFranciscoWeights } from 'react-native-typography'
 import { Button,Input } from 'react-native-elements';
+import {Container,Header,Left,Right,Body,Title} from "native-base";
 import * as firebase from 'firebase';
 
 const INITIAL_STATE = {
@@ -116,16 +117,31 @@ export default class SignUpScreen extends React.Component {
       lastName === "";
 
     return (
-      <View style={{ flex: 1, marginTop: 40 }}>
+      <View>
+        <Header  transparent>
+                 
+                 <Body>
+                 <Image
+                  source={
+                   __DEV__
+                      ? require('../assets/images/signup.png')
+                      : require('../assets/images/signup.png')
+                 }
+                 style={styles.welcomeImage}
+                />
+                 </Body>
+               
+               
+                 </Header>
 
-<Text style = {styles.titleText}> SIGN UP</Text>
+{/* <Text style = {styles.titleText}> Sign Up </Text> */}
         <ScrollView contentContainerStyle={styles.container}>
 
           <Input
-          inputStyle = {styles.inputStyle}
+          inputStyle = {styles.inputStyle1}
           errorStyle = {styles.errorStyle}
           
-          containerStyle = {styles.containerStyle}
+          containerStyle = {styles.containerStyle1}
           inputContainerStyle={styles.inputContainer}
           placeholder="Username"
           returnKeyLabel = {"next"}
@@ -230,11 +246,14 @@ const styles = StyleSheet.create({
   titleText:{
     fontSize: 30,
     fontFamily: 'System',
-    paddingTop: 30,
+    marginTop: 50,
     paddingBottom: 10,
     marginLeft: 45,
     marginRight: 45,
     flexDirection: 'row',
+    textAlign: 'center',
+   
+    
   },
   helloText: {
     fontFamily: 'System',
@@ -274,12 +293,32 @@ const styles = StyleSheet.create({
     fontFamily: 'System',
     paddingLeft: 10,
   },
+  inputStyle1:{
+    fontFamily: 'System',
+    paddingLeft: 10,
+
+  },
   containerStyle:{
     paddingBottom: 15
+  },
+  containerStyle1:{
+    paddingBottom: 15,
+    marginTop: 85
   },
   errorStyle:{
     marginLeft: 40,
     marginRight: 40,
     color: 'red'
+  },
+  welcomeImage: {
+    width: 230,
+    height: 240,
+    resizeMode: 'contain',
+    marginTop: 85,
+    
+    
+    
+  
+  
   },
 });

@@ -606,7 +606,7 @@ removeChild(child)
                   
                   <Button 
                   onPress={()=>Alert.alert(
-                    'Are You Sure?',
+                    'Save Changes?',
                     'Tracker Will Be Reset',
                     [
                       {text: 'Confirm', onPress: () => this.updateHabitData(theHabit,this.state.habitName,this.state.sunP,this.state.monP,

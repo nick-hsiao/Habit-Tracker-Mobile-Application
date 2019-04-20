@@ -1,8 +1,9 @@
 
 import React from 'react';
-import { Text, StyleSheet, ScrollView, View, Alert,TextInput} from 'react-native';
+import { Text, StyleSheet, ScrollView, View, Alert,TextInput,Image} from 'react-native';
 //import { sanFranciscoWeights } from 'react-native-typography'
 import { Button,Input } from 'react-native-elements';
+import {Container,Header,Left,Right,Body,Title} from "native-base";
 import * as firebase from 'firebase';
 
 const INITIAL_STATE = {
@@ -116,16 +117,32 @@ export default class SignInScreen extends React.Component {
       }
     else  */
     return (
-      <View style={{ flex: 1, marginTop: 45 }}>
+      <View>
+                <Header  transparent>
+                 
+                  <Body>
+                  <Image
+                   source={
+                    __DEV__
+                       ? require('../assets/images/signin.png')
+                       : require('../assets/images/signin.png')
+                  }
+                  style={styles.welcomeImage}
+                 />
+                  </Body>
+                
+                
+                  </Header>
+                
 
-<Text style = {styles.titleText}> SIGN IN </Text>
+
         <ScrollView contentContainerStyle={styles.container}>
-
+        {/* <Text style = {styles.titleText}> SIGN IN </Text> */}
           <Input
           inputStyle = {styles.inputStyle}
           errorStyle = {styles.errorStyle}
           //errorMessage = {isInvalid ? "Invalid Email" : ""}
-          containerStyle = {styles.containerStyle}
+          containerStyle = {styles.containerStyle1}
           inputContainerStyle={styles.inputContainer}
           placeholder="Email"
           returnKeyLabel = {"next"}
@@ -152,14 +169,24 @@ export default class SignInScreen extends React.Component {
             title="Log In"
           />
 
-          <Button 
+          <Button
+      
           type = 'clear'
           onPress = {() => this.props.navigation.navigate('SignUpScreen')}
           title = "Don't Have An Account? Sign Up!"
           titleStyle = {{fontSize: 15}}
-          >
+          />
 
-          </Button>
+
+          <Button 
+          
+          type = 'clear'
+          onPress = {() => this.props.navigation.navigate('PasswordForget')}
+          title = "Forgot Password?"
+          titleStyle = {{fontSize: 15}}
+          />
+
+         
 
         </ScrollView>
       </View>
@@ -183,12 +210,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   titleText:{
+
     fontSize: 30,
     fontFamily: 'System',
-    paddingTop: 30,
+    marginTop: 60,
     paddingBottom: 10,
     marginLeft: 45,
     marginRight: 45,
+    color: '#414042'
   },
   helloText: {
     fontFamily: 'System',
@@ -222,10 +251,25 @@ const styles = StyleSheet.create({
   containerStyle:{
     paddingBottom: 15
   },
+  containerStyle1:{
+    paddingBottom: 15,
+    marginTop: 90
+  },
   errorStyle:{
     marginLeft: 40,
     marginRight: 40,
     color: 'red'
+  },
+  welcomeImage: {
+    width: 230,
+    height: 230,
+    resizeMode: 'contain',
+    marginTop: 85,
+    
+    
+    
+  
+  
   },
 
 });
