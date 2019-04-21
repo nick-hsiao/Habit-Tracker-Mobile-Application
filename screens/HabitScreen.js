@@ -1,7 +1,7 @@
 import React from 'react';
-import { ScrollView, View, Text, StyleSheet,TextInput, TouchableOpacity,Alert} from 'react-native';
-import { Button, CheckBox, Input, ButtonGroup, Slider,ButtonToolbar} from 'react-native-elements';
-import {Container} from "native-base";
+import { ScrollView, View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { Button, CheckBox, Input, ButtonGroup, Slider, ButtonToolbar } from 'react-native-elements';
+import { Container } from "native-base";
 import Modal from "react-native-modal";
 import * as firebase from 'firebase';
 
@@ -26,25 +26,25 @@ const INITIAL_STATE = {
 
 
 export default class HabitScreen extends React.Component {
-  constructor () {
+  constructor() {
     super()
     this.state = {
-     
+
       dayIndex: 0,
       ...INITIAL_STATE,
       isModalVisible: false,
       checked: false,
-    
+
     }
     this.updateIndex = this.updateIndex.bind(this)
- 
+
   }
 
   user = firebase.auth().currentUser;
   uid = this.user.uid;
 
-  updateIndex (goalPeriod) {
-    this.setState({goalPeriod})
+  updateIndex(goalPeriod) {
+    this.setState({ goalPeriod })
   }
 
   static navigationOptions = {
@@ -54,37 +54,37 @@ export default class HabitScreen extends React.Component {
 
   _toggleModal = () =>
     this.setState({ isModalVisible: !this.state.isModalVisible });
-  
-  _toggleCheck = () =>{
+
+  _toggleCheck = () => {
     this.setState({ checked: !this.state.checked });
-    this.setState({reminders: !this.state.reminders});
-}
+    this.setState({ reminders: !this.state.reminders });
+  }
   _handleName = (text) => {
     this.setState({ habitName: text })
   }
 
-  _onSunPress = () =>{
-    this.setState({ sunP: this.state.sunP === 0 ? 1:0});
+  _onSunPress = () => {
+    this.setState({ sunP: this.state.sunP === 0 ? 1 : 0 });
   }
   _onMonPress = () =>
-    this.setState({ monP: this.state.monP === 0 ? 1:0});
+    this.setState({ monP: this.state.monP === 0 ? 1 : 0 });
 
   _onTuePress = () =>
-    this.setState({ tueP: this.state.tueP === 0 ? 1:0});
+    this.setState({ tueP: this.state.tueP === 0 ? 1 : 0 });
 
   _onWedPress = () =>
-    this.setState({ wedP: this.state.wedP === 0 ? 1:0});
+    this.setState({ wedP: this.state.wedP === 0 ? 1 : 0 });
 
   _onThuPress = () =>
-    this.setState({ thuP: this.state.thuP === 0 ? 1:0});
+    this.setState({ thuP: this.state.thuP === 0 ? 1 : 0 });
 
   _onFriPress = () =>
-    this.setState({ friP: this.state.friP === 0 ? 1:0});
+    this.setState({ friP: this.state.friP === 0 ? 1 : 0 });
 
   _onSatPress = () =>
-    this.setState({ satP: this.state.satP === 0 ? 1:0});
-  
-  _printHabit = () =>{
+    this.setState({ satP: this.state.satP === 0 ? 1 : 0 });
+
+  _printHabit = () => {
     console.log(this.state.sunP);
     console.log(this.state.monP);
     console.log(this.state.tueP);
@@ -92,183 +92,184 @@ export default class HabitScreen extends React.Component {
     console.log(this.state.thuP);
     console.log(this.state.friP);
     console.log(this.state.satP);
-  }       
+  }
 
 
-  writeHabitData = (habitName,sunP,monP,tueP,wedP,thuP,friP,satP,timesPerPeriod,reminders,goalPeriod,count) => {
+  writeHabitData = (habitName, sunP, monP, tueP, wedP, thuP, friP, satP, timesPerPeriod, reminders, goalPeriod, count) => {
 
     //var uid = authUser.user.uid;
-    
-    var key =firebase.database().ref().push().key;
-    
+
+    var key = firebase.database().ref().push().key;
+
 
     firebase.database().ref(`UsersList/${this.uid}/_habits/${key}`).set({
-        habitName,
-        sunP,
-        monP,
-        tueP,
-        wedP,
-        thuP,
-        friP,
-        satP,
-        timesPerPeriod,
-        reminders,
-        goalPeriod,
-        count,
-        habitid: key
+      habitName,
+      sunP,
+      monP,
+      tueP,
+      wedP,
+      thuP,
+      friP,
+      satP,
+      timesPerPeriod,
+      reminders,
+      goalPeriod,
+      count,
+      habitid: key
 
-    }).then((data)=>{
-        //reset
-       this.setState({habitName: ''});
-       this.setState({timesPerPeriod: 1});
-       this.setState({sunP: 0});
-       this.setState({monP: 0});
-       this.setState({tueP: 0});
-       this.setState({wedP: 0});
-       this.setState({thuP: 0});
-       this.setState({friP: 0});
-       this.setState({satP: 0});
-       this.setState({timesPerPeriod: 1});
-       this.setState({reminders: false});
-       this.setState({checked: false});
-       this.setState({goalPeriod: 0});
-    }).catch((error)=>{
-        //error callback
-        console.log('error ' , error)
+    }).then((data) => {
+      //reset
+      this.setState({ habitName: '' });
+      this.setState({ timesPerPeriod: 1 });
+      this.setState({ sunP: 0 });
+      this.setState({ monP: 0 });
+      this.setState({ tueP: 0 });
+      this.setState({ wedP: 0 });
+      this.setState({ thuP: 0 });
+      this.setState({ friP: 0 });
+      this.setState({ satP: 0 });
+      this.setState({ timesPerPeriod: 1 });
+      this.setState({ reminders: false });
+      this.setState({ checked: false });
+      this.setState({ goalPeriod: 0 });
+    }).catch((error) => {
+      //error callback
+      console.log('error ', error)
     })
     this.props.navigation.navigate('Home');
-  
-}
- 
-    
+
+  }
+
+
   render() {
 
-  const buttons = ['Daily', 'Weekly', 'Monthly']
-  const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']
-  const isInvalid = this.state.habitName.length < 2;
-  
-  
+    const buttons = ['Daily', 'Weekly', 'Monthly']
+    const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
+    const isInvalid = this.state.habitName.length < 2;
+
+
 
     return (
-      <View style = {{flex:1}}>
-      <ScrollView contentContainerStyle = {StyleSheet.scrollContainer}>
-        
-          
-          <View style={{height: 440, backgroundColor: 'white', marginTop: 70}}>
-            
-            <Text style = {styles.titleText}> Habit Name: </Text>
-            <Input style = {styles.textInput}
-            
-            placeholder='  Ex: Drink Water'
-            //leftIcon={{ type: 'feather', name: 'edit',marginRight: 5}}
-            onChangeText = {(habitName) => this.setState({habitName})}
-            />  
-            
-            <Text style = {styles.titleText}> Goal Period: </Text>
+      <View style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={StyleSheet.scrollContainer}>
+
+
+          <View style={{ height: 440, backgroundColor: 'white', marginTop: 70 }}>
+
+            <Text style={styles.titleText}> Habit Name: </Text>
+            <Input style={styles.textInput}
+
+              placeholder='  Ex: Drink Water'
+              //leftIcon={{ type: 'feather', name: 'edit',marginRight: 5}}
+              onChangeText={(habitName) => this.setState({ habitName })}
+            />
+
+            <Text style={styles.titleText}> Goal Period: </Text>
             <ButtonGroup
-            onPress={this.updateIndex}
-            selectedIndex={this.state.goalPeriod}
-            buttons={buttons}
-            containerStyle={{height: 30}}
+              onPress={this.updateIndex}
+              selectedIndex={this.state.goalPeriod}
+              buttons={buttons}
+              containerStyle={{ height: 30 }}
             />
 
-            <Text style = {styles.titleText}> 
-            Times Per {this.state.goalPeriod === 0? 'Day': this.state.goalPeriod === 1? 'Week':'Month' }: 
+            <Text style={styles.titleText}>
+              Times Per {this.state.goalPeriod === 0 ? 'Day' : this.state.goalPeriod === 1 ? 'Week' : 'Month'}:
             {this.state.timesPerPeriod} </Text>
-            <Slider trackStyle = {{
-             marginLeft: 25,
-             marginRight: 25,
-             
-              }}
-                     
-                      thumbStyle = {{backgroundColor: '#E9765B',
-                      width: 17, 
-                      height: 17,
-                      marginLeft: 25,
-                      marginRight: 25,
-                      
-                      }}
-                      thumbTouchSize = {{width: 70, height: 70}}
-                      value = {1}
-                      maximumValue = {10}
-                      minimumValue = {1}
-                      step = {1}
-                      timesPerPeriod={this.state.timesPerPeriod}
-                      onValueChange={timesPerPeriod => this.setState({ timesPerPeriod})}
-                      
-                      />
-          
-    
-            <Text style = {styles.trackText}> Track Which Days?: </Text>
-        
-            <Container style = {{flexDirection: 'row'}}>
-                    <TouchableOpacity  value = 'sun' 
-                    onPress = {this._onSunPress}
-                    style = {this.state.sunP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                     <Text style = {this.state.sunP === 0 ? styles.dayText: styles.dayTextPressed} >S</Text>
-                    </TouchableOpacity>
-                   <TouchableOpacity  value = 'mon' 
-                    onPress = {this._onMonPress}
-                    style = {this.state.monP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                      <Text style = {this.state.monP === 0 ? styles.dayText: styles.dayTextPressed} >M</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  value = 'tue'
-                    onPress = {this._onTuePress}
-                    style = {this.state.tueP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                      <Text style = {this.state.tueP === 0 ? styles.dayText: styles.dayTextPressed} >T</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  value = 'wed'
-                    onPress = {this._onWedPress}
-                    style = {this.state.wedP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                      <Text style = {this.state.wedP === 0 ? styles.dayText: styles.dayTextPressed} >W</Text>
-                    </TouchableOpacity>
-                   <TouchableOpacity  value = 'thu'
-                    onPress = {this._onThuPress}
-                    style = {this.state.thuP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                  <Text style = {this.state.thuP === 0 ? styles.dayText: styles.dayTextPressed} >H</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  value = 'fri' 
-                    onPress = {this._onFriPress}
-                    style = {this.state.friP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                      <Text style = {this.state.friP === 0 ? styles.dayText: styles.dayTextPressed} >F</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  value = 'sat'
-                    onPress = {this._onSatPress}
-                    style = {this.state.satP === 0 ? styles.cButton: styles.cButtonPressed} > 
-                     <Text style = {this.state.satP === 0 ? styles.dayText: styles.dayTextPressed} >A</Text>
-                    </TouchableOpacity>
+            <Slider trackStyle={{
+              marginLeft: 25,
+              marginRight: 25,
 
-                 </Container>
-  
-            <Text style = {styles.titleText}> Reminders: </Text>
-            <CheckBox
-            left
-            fontFamily = 'System'
-            title='REMINDERS'
-            checked={this.state.checked}
-            checkedColor = 'green'
-            onPress={this._toggleCheck}
+            }}
+
+              thumbStyle={{
+                backgroundColor: '#E9765B',
+                width: 17,
+                height: 17,
+                marginLeft: 25,
+                marginRight: 25,
+
+              }}
+              thumbTouchSize={{ width: 70, height: 70 }}
+              value={1}
+              maximumValue={10}
+              minimumValue={1}
+              step={1}
+              timesPerPeriod={this.state.timesPerPeriod}
+              onValueChange={timesPerPeriod => this.setState({ timesPerPeriod })}
+
             />
-          
-          <View style = {{flexDirection: 'row',justifyContent: 'center'}}>
-               <Button 
-            disabled = {isInvalid}
-            onPress = {()=>this.writeHabitData(this.state.habitName,this.state.sunP,this.state.monP,
-                                              this.state.tueP, this.state.wedP, this.state.thuP, this.state.friP,
-                                            this.state.satP, this.state.timesPerPeriod, this.state.reminders,this.state.goalPeriod,this.state.count)}
-          
-            style = {styles.button} 
-            title = "Save"> 
-            </Button>
-            <Button style = {styles.button}
-            onPress={() => this.props.navigation.navigate('Home')}  
-            title="Cancel">
-            </Button>
+
+
+            <Text style={styles.trackText}> Track Which Days?: </Text>
+
+            <Container style={{ flexDirection: 'row' }}>
+              <TouchableOpacity value='sun'
+                onPress={this._onSunPress}
+                style={this.state.sunP === 0 ? styles.cButton : styles.cButtonPressed} >
+                <Text style={this.state.sunP === 0 ? styles.dayText : styles.dayTextPressed} >S</Text>
+              </TouchableOpacity>
+              <TouchableOpacity value='mon'
+                onPress={this._onMonPress}
+                style={this.state.monP === 0 ? styles.cButton : styles.cButtonPressed} >
+                <Text style={this.state.monP === 0 ? styles.dayText : styles.dayTextPressed} >M</Text>
+              </TouchableOpacity>
+              <TouchableOpacity value='tue'
+                onPress={this._onTuePress}
+                style={this.state.tueP === 0 ? styles.cButton : styles.cButtonPressed} >
+                <Text style={this.state.tueP === 0 ? styles.dayText : styles.dayTextPressed} >T</Text>
+              </TouchableOpacity>
+              <TouchableOpacity value='wed'
+                onPress={this._onWedPress}
+                style={this.state.wedP === 0 ? styles.cButton : styles.cButtonPressed} >
+                <Text style={this.state.wedP === 0 ? styles.dayText : styles.dayTextPressed} >W</Text>
+              </TouchableOpacity>
+              <TouchableOpacity value='thu'
+                onPress={this._onThuPress}
+                style={this.state.thuP === 0 ? styles.cButton : styles.cButtonPressed} >
+                <Text style={this.state.thuP === 0 ? styles.dayText : styles.dayTextPressed} >H</Text>
+              </TouchableOpacity>
+              <TouchableOpacity value='fri'
+                onPress={this._onFriPress}
+                style={this.state.friP === 0 ? styles.cButton : styles.cButtonPressed} >
+                <Text style={this.state.friP === 0 ? styles.dayText : styles.dayTextPressed} >F</Text>
+              </TouchableOpacity>
+              <TouchableOpacity value='sat'
+                onPress={this._onSatPress}
+                style={this.state.satP === 0 ? styles.cButton : styles.cButtonPressed} >
+                <Text style={this.state.satP === 0 ? styles.dayText : styles.dayTextPressed} >A</Text>
+              </TouchableOpacity>
+
+            </Container>
+
+            <Text style={styles.titleText}> Reminders: </Text>
+            <CheckBox
+              left
+              fontFamily='System'
+              title='REMINDERS'
+              checked={this.state.checked}
+              checkedColor='green'
+              onPress={this._toggleCheck}
+            />
+
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <Button
+                disabled={isInvalid}
+                onPress={() => this.writeHabitData(this.state.habitName, this.state.sunP, this.state.monP,
+                  this.state.tueP, this.state.wedP, this.state.thuP, this.state.friP,
+                  this.state.satP, this.state.timesPerPeriod, this.state.reminders, this.state.goalPeriod, this.state.count)}
+
+                style={styles.button}
+                title="Save">
+              </Button>
+              <Button style={styles.button}
+                onPress={() => this.props.navigation.navigate('Home')}
+                title="Cancel">
+              </Button>
             </View>
-            
+
           </View>
-        
-      </ScrollView>
+
+        </ScrollView>
       </View>
     );
   }
@@ -297,49 +298,49 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1
   },
-  
- container: {
-  paddingTop: 5,
-  flex: 1,
-  flexDirection: 'row',
-  marginLeft: 5,
-},
 
-dayText: {
-  fontSize: 17,
-  
-},
-dayTextPressed:{
-  fontSize: 17,
-  
-  color: 'white',
-},
+  container: {
+    paddingTop: 5,
+    flex: 1,
+    flexDirection: 'row',
+    marginLeft: 5,
+  },
+
+  dayText: {
+    fontSize: 17,
+
+  },
+  dayTextPressed: {
+    fontSize: 17,
+
+    color: 'white',
+  },
   button: {
     borderRadius: 5,
     margin: 10,
     width: 100
-    
+
   },
-  cButton:{
-    borderWidth : 0.5,
+  cButton: {
+    borderWidth: 0.5,
     borderRadius: 100,
     borderColor: 'gray',
     alignItems: 'center',
     justifyContent: 'center',
     width: 40,
-    height : 40,
+    height: 40,
     marginRight: 6,
     marginLeft: 6,
-    
+
   },
 
-  cButtonPressed:{
-    
+  cButtonPressed: {
+
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
     width: 40,
-    height : 40,
+    height: 40,
     marginRight: 6,
     marginLeft: 6,
     backgroundColor: '#4283CF',
@@ -354,7 +355,7 @@ dayTextPressed:{
     marginLeft: 100,
     marginRight: 100
   },
-  modalText:{
+  modalText: {
     fontSize: 30,
     paddingTop: 50,
     textAlign: 'center',
@@ -370,5 +371,5 @@ dayTextPressed:{
     paddingBottom: 5,
     justifyContent: 'space-around'
   },
-  
+
 });

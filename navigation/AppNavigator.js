@@ -1,8 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator} from 'react-navigation';
-import { flipY,fadeIn} from 'react-navigation-transitions';
-
+import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { flipY, fadeIn } from 'react-navigation-transitions';
 import TabBarIcon from '../components/TabBarIcon';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import HomeScreen from '../screens/HomeScreen';
@@ -21,31 +20,32 @@ const HomeStack = createStackNavigator({
   PasswordChange: PasswordChangeScreen,
   PasswordForget: PasswordForgetScreen,
   HabitScreen: HabitScreen,
-  
-  },
+
+},
   {
     initialRouteName: 'Home',
     //transitionConfig: () => flipY(700),
-    defaultNavigationOptions:  {
-      
+    defaultNavigationOptions: {
+
       header: null
-  }
-    
+    }
+
   }
 );
-const SignInStack = createStackNavigator({ SignIn: SignInScreen,SignUpScreen: SignUpScreen, AuthPasswordForgetScreen: AuthPasswordForgetScreen },
-  { defaultNavigationOptions:  {  
-       header: null
-  }
-});
+const SignInStack = createStackNavigator({ SignIn: SignInScreen, SignUpScreen: SignUpScreen, AuthPasswordForgetScreen: AuthPasswordForgetScreen },
+  {
+    defaultNavigationOptions: {
+      header: null
+    }
+  });
 
 const AuthStack = createStackNavigator({ AuthLoading: AuthLoadingScreen },
-  { 
+  {
     //transitionConfig: () => flipY(),
-    defaultNavigationOptions:  {  
-       header: null
-  }
-});
+    defaultNavigationOptions: {
+      header: null
+    }
+  });
 export default createAppContainer(createSwitchNavigator(
   {
     Auth: AuthStack,

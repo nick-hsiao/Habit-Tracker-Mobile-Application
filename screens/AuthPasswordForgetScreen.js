@@ -1,61 +1,54 @@
-
 import React from 'react';
-import { Text, StyleSheet, ScrollView, View, Alert,TextInput,Image} from 'react-native';
-//import { sanFranciscoWeights } from 'react-native-typography'
-import { Button,Input } from 'react-native-elements';
-import {Container,Header,Left,Right,Body,Title} from "native-base";
+import { Text, StyleSheet, ScrollView, View, Alert, TextInput, Image } from 'react-native';
+import { Button, Input } from 'react-native-elements';
+import { Container, Header, Left, Right, Body, Title } from "native-base";
 import * as firebase from 'firebase';
 
 const INITIAL_STATE = {
-    email: "",
-    error: null
-  };
-  
-
-
+  email: "",
+  error: null
+};
 
 export default class PasswordForgetScreen extends React.Component {
 
-    constructor(props) {
-        super(props);
-    
-        this.state = { ...INITIAL_STATE };
-      }
-    
-      onSubmit = event => {
-        const { email } = this.state;
+  constructor(props) {
+    super(props);
 
-        
-    
-        
-        this.props.firebase
-          firebase.auth().sendPasswordResetEmail(email)
-          .then(() => {
-            this.setState({ ...INITIAL_STATE });
-            this.props.navigation.navigate('SignIn');
-          })
-          .catch(error => {
-            this.setState({ error });
-            if (error.code == 'auth/invalid-email'){
-              Alert.alert("Invalid Email","Please Try Again");
-            }
-            else if(error.code == 'auth/user-not-found'){
-              Alert.alert("User Not Found","Please Try Again");
-            }
-            
-            
-            console.log(error.code);
-            //Alert.alert(error);
-          });
-    
-        event.preventDefault();
-        
-        
-      };
-    
-      onChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
-      };
+    this.state = { ...INITIAL_STATE };
+  }
+
+  onSubmit = event => {
+    const { email } = this.state;
+
+
+    this.props.firebase
+    firebase.auth().sendPasswordResetEmail(email)
+      .then(() => {
+        this.setState({ ...INITIAL_STATE });
+        this.props.navigation.navigate('SignIn');
+      })
+      .catch(error => {
+        this.setState({ error });
+        if (error.code == 'auth/invalid-email') {
+          Alert.alert("Invalid Email", "Please Try Again");
+        }
+        else if (error.code == 'auth/user-not-found') {
+          Alert.alert("User Not Found", "Please Try Again");
+        }
+
+
+        console.log(error.code);
+        //Alert.alert(error);
+      });
+
+    event.preventDefault();
+
+
+  };
+
+  onChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
 
   render() {
 
@@ -66,51 +59,43 @@ export default class PasswordForgetScreen extends React.Component {
     return (
       <View>
 
-         <Header  transparent>
-                 
-                 <Body>
-                 <Image
-                  source={
-                   __DEV__
-                      ? require('../assets/images/forgot.png')
-                      : require('../assets/images/forgot.png')
-                 }
-                 style={styles.welcomeImage}
-                />
-                 </Body>
-               
-               
-                 </Header>
+        <Header transparent>
+
+          <Body>
+            <Image
+              source={
+                __DEV__
+                  ? require('../assets/images/forgot.png')
+                  : require('../assets/images/forgot.png')
+              }
+              style={styles.welcomeImage}
+            />
+          </Body>
+
+
+        </Header>
 
 
         <ScrollView contentContainerStyle={styles.container}>
 
 
           <Input
-          inputStyle = {styles.inputStyle}
-          errorStyle = {styles.errorStyle}
-          
-          containerStyle = {styles.containerStyle}
-          inputContainerStyle={styles.inputContainer}
-          placeholder="Email"
-          returnKeyLabel = {"next"}
-          onChange={this.onChange}
-          onChangeText = {(text) => this.setState({email:text})}
+            inputStyle={styles.inputStyle}
+            errorStyle={styles.errorStyle}
+
+            containerStyle={styles.containerStyle}
+            inputContainerStyle={styles.inputContainer}
+            placeholder="Email"
+            returnKeyLabel={"next"}
+            onChange={this.onChange}
+            onChangeText={(text) => this.setState({ email: text })}
           />
-                             
 
-
-          <Button style = {styles.button}
-          disabled = {isInvalid}
-            onPress = {this.onSubmit}
+          <Button style={styles.button}
+            disabled={isInvalid}
+            onPress={this.onSubmit}
             title="Reset My Password"
           />
-
-
-          
-
-
-
 
 
         </ScrollView>
@@ -126,7 +111,7 @@ const styles = StyleSheet.create({
     fontWeight: '200',
     flexGrow: 1,
   },
-  titleText:{
+  titleText: {
     fontSize: 25,
     fontFamily: 'System',
     paddingTop: 30,
@@ -164,19 +149,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   inputContainer: {
-    
+
     marginLeft: 40,
     marginRight: 40,
   },
-  inputStyle:{
+  inputStyle: {
     fontFamily: 'System',
     paddingLeft: 10,
     marginTop: 40
   },
-  containerStyle:{
+  containerStyle: {
     paddingBottom: 15
   },
-  errorStyle:{
+  errorStyle: {
     marginLeft: 40,
     marginRight: 40,
     color: 'red'
@@ -186,11 +171,11 @@ const styles = StyleSheet.create({
     height: 340,
     resizeMode: 'contain',
     marginTop: 45,
-    
-    
-    
-    
-  
-  
+
+
+
+
+
+
   },
 });

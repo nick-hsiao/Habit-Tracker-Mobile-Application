@@ -1,113 +1,111 @@
-
 import React from 'react';
-import { Text, StyleSheet, ScrollView, View, Alert,TextInput,Image} from 'react-native';
-import {Container,Header,Left,Right,Body,Title} from "native-base";
-//import { sanFranciscoWeights } from 'react-native-typography'
-import { Button,Input} from 'react-native-elements';
+import { Text, StyleSheet, ScrollView, View, Alert, TextInput, Image } from 'react-native';
+import { Container, Header, Left, Right, Body, Title } from "native-base";
+import { Button, Input } from 'react-native-elements';
 import * as firebase from 'firebase';
 
 const INITIAL_STATE = {
-    passwordOne: "",
-    passwordTwo: "",
-    error: null
-  };
-  
+  passwordOne: "",
+  passwordTwo: "",
+  error: null
+};
+
 
 
 
 export default class PasswordChangeScreen extends React.Component {
 
-    constructor(props) {
-        super(props);
-    
-        this.state = { ...INITIAL_STATE };
-      }
-    
-      onSubmit = event => {
-        const { passwordOne } = this.state;
-    
-        this.props.firebase
-          firebase.auth().currentUser.updatePassword(passwordOne)
-          .then(() => {
-            this.setState({ ...INITIAL_STATE });
-            this.props.navigation.navigate('Home');
-          })
-          .catch(error => {
-            this.setState({ error });
-          });
-    
-        event.preventDefault();
+  constructor(props) {
+    super(props);
 
-        
-      };
-    
-      onChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
-      };
-    
-      render() {
-        const { passwordOne, passwordTwo, error } = this.state;
-    
-        const isInvalid = passwordOne !== passwordTwo || passwordOne.length < 8;
+    this.state = { ...INITIAL_STATE };
+  }
+
+  onSubmit = event => {
+    const { passwordOne } = this.state;
+
+    this.props.firebase
+    firebase.auth().currentUser.updatePassword(passwordOne)
+      .then(() => {
+        this.setState({ ...INITIAL_STATE });
+        this.props.navigation.navigate('Home');
+      })
+      .catch(error => {
+        this.setState({ error });
+      });
+
+    event.preventDefault();
+
+
+  };
+
+  onChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  render() {
+    const { passwordOne, passwordTwo, error } = this.state;
+
+    const isInvalid = passwordOne !== passwordTwo || passwordOne.length < 8;
 
     return (
       <View>
 
-        <Header  transparent>
-                 
-                 <Body>
-                 <Image
-                  source={
-                   __DEV__
-                      ? require('../assets/images/reset.png')
-                      : require('../assets/images/reset.png')
-                 }
-                 style={styles.welcomeImage}
-                />
-                 </Body>
-               
-               
-                 </Header>
+        <Header transparent>
+
+          <Body>
+            <Image
+              source={
+                __DEV__
+                  ? require('../assets/images/reset.png')
+                  : require('../assets/images/reset.png')
+              }
+              style={styles.welcomeImage}
+            />
+          </Body>
+
+
+        </Header>
 
 
 
         <ScrollView contentContainerStyle={styles.container}>
 
-                             <Input
-          inputStyle = {styles.inputStyle1}
-          errorStyle = {styles.errorStyle}
-          
-          containerStyle = {styles.containerStyle}
-          inputContainerStyle={styles.inputContainer}
-          secureTextEntry={true}
-          placeholder="New Password"
-          returnKeyLabel = {"next"}
-          onChange={this.onChange}
-          onChangeText = {(text) => this.setState({passwordOne:text})}
+          <Input
+            inputStyle={styles.inputStyle1}
+            errorStyle={styles.errorStyle}
+
+            containerStyle={styles.containerStyle}
+            inputContainerStyle={styles.inputContainer}
+            secureTextEntry={true}
+            placeholder="New Password"
+            returnKeyLabel={"next"}
+            onChange={this.onChange}
+            onChangeText={(text) => this.setState({ passwordOne: text })}
           />
-                              <Input
-          inputStyle = {styles.inputStyle}
-          errorStyle = {styles.errorStyle}
-          errorMessage = {isInvalid ? "Passwords Don't Match" : ""}
-          
-          containerStyle = {styles.containerStyle}
-          inputContainerStyle={styles.inputContainer}
-          secureTextEntry={true}
-          placeholder="Confirm New Password"
-          returnKeyLabel = {"next"}
-          onChange={this.onChange}
-          onChangeText = {(text) => this.setState({passwordTwo:text})}
+          <Input
+            inputStyle={styles.inputStyle}
+            errorStyle={styles.errorStyle}
+            errorMessage={isInvalid ? "Passwords Don't Match" : ""}
+
+            containerStyle={styles.containerStyle}
+            inputContainerStyle={styles.inputContainer}
+            secureTextEntry={true}
+            placeholder="Confirm New Password"
+            returnKeyLabel={"next"}
+            onChange={this.onChange}
+            onChangeText={(text) => this.setState({ passwordTwo: text })}
           />
 
 
-          <Button style = {styles.button}
-          disabled = {isInvalid}
-            onPress = {this.onSubmit}
+          <Button style={styles.button}
+            disabled={isInvalid}
+            onPress={this.onSubmit}
             title="Confirm Change"
           />
 
 
-          
+
 
 
 
@@ -126,7 +124,7 @@ const styles = StyleSheet.create({
     fontWeight: '200',
     flexGrow: 1,
   },
-  titleText:{
+  titleText: {
     fontSize: 25,
     fontFamily: 'System',
     paddingTop: 30,
@@ -164,23 +162,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   inputContainer: {
-    
+
     marginLeft: 40,
     marginRight: 40,
   },
-  inputStyle:{
+  inputStyle: {
     fontFamily: 'System',
     paddingLeft: 10,
   },
-  inputStyle1:{
+  inputStyle1: {
     fontFamily: 'System',
     paddingLeft: 10,
     marginTop: 50
   },
-  containerStyle:{
+  containerStyle: {
     paddingBottom: 15
   },
-  errorStyle:{
+  errorStyle: {
     marginLeft: 45,
     marginRight: 40,
     color: 'red'
@@ -190,11 +188,11 @@ const styles = StyleSheet.create({
     height: 340,
     resizeMode: 'contain',
     marginTop: 45,
-    
-    
-    
-    
-  
-  
+
+
+
+
+
+
   },
 });

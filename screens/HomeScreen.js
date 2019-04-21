@@ -360,25 +360,7 @@ removeChild(child)
     const isInvalid = this.state.stateChanged === false;
     
    
-/* 
-       if(!this.state.currentUser) {
-    
-        return (
-          <View style = {{marginTop: 280}}>
-      <TouchableOpacity onPress  ={() => this.props.navigation.navigate('SignIn')}>
-             <Image
-          source={
-           __DEV__
-              ? require('../assets/images/logo.png')
-              : require('../assets/images/logo.png')
-         }
-         style={{alignSelf: 'center',height: 90, width: 90 }}
-        />
-        </TouchableOpacity>
-          </View>
-         
-         )
-        } */
+
          return (
            <View style={styles.container}>
            <NavigationEvents

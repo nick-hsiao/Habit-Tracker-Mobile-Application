@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { Text, StyleSheet, ScrollView, View, Alert,TextInpu,Image} from 'react-native';
+import { Text, StyleSheet, ScrollView, View, Alert, TextInpu, Image } from 'react-native';
 //import { sanFranciscoWeights } from 'react-native-typography'
-import { Button,Input } from 'react-native-elements';
-import {Container,Header,Left,Right,Body,Title} from "native-base";
+import { Button, Input } from 'react-native-elements';
+import { Container, Header, Left, Right, Body, Title } from "native-base";
 import * as firebase from 'firebase';
 
 const INITIAL_STATE = {
@@ -32,21 +32,19 @@ export default class SignUpScreen extends React.Component {
   onSubmit = event => {
     const { username, firstName, lastName, email, passwordOne } = this.state;
 
-   
-      if(!email.includes('@') || !email.includes('.'))
-      {
-        Alert.alert("Email is badly formatted");
-      }
-      else if(passwordOne.length < 8)
-      {
-        Alert.alert("Password must have minimum of 8 characters");
-      }
-      else{
-        this.props.firebase
-        firebase.auth().createUserWithEmailAndPassword(email, passwordOne)
+
+    if (!email.includes('@') || !email.includes('.')) {
+      Alert.alert("Email is badly formatted");
+    }
+    else if (passwordOne.length < 8) {
+      Alert.alert("Password must have minimum of 8 characters");
+    }
+    else {
+      this.props.firebase
+      firebase.auth().createUserWithEmailAndPassword(email, passwordOne)
         .then(authUser => {
 
-          uid= authUser.user.uid;
+          uid = authUser.user.uid;
 
           firebase.database().ref(`UsersList/${uid}`).set({
             username,
@@ -54,7 +52,7 @@ export default class SignUpScreen extends React.Component {
             lastName,
             userID: uid
           })
-          
+
 
           // Create a user in your Firebase realtime database
           return this.props.firebase.user(authUser.user.uid).set({
@@ -66,15 +64,15 @@ export default class SignUpScreen extends React.Component {
           this.setState({ ...INITIAL_STATE });
           this.props.history.push(ROUTES.HOME);
         })
-  
+
         .catch(error => {
           this.setState({ error });
           Alert.alert(error.message);
         });
 
-        Alert.alert("Account created");        
-      }
-  
+      Alert.alert("Account created");
+    }
+
   };
 
 
@@ -118,117 +116,110 @@ export default class SignUpScreen extends React.Component {
 
     return (
       <View>
-        <Header  transparent>
-                 
-                 <Body>
-                 <Image
-                  source={
-                   __DEV__
-                      ? require('../assets/images/signup.png')
-                      : require('../assets/images/signup.png')
-                 }
-                 style={styles.welcomeImage}
-                />
-                 </Body>
-               
-               
-                 </Header>
+        <Header transparent>
 
-{/* <Text style = {styles.titleText}> Sign Up </Text> */}
+          <Body>
+            <Image
+              source={
+                __DEV__
+                  ? require('../assets/images/signup.png')
+                  : require('../assets/images/signup.png')
+              }
+              style={styles.welcomeImage}
+            />
+          </Body>
+
+
+        </Header>
+
+        {/* <Text style = {styles.titleText}> Sign Up </Text> */}
         <ScrollView contentContainerStyle={styles.container}>
 
           <Input
-          inputStyle = {styles.inputStyle1}
-          errorStyle = {styles.errorStyle}
-          
-          containerStyle = {styles.containerStyle1}
-          inputContainerStyle={styles.inputContainer}
-          placeholder="Username"
-          returnKeyLabel = {"next"}
-          onChange={this.onChange}
-          onChangeText = {(text) => this.setState({username:text})}
+            inputStyle={styles.inputStyle1}
+            errorStyle={styles.errorStyle}
+
+            containerStyle={styles.containerStyle1}
+            inputContainerStyle={styles.inputContainer}
+            placeholder="Username"
+            returnKeyLabel={"next"}
+            onChange={this.onChange}
+            onChangeText={(text) => this.setState({ username: text })}
           />
           <Input
-          inputStyle = {styles.inputStyle}
-          errorStyle = {styles.errorStyle}
-          
-          containerStyle = {styles.containerStyle}
-          inputContainerStyle={styles.inputContainer}
-          placeholder="First Name"
-          returnKeyLabel = {"next"}
-          onChange={this.onChange}
-          onChangeText = {(text) => this.setState({firstName:text})}
+            inputStyle={styles.inputStyle}
+            errorStyle={styles.errorStyle}
+
+            containerStyle={styles.containerStyle}
+            inputContainerStyle={styles.inputContainer}
+            placeholder="First Name"
+            returnKeyLabel={"next"}
+            onChange={this.onChange}
+            onChangeText={(text) => this.setState({ firstName: text })}
           />
-                    <Input
-          inputStyle = {styles.inputStyle}
-          errorStyle = {styles.errorStyle}
-          
-          containerStyle = {styles.containerStyle}
-          inputContainerStyle={styles.inputContainer}
-          placeholder="Last Name"
-          returnKeyLabel = {"next"}
-          onChange={this.onChange}
-          onChangeText = {(text) => this.setState({lastName:text})}
+          <Input
+            inputStyle={styles.inputStyle}
+            errorStyle={styles.errorStyle}
+
+            containerStyle={styles.containerStyle}
+            inputContainerStyle={styles.inputContainer}
+            placeholder="Last Name"
+            returnKeyLabel={"next"}
+            onChange={this.onChange}
+            onChangeText={(text) => this.setState({ lastName: text })}
           />
 
           <Input
-          inputStyle = {styles.inputStyle}
-          errorStyle = {styles.errorStyle}
-          
-          containerStyle = {styles.containerStyle}
-          inputContainerStyle={styles.inputContainer}
-          placeholder="Email"
-          returnKeyLabel = {"next"}
-          onChange={this.onChange}
-          onChangeText = {(text) => this.setState({email:text})}
+            inputStyle={styles.inputStyle}
+            errorStyle={styles.errorStyle}
+
+            containerStyle={styles.containerStyle}
+            inputContainerStyle={styles.inputContainer}
+            placeholder="Email"
+            returnKeyLabel={"next"}
+            onChange={this.onChange}
+            onChangeText={(text) => this.setState({ email: text })}
           />
-                             <Input
-          inputStyle = {styles.inputStyle}
-          errorStyle = {styles.errorStyle}
-          
-          containerStyle = {styles.containerStyle}
-          inputContainerStyle={styles.inputContainer}
-          secureTextEntry={true}
-          placeholder="Password"
-          returnKeyLabel = {"next"}
-          onChange={this.onChange}
-          onChangeText = {(text) => this.setState({passwordOne:text})}
+          <Input
+            inputStyle={styles.inputStyle}
+            errorStyle={styles.errorStyle}
+
+            containerStyle={styles.containerStyle}
+            inputContainerStyle={styles.inputContainer}
+            secureTextEntry={true}
+            placeholder="Password"
+            returnKeyLabel={"next"}
+            onChange={this.onChange}
+            onChangeText={(text) => this.setState({ passwordOne: text })}
           />
-                           <Input
-          inputStyle = {styles.inputStyle}
-          errorStyle = {styles.errorStyle}
-          
-          containerStyle = {styles.containerStyle}
-          inputContainerStyle={styles.inputContainer}
-          secureTextEntry={true}
-          placeholder="Confirm Password"
-          returnKeyLabel = {"next"}
-          onChange={this.onChange}
-          onChangeText = {(text) => this.setState({passwordTwo:text})}
+          <Input
+            inputStyle={styles.inputStyle}
+            errorStyle={styles.errorStyle}
+
+            containerStyle={styles.containerStyle}
+            inputContainerStyle={styles.inputContainer}
+            secureTextEntry={true}
+            placeholder="Confirm Password"
+            returnKeyLabel={"next"}
+            onChange={this.onChange}
+            onChangeText={(text) => this.setState({ passwordTwo: text })}
           />
 
 
-          <Button style = {styles.button}
-          disabled = {isInvalid}
-            onPress = {this.onSubmit}
+          <Button style={styles.button}
+            disabled={isInvalid}
+            onPress={this.onSubmit}
             title="Submit"
           />
 
-          <Button 
-          type = 'clear'
-          onPress = {() => this.props.navigation.navigate('SignIn')}
-          title = "Have An Account? Sign In!"
-          titleStyle = {{fontSize: 15}}
+          <Button
+            type='clear'
+            onPress={() => this.props.navigation.navigate('SignIn')}
+            title="Have An Account? Sign In!"
+            titleStyle={{ fontSize: 15 }}
           >
 
           </Button>
-
-
-          
-
-
-
-
 
         </ScrollView>
       </View>
@@ -243,7 +234,7 @@ const styles = StyleSheet.create({
     fontWeight: '200',
     flexGrow: 1,
   },
-  titleText:{
+  titleText: {
     fontSize: 30,
     fontFamily: 'System',
     marginTop: 50,
@@ -252,8 +243,8 @@ const styles = StyleSheet.create({
     marginRight: 45,
     flexDirection: 'row',
     textAlign: 'center',
-   
-    
+
+
   },
   helloText: {
     fontFamily: 'System',
@@ -285,27 +276,27 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   inputContainer: {
-    
+
     marginLeft: 40,
     marginRight: 40,
   },
-  inputStyle:{
+  inputStyle: {
     fontFamily: 'System',
     paddingLeft: 10,
   },
-  inputStyle1:{
+  inputStyle1: {
     fontFamily: 'System',
     paddingLeft: 10,
 
   },
-  containerStyle:{
+  containerStyle: {
     paddingBottom: 15
   },
-  containerStyle1:{
+  containerStyle1: {
     paddingBottom: 15,
     marginTop: 85
   },
-  errorStyle:{
+  errorStyle: {
     marginLeft: 40,
     marginRight: 40,
     color: 'red'
@@ -315,10 +306,10 @@ const styles = StyleSheet.create({
     height: 240,
     resizeMode: 'contain',
     marginTop: 85,
-    
-    
-    
-  
-  
+
+
+
+
+
   },
 });
