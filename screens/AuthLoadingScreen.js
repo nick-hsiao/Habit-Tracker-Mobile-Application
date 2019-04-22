@@ -15,6 +15,12 @@ export default class AuthLoadingScreen extends React.Component {
     super(props);
     this._bootstrapAsync();
   }
+  // componentDidMount(){
+  //   firebase.auth().onAuthStateChanged(user => {
+  //     this.props.navigation.navigate(user ? 'Home' : 'SignIn')
+  //   });
+
+  // }
 
   // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {

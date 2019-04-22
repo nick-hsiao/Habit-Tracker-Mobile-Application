@@ -158,8 +158,9 @@ export default class HabitScreen extends React.Component {
 
             <Text style={styles.titleText}> Habit Name: </Text>
             <Input style={styles.textInput}
+              inputStyle={{ paddingLeft: 8 }}
 
-              placeholder='  Ex: Drink Water'
+              placeholder='Ex: Drink Water'
               //leftIcon={{ type: 'feather', name: 'edit',marginRight: 5}}
               onChangeText={(habitName) => this.setState({ habitName })}
             />
@@ -175,30 +176,27 @@ export default class HabitScreen extends React.Component {
             <Text style={styles.titleText}>
               Times Per {this.state.goalPeriod === 0 ? 'Day' : this.state.goalPeriod === 1 ? 'Week' : 'Month'}:
             {this.state.timesPerPeriod} </Text>
-            <Slider trackStyle={{
-              marginLeft: 25,
-              marginRight: 25,
-
-            }}
-
-              thumbStyle={{
-                backgroundColor: '#E9765B',
-                width: 17,
-                height: 17,
-                marginLeft: 25,
-                marginRight: 25,
-
+            <View style={{ marginLeft: 10, marginRight: 10, alignItems: 'stretch', justifyContent: 'center', flex: 1 }}>
+              <Slider trackStyle={{
+                //
               }}
-              thumbTouchSize={{ width: 70, height: 70 }}
-              value={1}
-              maximumValue={10}
-              minimumValue={1}
-              step={1}
-              timesPerPeriod={this.state.timesPerPeriod}
-              onValueChange={timesPerPeriod => this.setState({ timesPerPeriod })}
 
-            />
+                thumbStyle={{
+                  backgroundColor: '#E9765B',
+                  width: 17,
+                  height: 17,
+                }}
+                minimumTrackTintColor = '#E9765B'
+                thumbTouchSize={{ width: 70, height: 70 }}
+                value={1}
+                maximumValue={10}
+                minimumValue={1}
+                step={1}
+                timesPerPeriod={this.state.timesPerPeriod}
+                onValueChange={timesPerPeriod => this.setState({ timesPerPeriod })}
 
+              />
+            </View>
 
             <Text style={styles.trackText}> Track Which Days?: </Text>
 

@@ -32,13 +32,35 @@ export default class SignUpScreen extends React.Component {
   onSubmit = event => {
     const { username, firstName, lastName, email, passwordOne } = this.state;
 
+    // var usernameFound = false;
+
+
+    // firebase.database().ref(`UsersList`).on('value', function (snapshot) {
+    //   snapshot.forEach(function (child) {
+    //     console.log(child.val().username)
+    //     if (usernameFound === false) {
+    //       if (child.val().username === username) {
+    //         usernameFound = true;
+    //         //Alert.alert("Username Is Already Taken", "Please Try Again");
+
+
+    //       }
+    //     }
+    //   })
+    // });
+
+   
+    // console.log(usernameFound)
+    // this doesnt work for now...synchronous problem
 
     if (!email.includes('@') || !email.includes('.')) {
-      Alert.alert("Email is badly formatted");
+      Alert.alert("E-Mail Is Poorly Formatted");
     }
-    else if (passwordOne.length < 8) {
-      Alert.alert("Password must have minimum of 8 characters");
-    }
+    // else if (usernameFound === true) {
+
+    //   Alert.alert("Username Is Already Taken", "Please Try Again");
+    //   return;
+    // }
     else {
       this.props.firebase
       firebase.auth().createUserWithEmailAndPassword(email, passwordOne)
@@ -61,17 +83,28 @@ export default class SignUpScreen extends React.Component {
           });
         })
         .then(authUser => {
+          
           this.setState({ ...INITIAL_STATE });
           this.props.history.push(ROUTES.HOME);
+
         })
 
         .catch(error => {
           this.setState({ error });
-          Alert.alert(error.message);
+          console.log(error.message);
+          if (error.message == 'The email address is already in use by another account.') {
+            Alert.alert('E-Mail Is Already In Use', 'Please Try Again')
+
+          }
+          else {
+            console.log(error.message)
+          }
+          //Alert.alert(error.message);
         });
 
-      Alert.alert("Account created");
+
     }
+    Alert.alert("Account created");
 
   };
 
@@ -107,12 +140,17 @@ export default class SignUpScreen extends React.Component {
     } = this.state;
 
     const isInvalid =
-      passwordOne !== passwordTwo ||
+      passwordOne != passwordTwo ||
       passwordOne === "" ||
       email === "" ||
       username === "" ||
       firstName === "" ||
-      lastName === "";
+      lastName === "" ||
+      passwordOne.length < 8 ||
+      passwordTwo.length < 8;
+    const pwLength1 = passwordOne.length < 8;
+    //const pwLength2 = passwordTwo.length<8;
+    const pwMatch = passwordOne != passwordTwo;
 
     return (
       <View>
@@ -136,7 +174,7 @@ export default class SignUpScreen extends React.Component {
         <ScrollView contentContainerStyle={styles.container}>
 
           <Input
-            inputStyle={styles.inputStyle1}
+            inputStyle={styles.inputStyle}
             errorStyle={styles.errorStyle}
 
             containerStyle={styles.containerStyle1}
@@ -183,9 +221,11 @@ export default class SignUpScreen extends React.Component {
           <Input
             inputStyle={styles.inputStyle}
             errorStyle={styles.errorStyle}
+            errorMessage={pwLength1 ? 'Password Must Be At Least 8 Characters' : null}
 
             containerStyle={styles.containerStyle}
             inputContainerStyle={styles.inputContainer}
+
             secureTextEntry={true}
             placeholder="Password"
             returnKeyLabel={"next"}
@@ -195,7 +235,7 @@ export default class SignUpScreen extends React.Component {
           <Input
             inputStyle={styles.inputStyle}
             errorStyle={styles.errorStyle}
-
+            errorMessage={pwMatch ? 'Passwords Must Match' : null}
             containerStyle={styles.containerStyle}
             inputContainerStyle={styles.inputContainer}
             secureTextEntry={true}
@@ -283,6 +323,7 @@ const styles = StyleSheet.create({
   inputStyle: {
     fontFamily: 'System',
     paddingLeft: 10,
+    fontSize: 20
   },
   inputStyle1: {
     fontFamily: 'System',
@@ -299,6 +340,7 @@ const styles = StyleSheet.create({
   errorStyle: {
     marginLeft: 40,
     marginRight: 40,
+    paddingLeft: 5,
     color: 'red'
   },
   welcomeImage: {

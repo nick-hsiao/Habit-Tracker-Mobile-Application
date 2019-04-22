@@ -13,12 +13,22 @@ export default class SettingsScreen2 extends React.Component {
   _changePassword = () => {
     this.props.navigation.navigate('PasswordChange')
   }
-  _signOut = () => {
-    firebase.auth().signOut();
-    Alert.alert("You Have Signed Out.");
-    this.props.navigation.navigate('SignIn');
+  _signOut = event => {
+    firebase.auth().signOut().then(function () {
+      // Sign-out successful.
+      console.log(firebase.auth().currentUser);
+      //this.props.navigation.navigate('Auth');
+      Alert.alert("You Have Signed Out.");
+      //nav
+    }).catch(function (error) {
+      //this.props.navigation.navigate('Home');
+      Alert.alert("Sign Out Error" + error);
+    });
 
-  }
+    event.preventDefault();
+
+  };
+
   _goBack = () => {
     this.props.navigation.navigate('Home');
   }
@@ -111,11 +121,11 @@ const styles = StyleSheet.create({
     color: '#414042'
   },
   Container: {
-    paddingTop: 20
+    paddingTop: 15
   },
   welcomeImage: {
-    width: 65,
-    height: 65,
+    width: 70,
+    height: 70,
     resizeMode: 'contain',
 
 

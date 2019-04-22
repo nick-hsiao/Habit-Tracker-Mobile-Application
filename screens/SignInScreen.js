@@ -53,6 +53,7 @@ export default class SignInScreen extends React.Component {
     event.preventDefault();
 
     var user = firebase.auth().currentUser;
+    console.log(user)
 
     if (user != null) { this.props.navigation.navigate('Home'); }
 
@@ -62,12 +63,16 @@ export default class SignInScreen extends React.Component {
   onSubmit2 = event => {
     firebase.auth().signOut().then(function () {
       // Sign-out successful.
+      console.log(firebase.auth.currentUser);
+
       Alert.alert("You have signed out.");
-      //nav
+      //navigate('Auth');
     }).catch(function (error) {
       // An error happened.
       Alert.alert("Sign Out Error");
     });
+
+    this.props.navigation.navigate('Auth');
 
     event.preventDefault();
 
