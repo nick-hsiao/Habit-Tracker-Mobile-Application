@@ -32,35 +32,39 @@ export default class SignUpScreen extends React.Component {
   onSubmit = event => {
     const { username, firstName, lastName, email, passwordOne } = this.state;
 
-    // var usernameFound = false;
+    var usernameFound = false;
 
 
-    // firebase.database().ref(`UsersList`).on('value', function (snapshot) {
-    //   snapshot.forEach(function (child) {
-    //     console.log(child.val().username)
-    //     if (usernameFound === false) {
-    //       if (child.val().username === username) {
-    //         usernameFound = true;
-    //         //Alert.alert("Username Is Already Taken", "Please Try Again");
+    firebase.database().ref(`UsersList`).on('value', function (snapshot) {
+      snapshot.forEach(function (child) {
+        console.log(child.val().username)
+        if (usernameFound === false) {
+          if (child.val().username === username) {
+            usernameFound = true;
+            //Alert.alert("Username Is Already Taken", "Please Try Again");
 
 
-    //       }
-    //     }
-    //   })
-    // });
+          }
+        }
+      })
+    });
 
+    setTimeout(()=>this.authenticate(username, firstName, lastName, email, passwordOne, usernameFound), 1000);
+  }
    
-    // console.log(usernameFound)
+    
     // this doesnt work for now...synchronous problem
 
+
+authenticate = (username, firstName, lastName, email, passwordOne, usernameFound) =>{
     if (!email.includes('@') || !email.includes('.')) {
       Alert.alert("E-Mail Is Poorly Formatted");
     }
-    // else if (usernameFound === true) {
+    else if (usernameFound === true) {
 
-    //   Alert.alert("Username Is Already Taken", "Please Try Again");
-    //   return;
-    // }
+      Alert.alert("Username Is Already Taken", "Please Try Again");
+      return;
+    }
     else {
       this.props.firebase
       firebase.auth().createUserWithEmailAndPassword(email, passwordOne)
@@ -83,7 +87,7 @@ export default class SignUpScreen extends React.Component {
           });
         })
         .then(authUser => {
-          
+          Alert.alert("Account created");
           this.setState({ ...INITIAL_STATE });
           this.props.history.push(ROUTES.HOME);
 
@@ -104,8 +108,8 @@ export default class SignUpScreen extends React.Component {
 
 
     }
-    Alert.alert("Account created");
-
+    
+  
   };
 
 
