@@ -24,7 +24,6 @@ export default class PasswordChangeScreen extends React.Component {
   onSubmit = event => {
     const { passwordOne } = this.state;
 
-    this.props.firebase
     firebase.auth().currentUser.updatePassword(passwordOne)
       .then(() => {
         this.setState({ ...INITIAL_STATE });

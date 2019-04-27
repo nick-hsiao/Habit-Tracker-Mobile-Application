@@ -13,6 +13,9 @@ export default class SettingsScreen2 extends React.Component {
   _changePassword = () => {
     this.props.navigation.navigate('PasswordChange')
   }
+  _updateInfo = () => {
+    this.props.navigation.navigate('UpdateInfo')
+  }
   _signOut = event => {
     firebase.auth().signOut().then(function () {
       // Sign-out successful.
@@ -37,25 +40,31 @@ export default class SettingsScreen2 extends React.Component {
     const list = [
       {
         title: 'Forgot Password',
-        icon: 'email',
-        type: 'material'
+        icon: 'mail',
+        type: 'antdesign'
 
       },
       {
         title: 'Change Password',
-        icon: 'key',
-        type: 'font-awesome'
+        icon: 'unlock',
+        type: 'antdesign'
+
+      },
+      {
+        title: 'Update User Info',
+        icon: 'idcard',
+        type: 'antdesign'
 
       },
       {
         title: 'Sign Out',
-        icon: 'person',
-        type: 'material'
+        icon: 'logout',
+        type: 'antdesign'
       },
       {
         title: 'Go Back',
-        icon: 'share-square-o',
-        type: 'font-awesome'
+        icon: 'home',
+        type: 'antdesign'
       },
 
     ]
@@ -102,8 +111,9 @@ export default class SettingsScreen2 extends React.Component {
                   color='#414042'
                   size={30}
                 />}
-                onPress={item.icon === 'email' ? this._forgotPassword :
-                  item.icon === 'key' ? this._changePassword : item.icon === 'person' ? this._signOut : this._goBack}
+                onPress={item.icon === 'mail' ? this._forgotPassword :
+                  item.icon === 'unlock' ? this._changePassword : item.icon === 'logout' ? this._signOut : item.icon === 'idcard' ? this._updateInfo :
+                  this._goBack}
               />
             ))
           }

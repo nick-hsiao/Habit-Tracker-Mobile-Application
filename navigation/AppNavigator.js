@@ -12,6 +12,7 @@ import PasswordForgetScreen from '../screens/PasswordForgetScreen';
 import AuthPasswordForgetScreen from '../screens/AuthPasswordForgetScreen';
 import SignInScreen from '../screens/SignInScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import UpdateInfoScreen from '../screens/UpdateInfoScreen';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 
 const HomeStack = createStackNavigator({
@@ -19,7 +20,8 @@ const HomeStack = createStackNavigator({
   Settings: SettingsScreen,
   PasswordChange: PasswordChangeScreen,
   PasswordForget: PasswordForgetScreen,
-  HabitScreen: HabitScreen,
+  HabitScreen: HabitScreen, 
+  UpdateInfo: UpdateInfoScreen,
 
 },
   {
