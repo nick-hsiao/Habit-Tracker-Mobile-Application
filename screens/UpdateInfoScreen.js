@@ -99,17 +99,9 @@ export default class PasswordForgetScreen extends React.Component {
 
       console.log("THE INFO IS " + this.state.userN + " " + this.state.firstN + " " + this.state.lastN);
 
-
-      firebase.database().ref(`/UsersList/${firebase.auth().currentUser.uid}`).update({
-        username: this.state.userN,
-        firstName: this.state.firstN,
-        lastName: this.state.lastN
-      })
-
-
       console.log("CURRENT EMAIL IS " + firebase.auth().currentUser.email);
 
-      if (firebase.auth().currentUser.email != this.state.emailN) {
+      //if (firebase.auth().currentUser.email != this.state.emailN) {
 
         //this.setState({isHabitModalVisible: true});
         AlertIOS.prompt(
@@ -128,67 +120,12 @@ export default class PasswordForgetScreen extends React.Component {
           ],
           'secure-text',
         );
-      }
-      else {
-        this.props.navigation.navigate('Settings');
-      }
-
-
-
-
-
-
-      //console.log("CURRENT EMAIL IS " + firebase.auth().currentUser.password);
-
-      /** 
-    this.props.firebase
-    firebase.auth().createUserWithEmailAndPassword(email, passwordOne)
-      .then(authUser => {
-
-        uid = authUser.user.uid;
-
-        firebase.database().ref(`UsersList/${uid}`).set({
-          username,
-          firstName,
-          lastName,
-          userID: uid
-        })
-        
-
-
-        // Create a user in your Firebase realtime database
-        return this.props.firebase.user(authUser.user.uid).set({
-          username,
-          email
-        });
-      })
-      .then(authUser => {
-        Alert.alert("Account created");
-        this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
-        
-
-      })
-
-      .catch(error => {
-        this.setState({ error });
-        console.log(error.message);
-        if (error.message == 'The email address is already in use by another account.') {
-          Alert.alert('E-Mail Is Already In Use', 'Please Try Again')
-
-        }
-        else {
-          console.log(error.message)
-        }
-        //Alert.alert(error.message);
-      });
-      **/
-
+     // }
+     // else {
+     //   this.props.navigation.navigate('Settings');
+     // }
 
     }
-
-
-
 
   };
 
@@ -210,6 +147,14 @@ export default class PasswordForgetScreen extends React.Component {
     this.reauthenticate(currentPassword).then(() => {
       var user = firebase.auth().currentUser;
       user.updateEmail(newEmail).then(() => {
+
+        
+      firebase.database().ref(`/UsersList/${firebase.auth().currentUser.uid}`).update({
+        username: this.state.userN,
+        firstName: this.state.firstN,
+        lastName: this.state.lastN
+      })
+
         console.log("Email Updated!");
         this.props.navigation.navigate('Settings');
       }).catch((error) => { Alert.alert("Incorrect Password","Please Try Again"); });
