@@ -115,6 +115,10 @@ export default class PasswordForgetScreen extends React.Component {
           {
             this.setState({isHabitModalVisible: true});
           }
+          else
+          {
+            this.props.navigation.navigate('Settings');
+          }
 
 
 
@@ -169,6 +173,8 @@ export default class PasswordForgetScreen extends React.Component {
 
 
     }
+
+
     
   
   };
@@ -192,8 +198,9 @@ export default class PasswordForgetScreen extends React.Component {
       var user = firebase.auth().currentUser;
       user.updateEmail(newEmail).then(() => {
         console.log("Email updated!");
-      }).catch((error) => { console.log(error); });
-    }).catch((error) => { console.log(error); });
+        this.props.navigation.navigate('Settings');
+      }).catch((error) => {Alert.alert("The password you entered is incorrect");});
+    }).catch((error) => {Alert.alert("The password you entered is incorrect");});
   }
 
 
@@ -407,11 +414,5 @@ const styles = StyleSheet.create({
     height: 340,
     resizeMode: 'contain',
     marginTop: 65,
-
-
-
-
-
-
   },
 });
