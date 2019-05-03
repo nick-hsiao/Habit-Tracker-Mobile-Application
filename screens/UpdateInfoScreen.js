@@ -1,15 +1,15 @@
 import React from 'react';
-import { Text, StyleSheet, ScrollView, View, Alert, TextInput, Image } from 'react-native';
+import { Text, StyleSheet, ScrollView, View, Alert, TextInput, Image, AlertIOS } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { Container, Header, Left, Right, Body, Title } from "native-base";
 import * as firebase from 'firebase';
 import Modal from "react-native-modal";
 
 const INITIAL_STATE = {
-  userN : "",
-  firstN:  "",
+  userN: "",
+  firstN: "",
   lastN: "",
-  emailN:  "",
+  emailN: "",
   stateChanged: false,
   isHabitModalVisible: false,
   password: "",
@@ -23,62 +23,60 @@ export default class PasswordForgetScreen extends React.Component {
     super(props);
 
     userInfo = [];
-    
+
     this.state = { ...INITIAL_STATE };
   }
 
 
-  componentWillMount()
-  {
+  componentWillMount() {
 
     let currentUser = firebase.auth().currentUser;
 
 
     firebase.database().ref(`UsersList/${currentUser.uid}`).on('value', function (snapshot) {
-        snapshot.forEach(function (child) {
-            userInfo.push(child);
-        })
-     })
+      snapshot.forEach(function (child) {
+        userInfo.push(child);
+      })
+    })
 
-    setTimeout(()=>this.remove(),200);
+    setTimeout(() => this.remove(), 200);
   }
 
-  remove = () =>
-  {
-      userInfo.splice(0,1);
-      this.setState({userN: userInfo[3].val(), firstN: userInfo[0].val(), lastN: userInfo[1].val(), emailN: firebase.auth().currentUser.email  })
-      //userN = userInfo[3].val();
-      //firstN = userInfo[0].val();
-      //lastN = userInfo[1].val();
-      //emailN = firebase.auth().currentUser.email;
+  remove = () => {
+    userInfo.splice(0, 1);
+    this.setState({ userN: userInfo[3].val(), firstN: userInfo[0].val(), lastN: userInfo[1].val(), emailN: firebase.auth().currentUser.email })
+    //userN = userInfo[3].val();
+    //firstN = userInfo[0].val();
+    //lastN = userInfo[1].val();
+    //emailN = firebase.auth().currentUser.email;
   }
 
- //Authentication, from https://www.youtube.com/watch?v=ILlHA2kIuxs
- onSubmit = event => {
-    const { userN, firstN, lastN, emailN} = this.state;
+  //Authentication, from https://www.youtube.com/watch?v=ILlHA2kIuxs
+  onSubmit = event => {
+    const { userN, firstN, lastN, emailN } = this.state;
 
     var usernameFound = false;
 
     firebase.database().ref(`UsersList`).on('value', function (snapshot) {
       snapshot.forEach(function (child) {
         console.log(child.val().username)
-        
+
         if (usernameFound === false) {
-          if (child.val().username.toUpperCase() === userN.toUpperCase() && child.val().userID != userInfo[2].val() ) {
+          if (child.val().username.toUpperCase() === userN.toUpperCase() && child.val().userID != userInfo[2].val()) {
             usernameFound = true;
             //Alert.alert("Username Is Already Taken", "Please Try Again");
           }
         }
-        
+
       })
     });
 
-    setTimeout(()=>this.authenticate(this.state.userN, this.state.firstN, this.state.lastN, this.state.emailN, usernameFound), 1000);
+    setTimeout(() => this.authenticate(this.state.userN, this.state.firstN, this.state.lastN, this.state.emailN, usernameFound), 1000);
   }
 
-  authenticate = (userN, firstN, lastN, emailN, usernameFound) =>{
+  authenticate = (userN, firstN, lastN, emailN, usernameFound) => {
 
-    
+
     if (!emailN.includes('@') || !emailN.includes('.')) {
       Alert.alert("E-Mail Is Poorly Formatted");
     }
@@ -89,94 +87,109 @@ export default class PasswordForgetScreen extends React.Component {
     }
     else {
 
-        /** 
-        firebase.database().ref(`/UsersList/${firebase.auth().currentUser.uid}`).on('value', function (snapshot) {
-           
-            console.log("HHAHHHA "+ snapshot.val().username);
-            console.log("HHAHHHA "+ snapshot.val().firstName);
-            console.log("HHAHHHA "+ snapshot.val().lastName);
-        
-         })
-         **/
+      /** 
+      firebase.database().ref(`/UsersList/${firebase.auth().currentUser.uid}`).on('value', function (snapshot) {
+         
+          console.log("HHAHHHA "+ snapshot.val().username);
+          console.log("HHAHHHA "+ snapshot.val().firstName);
+          console.log("HHAHHHA "+ snapshot.val().lastName);
+      
+       })
+       **/
 
-         console.log("THE INFO IS "+ this.state.userN + " " + this.state.firstN + " " + this.state.lastN);
-
-        
-        firebase.database().ref(`/UsersList/${firebase.auth().currentUser.uid}`).update({
-            username: this.state.userN,
-            firstName: this.state.firstN,
-            lastName: this.state.lastN
-          })
-          
-          
-          console.log("CURRENT EMAIL IS " + firebase.auth().currentUser.email);
-
-          if(firebase.auth().currentUser.email != this.state.emailN)
-          {
-            this.setState({isHabitModalVisible: true});
-          }
-          else
-          {
-            this.props.navigation.navigate('Settings');
-          }
+      console.log("THE INFO IS " + this.state.userN + " " + this.state.firstN + " " + this.state.lastN);
 
 
+      firebase.database().ref(`/UsersList/${firebase.auth().currentUser.uid}`).update({
+        username: this.state.userN,
+        firstName: this.state.firstN,
+        lastName: this.state.lastN
+      })
+
+
+      console.log("CURRENT EMAIL IS " + firebase.auth().currentUser.email);
+
+      if (firebase.auth().currentUser.email != this.state.emailN) {
+
+        //this.setState({isHabitModalVisible: true});
+        AlertIOS.prompt(
+          'Enter Password',
+          'To Confirm Changes',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+            {
+              text: 'Confirm',
+              onPress: (password) => this.changeEmail(password,this.state.emailN),
+            },
+          ],
+          'secure-text',
+        );
+      }
+      else {
+        this.props.navigation.navigate('Settings');
+      }
 
 
 
 
-          //console.log("CURRENT EMAIL IS " + firebase.auth().currentUser.password);
-
-        /** 
-      this.props.firebase
-      firebase.auth().createUserWithEmailAndPassword(email, passwordOne)
-        .then(authUser => {
-
-          uid = authUser.user.uid;
-
-          firebase.database().ref(`UsersList/${uid}`).set({
-            username,
-            firstName,
-            lastName,
-            userID: uid
-          })
-          
 
 
-          // Create a user in your Firebase realtime database
-          return this.props.firebase.user(authUser.user.uid).set({
-            username,
-            email
-          });
+      //console.log("CURRENT EMAIL IS " + firebase.auth().currentUser.password);
+
+      /** 
+    this.props.firebase
+    firebase.auth().createUserWithEmailAndPassword(email, passwordOne)
+      .then(authUser => {
+
+        uid = authUser.user.uid;
+
+        firebase.database().ref(`UsersList/${uid}`).set({
+          username,
+          firstName,
+          lastName,
+          userID: uid
         })
-        .then(authUser => {
-          Alert.alert("Account created");
-          this.setState({ ...INITIAL_STATE });
-          this.props.history.push(ROUTES.HOME);
-          
+        
 
-        })
 
-        .catch(error => {
-          this.setState({ error });
-          console.log(error.message);
-          if (error.message == 'The email address is already in use by another account.') {
-            Alert.alert('E-Mail Is Already In Use', 'Please Try Again')
-
-          }
-          else {
-            console.log(error.message)
-          }
-          //Alert.alert(error.message);
+        // Create a user in your Firebase realtime database
+        return this.props.firebase.user(authUser.user.uid).set({
+          username,
+          email
         });
-        **/
+      })
+      .then(authUser => {
+        Alert.alert("Account created");
+        this.setState({ ...INITIAL_STATE });
+        this.props.history.push(ROUTES.HOME);
+        
+
+      })
+
+      .catch(error => {
+        this.setState({ error });
+        console.log(error.message);
+        if (error.message == 'The email address is already in use by another account.') {
+          Alert.alert('E-Mail Is Already In Use', 'Please Try Again')
+
+        }
+        else {
+          console.log(error.message)
+        }
+        //Alert.alert(error.message);
+      });
+      **/
 
 
     }
 
 
-    
-  
+
+
   };
 
 
@@ -186,31 +199,30 @@ export default class PasswordForgetScreen extends React.Component {
   reauthenticate = (currentPassword) => {
     var user = firebase.auth().currentUser;
     var cred = firebase.auth.EmailAuthProvider.credential(
-        user.email, currentPassword);
+      user.email, currentPassword);
     return user.reauthenticateWithCredential(cred);
   }
 
-/**
-   * Change email, got help from https://medium.com/@ericmorgan1/change-user-email-password-in-firebase-and-react-native-d0abc8d21618
-   */
+  /**
+     * Change email, got help from https://medium.com/@ericmorgan1/change-user-email-password-in-firebase-and-react-native-d0abc8d21618
+     */
   changeEmail = (currentPassword, newEmail) => {
     this.reauthenticate(currentPassword).then(() => {
       var user = firebase.auth().currentUser;
       user.updateEmail(newEmail).then(() => {
-        console.log("Email updated!");
+        console.log("Email Updated!");
         this.props.navigation.navigate('Settings');
-      }).catch((error) => {Alert.alert("The password you entered is incorrect");});
-    }).catch((error) => {Alert.alert("The password you entered is incorrect");});
+      }).catch((error) => { Alert.alert("Incorrect Password","Please Try Again"); });
+    }).catch((error) => { Alert.alert("Incorrect Password","Please Try Again"); });
   }
 
 
-  emailUpdate(password)
-  {
-      
+  emailUpdate(password) {
+
     this.setState({ isHabitModalVisible: false });
     this.reauthenticate(password).catch((error) => { console.log(error); });
     this.changeEmail(password, this.state.emailN);
-    
+
 
     //console.log("password is " + password)
 
@@ -262,10 +274,10 @@ export default class PasswordForgetScreen extends React.Component {
             placeholder="Username"
             returnKeyLabel={"next"}
             onChange={this.onChange}
-            onChangeText={(text) => this.setState({userN: text, stateChanged: true})}
+            onChangeText={(text) => this.setState({ userN: text, stateChanged: true })}
           >{this.state.userN}</Input>
 
-        <Input
+          <Input
             inputStyle={styles.inputStyle1}
             errorStyle={styles.errorStyle}
 
@@ -274,10 +286,10 @@ export default class PasswordForgetScreen extends React.Component {
             placeholder="First Name"
             returnKeyLabel={"next"}
             onChange={this.onChange}
-            onChangeText={(text) => this.setState({firstN: text, stateChanged: true})}
+            onChangeText={(text) => this.setState({ firstN: text, stateChanged: true })}
           >{this.state.firstN}</Input>
 
-<Input
+          <Input
             inputStyle={styles.inputStyle1}
             errorStyle={styles.errorStyle}
 
@@ -286,10 +298,10 @@ export default class PasswordForgetScreen extends React.Component {
             placeholder="Last Name"
             returnKeyLabel={"next"}
             onChange={this.onChange}
-            onChangeText={(text) => this.setState({lastN: text, stateChanged: true})}
+            onChangeText={(text) => this.setState({ lastN: text, stateChanged: true })}
           >{this.state.lastN}</Input>
 
-<Input
+          <Input
             inputStyle={styles.inputStyle1}
             errorStyle={styles.errorStyle}
 
@@ -298,7 +310,7 @@ export default class PasswordForgetScreen extends React.Component {
             placeholder="Email"
             returnKeyLabel={"next"}
             onChange={this.onChange}
-            onChangeText={(text) => this.setState({emailN: text, stateChanged: true})}
+            onChangeText={(text) => this.setState({ emailN: text, stateChanged: true })}
           >{this.state.emailN}</Input>
 
           <Button style={styles.button}
@@ -307,31 +319,31 @@ export default class PasswordForgetScreen extends React.Component {
             title="Update Info"
           />
 
-                <Modal
-                      contentContainerStyle={styles.modalContent}
-                      isVisible={this.state.isHabitModalVisible}
-                      onSwipeComplete={() => this.setState({ isHabitModalVisible: false })}
-                      swipeDirection="up">
-                      <View style={{ height: 500, backgroundColor: 'white', borderRadius: 15 }}>
+          <Modal
+            contentContainerStyle={styles.modalContent}
+            isVisible={this.state.isHabitModalVisible}
+            onSwipeComplete={() => this.setState({ isHabitModalVisible: false })}
+            swipeDirection="up">
+            <View style={{ height: 500, backgroundColor: 'white', borderRadius: 15 }}>
 
-                        <Text style={styles.titleText}> You requested to change your email. Enter your password to continue: </Text>
-                        <Input inputStyle={styles.textInput}
-                            secureTextEntry={true}
+              <Text style={styles.titleText}> You requested to change your email. Enter your password to continue: </Text>
+              <Input inputStyle={styles.textInput}
+                secureTextEntry={true}
 
-                          placeholder='  Password '
-                          //leftIcon={{ type: 'feather', name: 'edit',marginRight: 5}}
-                          onChangeText={(text) => this.setState({ password: text, stateChanged: true })}
+                placeholder='  Password '
+                //leftIcon={{ type: 'feather', name: 'edit',marginRight: 5}}
+                onChangeText={(text) => this.setState({ password: text, stateChanged: true })}
 
-                        ></Input>
+              ></Input>
 
-                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
 
-                          
-                        <Button onPress={()=> this.emailUpdate(this.state.password)} style={styles.cancelbutton} title="Save"></Button>
-                          <Button onPress={() => this.setState({ isHabitModalVisible: false })} style={styles.cancelbutton} title="Cancel"></Button>
-                        </View>
-                      </View>
-                    </Modal>
+
+                <Button onPress={() => this.emailUpdate(this.state.password)} style={styles.cancelbutton} title="Save"></Button>
+                <Button onPress={() => this.setState({ isHabitModalVisible: false })} style={styles.cancelbutton} title="Cancel"></Button>
+              </View>
+            </View>
+          </Modal>
 
 
         </ScrollView>
@@ -371,8 +383,8 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 10,
-    marginLeft: 135,
-    marginRight: 135,
+    marginLeft: 120,
+    marginRight: 120,
     borderRadius: 5,
   },
   textInput: {
