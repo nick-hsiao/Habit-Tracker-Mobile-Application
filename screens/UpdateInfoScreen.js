@@ -87,43 +87,27 @@ export default class PasswordForgetScreen extends React.Component {
     }
     else {
 
-      /** 
-      firebase.database().ref(`/UsersList/${firebase.auth().currentUser.uid}`).on('value', function (snapshot) {
-         
-          console.log("HHAHHHA "+ snapshot.val().username);
-          console.log("HHAHHHA "+ snapshot.val().firstName);
-          console.log("HHAHHHA "+ snapshot.val().lastName);
-      
-       })
-       **/
-
       console.log("THE INFO IS " + this.state.userN + " " + this.state.firstN + " " + this.state.lastN);
 
       console.log("CURRENT EMAIL IS " + firebase.auth().currentUser.email);
 
-      //if (firebase.auth().currentUser.email != this.state.emailN) {
-
-        //this.setState({isHabitModalVisible: true});
-        AlertIOS.prompt(
-          'Enter Password',
-          'To Confirm Changes',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel',
-            },
-            {
-              text: 'Confirm',
-              onPress: (password) => this.changeEmail(password,this.state.emailN),
-            },
-          ],
-          'secure-text',
-        );
-     // }
-     // else {
-     //   this.props.navigation.navigate('Settings');
-     // }
+      AlertIOS.prompt(
+        'Enter Password',
+        'To Confirm Changes',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {
+            text: 'Confirm',
+            onPress: (password) => this.changeEmail(password, this.state.emailN),
+            style: 'default'
+          },
+        ],
+        'secure-text',
+      );
 
     }
 
@@ -148,17 +132,17 @@ export default class PasswordForgetScreen extends React.Component {
       var user = firebase.auth().currentUser;
       user.updateEmail(newEmail).then(() => {
 
-        
-      firebase.database().ref(`/UsersList/${firebase.auth().currentUser.uid}`).update({
-        username: this.state.userN,
-        firstName: this.state.firstN,
-        lastName: this.state.lastN
-      })
+
+        firebase.database().ref(`/UsersList/${firebase.auth().currentUser.uid}`).update({
+          username: this.state.userN,
+          firstName: this.state.firstN,
+          lastName: this.state.lastN
+        })
 
         console.log("Email Updated!");
         this.props.navigation.navigate('Settings');
-      }).catch((error) => { Alert.alert("Incorrect Password","Please Try Again"); });
-    }).catch((error) => { Alert.alert("Incorrect Password","Please Try Again"); });
+      }).catch((error) => { Alert.alert("E-Mail Already In Use", "Please Try Again"); });
+    }).catch((error) => { Alert.alert("Incorrect Password", "Please Try Again"); });
   }
 
 
@@ -264,31 +248,7 @@ export default class PasswordForgetScreen extends React.Component {
             title="Update Info"
           />
 
-          <Modal
-            contentContainerStyle={styles.modalContent}
-            isVisible={this.state.isHabitModalVisible}
-            onSwipeComplete={() => this.setState({ isHabitModalVisible: false })}
-            swipeDirection="up">
-            <View style={{ height: 500, backgroundColor: 'white', borderRadius: 15 }}>
-
-              <Text style={styles.titleText}> You requested to change your email. Enter your password to continue: </Text>
-              <Input inputStyle={styles.textInput}
-                secureTextEntry={true}
-
-                placeholder='  Password '
-                //leftIcon={{ type: 'feather', name: 'edit',marginRight: 5}}
-                onChangeText={(text) => this.setState({ password: text, stateChanged: true })}
-
-              ></Input>
-
-              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-
-
-                <Button onPress={() => this.emailUpdate(this.state.password)} style={styles.cancelbutton} title="Save"></Button>
-                <Button onPress={() => this.setState({ isHabitModalVisible: false })} style={styles.cancelbutton} title="Cancel"></Button>
-              </View>
-            </View>
-          </Modal>
+         
 
 
         </ScrollView>
