@@ -139,7 +139,7 @@ export default class PasswordForgetScreen extends React.Component {
           lastName: this.state.lastN
         })
 
-        console.log("Email Updated!");
+        Alert.alert("Account Info Updated!");
         this.props.navigation.navigate('Settings');
       }).catch((error) => { Alert.alert("E-Mail Already In Use", "Please Try Again"); });
     }).catch((error) => { Alert.alert("Incorrect Password", "Please Try Again"); });
