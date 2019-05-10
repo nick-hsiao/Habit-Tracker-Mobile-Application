@@ -12,36 +12,35 @@ import {
   Alert,
   RefreshControl,
 } from 'react-native';
-import { Button, CheckBox, Input, ButtonGroup, Slider, ButtonToolbar, Card ,Icon} from 'react-native-elements';
-//import Icon from "react-native-vector-icons/Ionicons";
-import { WebBrowser } from 'expo';
+import { Button, CheckBox, Input, ButtonGroup, Slider, ButtonToolbar, Card, Icon } from 'react-native-elements';
 import * as firebase from 'firebase';
 import Modal from "react-native-modal";
 import { NavigationEvents } from "react-navigation";
 import { Container, Header, Left, Right, Body, Title } from "native-base";
 
-
-//import logo from '../assets/images/logo.png';
-
 const habit = {
   1: "habitName",
 };
 
-//var habits = [];
 var count = 0;
 
-//The commented lines of code (the console log) in this function will work if you declare 
-//habits (from previous lines) as an empty array (var habits = [];)
 function addHabit(value) {
   habits.push(value);
   count++;
 }
 
-
+/**
+ * 
+ * @author nickhsiao, richardpham
+ */
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
+  /**
+   * 
+   * constructor initializes variables and states
+   */
   constructor() {
     super()
     habits = [];
@@ -75,22 +74,27 @@ export default class HomeScreen extends React.Component {
       timePassed: false,
       habitid: "",
       periodChanged: false,
-
       stateChanged: false,
       index: 0
-
     }
-
     this.updateIndex = this.updateIndex.bind(this);
   }
 
+  /**
+   * stores variable from goal period button bar
+   * 
+   * @param {*} goalPeriod 
+   */
   updateIndex(goalPeriod) {
     this.setState({ goalPeriod });
     this.setState({ stateChanged: true });
   }
 
 
-
+  /**
+   * refreshes the page, updates components upon navigation
+   * 
+   */
   _onRefresh = () => {
     this.setState({ refreshing: true });
     this.forceUpdate();
@@ -98,12 +102,20 @@ export default class HomeScreen extends React.Component {
 
   }
 
+  /**
+   * check if goal period was changed
+   * 
+   */
   _checkChange = (goalPeriod1) => {
     if (this.state.prevGoalPeriod != goalPeriod1) {
       this.setState({ periodChanged: true });
     }
   }
 
+  /**
+   * user attempts to edit habit, load the habit settings into the state
+   * 
+   */
   _toggleHabitModal = (child) =>
     this.setState({
       index: habits.indexOf(child), stateChanged: false, count: child.val().count, habitid: child.val().habitid, isHabitModalVisible: true,
@@ -113,6 +125,10 @@ export default class HomeScreen extends React.Component {
       goalPeriod: child.val().goalPeriod, prevGoalPeriod: child.val().goalPeriod, timesPerPeriod: child.val().timesPerPeriod
     });
 
+  /**
+   * user cancels or hidse the modal, reset the state
+   * 
+   */
   _toggleHabitModalNull = () => {
     this.setState({ isHabitModalVisible: null });
     this.setState({ timesPerPeriod: 1 });
@@ -133,7 +149,14 @@ export default class HomeScreen extends React.Component {
     //this.forceUpdate();
   }
 
+
   lastTap = null;
+  /**
+   * handles double tap function for each habit component, increments the count and updates databsase
+   * 
+   * @param counter current counter
+   * @param habitid the habitid of the habit that was double clicked
+   */
   handleDoubleTap = (counter, habitid) => {
     const now = Date.now();
     const DOUBLE_PRESS_DELAY = 300;
@@ -148,6 +171,10 @@ export default class HomeScreen extends React.Component {
     }
   }
 
+  /**
+   * check if there is a current user using a promise
+   * 
+   */
   checkUserState() {
     return new Promise((resolve, reject) => {
       var user = firebase.auth().currentUser;
@@ -160,18 +187,15 @@ export default class HomeScreen extends React.Component {
 
     })
   }
-
-  //Rerender when user state is loaded, helped by https://stackoverflow.com/questions/48529910/why-firebase-user-is-not-authenticated-anymore-when-refreshing
-  //  componentDidMount(){
-  //    this.forceUpdate();
-  //  }
+  /**
+   * componentwillmount will be called when this screen reaches this stage of react native lifecycle
+   * waits for user authentication to load then grabs all the habits and places them into habit object array
+   * habit array is used to map out components in the render function
+   * 
+   */
   componentWillMount() {
 
-
-    //var habits = this.state.habits;
-
     this.unsubscribe = firebase.auth().onAuthStateChanged(currentUser => {
-      //let habits = habits;
       var promise = new Promise((resolve, reject) => {
 
         let user = currentUser;
@@ -190,27 +214,16 @@ export default class HomeScreen extends React.Component {
 
         while (habits.length === 0) {
 
-
-
-          //dummy value in array to be removed later
           addHabit(null);
 
-          // var user = firebase.auth().currentUser;
-          // uid = user.uid;
-          // User is signed in.
-          //console.log(user);
-
-          //Get list of entries, got help from https://stackoverflow.com/questions/49106987/how-to-retrieve-all-the-names-of-file-in-firebase-folder
           firebase.database().ref(`UsersList/${currentUser.uid}/_habits`).on('value', function (snapshot) {
             snapshot.forEach(function (child) {
 
-
               var edited = false;
-
-              //Check if something is edited. If not, load into database. 
               var oldIndex;
+
               for (i = 0; i < habits.length; i++) {
-                //If name matches, edited is true
+      
                 if (habits[i] != null) {
                   if (child.val().habitid === habits[i].val().habitid) {
                     edited = true;
@@ -222,37 +235,25 @@ export default class HomeScreen extends React.Component {
                 addHabit(child);
               }
               else {
-                //replace old index
                 habits[oldIndex] = child;
-
               }
-
             });
           });
         }
 
         if (habits.length > 0) {
-          //Remove dummy value from array, https://stackoverflow.com/questions/5767325/how-do-i-remove-a-particular-element-from-an-array-in-javascript
           var index = habits.indexOf(null);
           if (index > -1) {
-            //console.log(habits[index]);
             habits.splice(index, 1);
           }
-
-          //Got help from https://www.youtube.com/watch?v=gvicrj31JOM, at 2:11
-          //Value is used to run a function inside setTimeout
           const value = this;
 
           value.set = function () {
-            //Set user state after a delay time
             this.setState({ currentUser });
           }
 
-          //Wait for data to be loaded before setting user
           setTimeout(function () { value.set(); }, 1000);
           console.log(currentUser)
-
-
         }
       }, function (error) {
         console.log(error);
@@ -262,32 +263,36 @@ export default class HomeScreen extends React.Component {
 
     })
     this.forceUpdate();
-    //console.log(habits);
   }
 
-  //Rerender when user state is loaded, helped by https://stackoverflow.com/questions/48529910/why-firebase-user-is-not-authenticated-anymore-when-refreshing
+  /**
+   * function is called upon reaching the componentwillunmount state of react native lifecycle
+   * 
+   */
   componentWillUnmount() {
     this.unsubscribe()
   }
 
+  /**
+   * updates the habit settings after user presses save and writes to database, resets all states after
+   * 
+   * @param child the habit object
+   * @param habitName1 updated habit name
+   * @param sunP1 updated sunP
+   * @param monP1 updated monP
+   * @param tueP1 updated tueP
+   * @param wedP1 updated wedP
+   * @param thuP1 updated thuP
+   * @param friP1 updated friP
+   * @param satP1 updated satP
+   * @param timesPerPeriod1 updated times per period
+   * @param reminders1 updated reminders
+   * @param goalPeriod1 updated goal period
+   * 
+   */
   updateHabitData = (child, habitName1, sunP1, monP1, tueP1, wedP1, thuP1, friP1, satP1, timesPerPeriod1, reminders1, goalPeriod1, count1, id) => {
 
-    
-    /** 
-    //Remove old habit from array and replace it, https://stackoverflow.com/questions/5767325/how-do-i-remove-a-particular-element-from-an-array-in-javascript
-     var index = habits.indexOf(habitName);
-     
-     **/
-    /*  var index = this.state.index;
-     if (index > -1) {
-       habits.splice(index, 1);
-      } */ //dont use this code fks it up
-    //console.log(habits.indexOf(child));
-    //console.log(habits);
-    //console.log(this.state.habitid);
-    //console.log(this.state.index);
     var user = firebase.auth().currentUser
-
 
     firebase.database().ref(`/UsersList/${user.uid}/_habits/${this.state.habitid}`).update({
       habitName: habitName1,
@@ -305,44 +310,36 @@ export default class HomeScreen extends React.Component {
 
 
     }).then((data) => {
-      //reset
-      //this.setState({ isHabitModalVisible: null });
-      /*  this.setState({timesPerPeriod: 1});
-       this.setState({sunP: 0});
-       this.setState({monP: 0});
-       this.setState({tueP: 0});
-       this.setState({wedP: 0});
-       this.setState({thuP: 0});
-       this.setState({friP: 0});
-       this.setState({satP: 0});
-       this.setState({timesPerPeriod: 1});
-       this.setState({reminders: false});
-       this.setState({checked: false});
-       this.setState({goalPeriod: 0});
-       this.setState({periodChanged: false}); */
+
       var index = this.state.index;
-      //console.log(index);
-
-
-
 
     }).catch((error) => {
-      //error callback
       console.log('error ', error)
     })
     this.forceUpdate();
     this._toggleHabitModalNull();
   }
 
+  /**
+   * refresh components
+   * 
+   */
   _refresh = () => {
     this.forceUpdate();
   }
+  
+  /**
+   * reminders state change
+   * 
+   */
   _toggleCheck = () => {
-    //this.setState({ checked: !this.state.checked });
     this.setState({ reminders: !this.state.reminders, stateChanged: true });
   }
 
-
+  /**
+   * update states as settings are changed
+   * 
+   */
   _onSunPress = () => {
     this.setState({ sunP: this.state.sunP === 0 ? 1 : 0, stateChanged: true });
   }
@@ -364,12 +361,22 @@ export default class HomeScreen extends React.Component {
   _onSatPress = () =>
     this.setState({ satP: this.state.satP === 0 ? 1 : 0, stateChanged: true });
 
+  /**
+   * update habit name, state changed
+   * 
+   * @param {*} text 
+   */
   _changedName(text) {
     this.setState({ habitName: text });
     this.setState({ stateChanged: true });
 
   }
 
+  /**
+   * used to reset counter for a habit
+   * 
+   * @param {*} habitid specified habit object
+   */
   _resetCounter(habitid) {
     firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/_habits/${habitid}`).update({
       count: 0
@@ -377,22 +384,19 @@ export default class HomeScreen extends React.Component {
     this.forceUpdate();
   }
 
-
+  /**
+   * delete a habit from the array and refresh the components
+   * 
+   * @param {*} child habit object to be deleted
+   */
   removeChild(child) {
-    //Delete child from array, https://stackoverflow.com/questions/5767325/how-do-i-remove-a-particular-element-from-an-array-in-javascript
     var index = habits.indexOf(child);
     if (index > -1) {
       habits.splice(index, 1);
     }
-
     console.log("DELETING " + child.val().habitName);
 
-    //Remove??
-    //firebase.database().ref(`UsersList/${this.uid}/_habits/${child.val().habitName}/friP`).remove();
-
     firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/_habits/${child.val().habitid}`).set(null);
-
-
     this._refresh();
 
   }
@@ -401,10 +405,7 @@ export default class HomeScreen extends React.Component {
   render() {
 
     const buttons = ['Daily', 'Weekly', 'Monthly']
-    //var user = firebase.auth().currentUser;
     const isInvalid = this.state.stateChanged === false;
-
-
 
     return (
       <View style={styles.container}>
@@ -426,7 +427,7 @@ export default class HomeScreen extends React.Component {
                 <Button icon={
                   <Icon
                     name='settings'
-                    type = 'feather'
+                    type='feather'
                     color='#414042'
                     size={25} />}
 
@@ -448,8 +449,8 @@ export default class HomeScreen extends React.Component {
               <Right>
                 <Button icon={
                   <Icon
-                    name= 'plus'
-                    type = 'feather'
+                    name='plus'
+                    type='feather'
                     color='#414042'
                     size={25} />}
                   type='clear'
@@ -491,8 +492,6 @@ export default class HomeScreen extends React.Component {
                     borderRadius: 7,
                     height: 75
                   }}
-                  //header button onPress={() => alert("This is Card Header")}
-
                   >
 
 
@@ -502,7 +501,7 @@ export default class HomeScreen extends React.Component {
                         icon={
                           <Icon
                             name='edit'
-                            type = 'feather'
+                            type='feather'
                             color='#414042'
                             size={23}
                           />
@@ -525,7 +524,7 @@ export default class HomeScreen extends React.Component {
                           <Icon
                             name="trash-2"
                             color='#414042'
-                            type = 'feather'
+                            type='feather'
                             size={23}
                           />
                         }
@@ -545,7 +544,6 @@ export default class HomeScreen extends React.Component {
                         <Input inputStyle={styles.textInput}
 
                           placeholder='  Ex: Drink Water '
-                          //leftIcon={{ type: 'feather', name: 'edit',marginRight: 5}}
                           onChangeText={(text) => this.setState({ habitName: text, stateChanged: true })}
 
                         >{this.state.habitName}</Input>
@@ -561,24 +559,24 @@ export default class HomeScreen extends React.Component {
                         <Text style={styles.titleText}>
                           Times Per {this.state.goalPeriod === 0 ? 'Day' : this.state.goalPeriod === 1 ? 'Week' : 'Month'}:
                       {this.state.timesPerPeriod} </Text>
-                      <View style = {styles.Slider}>
-                        <Slider 
+                        <View style={styles.Slider}>
+                          <Slider
 
-                          thumbStyle={{
-                            backgroundColor: '#E9765B',
-                            width: 17,
-                            height: 17,
-                          
-                          }}
-                          minimumTrackTintColor = '#E9765B'
-                          thumbTouchSize={{ width: 70, height: 70 }}
-                          value={this.state.timesPerPeriod}
-                          maximumValue={10}
-                          minimumValue={1}
-                          step={1}
-                          timesPerPeriod={this.state.timesPerPeriod}
-                          onValueChange={timesPerPeriod => this.setState({ timesPerPeriod, stateChanged: true })}
-                        />
+                            thumbStyle={{
+                              backgroundColor: '#E9765B',
+                              width: 17,
+                              height: 17,
+
+                            }}
+                            minimumTrackTintColor='#E9765B'
+                            thumbTouchSize={{ width: 70, height: 70 }}
+                            value={this.state.timesPerPeriod}
+                            maximumValue={10}
+                            minimumValue={1}
+                            step={1}
+                            timesPerPeriod={this.state.timesPerPeriod}
+                            onValueChange={timesPerPeriod => this.setState({ timesPerPeriod, stateChanged: true })}
+                          />
                         </View>
                         <Text style={styles.trackText}> Track Which Days?: </Text>
 
@@ -656,11 +654,7 @@ export default class HomeScreen extends React.Component {
 
                               ],
                               { cancelable: false })}
-                            /* onPress = {()=>this.updateHabitData(theHabit,this.state.habitName,this.state.sunP,this.state.monP,
-                                                          this.state.tueP, this.state.wedP, this.state.thuP, this.state.friP,
-                                                        this.state.satP, this.state.timesPerPeriod, this.state.reminders,this.state.goalPeriod,theHabit.val().count,
-                                                      theHabit.val().habitid)} */
-
+                     
                             style={styles.savebutton}
                             disabled={isInvalid}
                             title="Save">
@@ -686,6 +680,10 @@ export default class HomeScreen extends React.Component {
 
 }
 
+/**
+ * styles sheet used to for styling and positioning of components and text
+ * 
+ */
 const styles = StyleSheet.create({
   todayText: {
     fontSize: 13,
@@ -700,7 +698,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     color: '#414042'
   },
-  textInput:{
+  textInput: {
     paddingLeft: 5
   },
   trackText: {
@@ -779,8 +777,8 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     resizeMode: 'contain',
-    
-    
+
+
 
   },
   getStartedContainer: {
