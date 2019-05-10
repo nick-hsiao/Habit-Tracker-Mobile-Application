@@ -1,9 +1,8 @@
 
 import React from 'react';
-import { Text, StyleSheet, ScrollView, View, Alert, TextInpu, Image } from 'react-native';
-//import { sanFranciscoWeights } from 'react-native-typography'
+import { StyleSheet, ScrollView, View, Alert, Image } from 'react-native';
 import { Button, Input } from 'react-native-elements';
-import { Container, Header, Left, Right, Body, Title } from "native-base";
+import { Header, Body } from "native-base";
 import * as firebase from 'firebase';
 
 const INITIAL_STATE = {
@@ -17,18 +16,29 @@ const INITIAL_STATE = {
   error: null
 };
 
-
-
-
+/**
+ * 
+ * @author nickhsiao, richardpham
+ * 
+ */
 export default class SignUpScreen extends React.Component {
 
+  /**
+   * 
+   * constructor initializes variables and states
+   * 
+   * @param props properties object
+   */
   constructor(props) {
     super(props);
 
     this.state = { ...INITIAL_STATE };
   }
 
-  //Authentication, from https://www.youtube.com/watch?v=ILlHA2kIuxs
+  /**
+   * 
+   * check if username already exists
+   */
   onSubmit = event => {
     const { username, firstName, lastName, email, passwordOne } = this.state;
 
@@ -37,12 +47,9 @@ export default class SignUpScreen extends React.Component {
 
     firebase.database().ref(`UsersList`).on('value', function (snapshot) {
       snapshot.forEach(function (child) {
-        console.log(child.val().username)
         if (usernameFound === false) {
           if (child.val().username === username) {
             usernameFound = true;
-            //Alert.alert("Username Is Already Taken", "Please Try Again");
-
 
           }
         }
@@ -52,10 +59,17 @@ export default class SignUpScreen extends React.Component {
     setTimeout(()=>this.authenticate(username, firstName, lastName, email, passwordOne, usernameFound), 1000);
   }
    
-    
-    // this doesnt work for now...synchronous problem
 
-
+  /**
+   * 
+   * allows user to sign up, modified from https://www.youtube.com/watch?v=ILlHA2kIuxs at 8:57 via onSignUpPress()
+   * 
+   * @param username the entered username
+   * @param firstName the entered first name
+   * @param lastName the entered last name
+   * @param email the entered email
+   * @param passwordOne the entered password
+   */
 authenticate = (username, firstName, lastName, email, passwordOne, usernameFound) =>{
     if (!email.includes('@') || !email.includes('.')) {
       Alert.alert("E-Mail Is Poorly Formatted");
@@ -80,7 +94,7 @@ authenticate = (username, firstName, lastName, email, passwordOne, usernameFound
           })
 
 
-          // Create a user in your Firebase realtime database
+          // Create a user in Firebase realtime database
           return this.props.firebase.user(authUser.user.uid).set({
             username,
             email
@@ -95,15 +109,13 @@ authenticate = (username, firstName, lastName, email, passwordOne, usernameFound
 
         .catch(error => {
           this.setState({ error });
-          console.log(error.message);
           if (error.message == 'The email address is already in use by another account.') {
             Alert.alert('E-Mail Is Already In Use', 'Please Try Again')
 
           }
           else {
-            console.log(error.message)
+
           }
-          //Alert.alert(error.message);
         });
 
 
@@ -112,20 +124,10 @@ authenticate = (username, firstName, lastName, email, passwordOne, usernameFound
   
   };
 
-
-
-  _onPressButton() {
-    Alert.alert('Hello!')
-  }
-
-  handleName = (text) => {
-    this.setState({ username: text })
-  }
-
-  hello = (name) => {
-    Alert.alert(this.state.email + " test " + this.state.passwordOne);
-  }
-
+  /**
+   * 
+   * used to set state of a value when value is changed
+   */
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -153,7 +155,6 @@ authenticate = (username, firstName, lastName, email, passwordOne, usernameFound
       passwordOne.length < 8 ||
       passwordTwo.length < 8;
     const pwLength1 = passwordOne.length < 8;
-    //const pwLength2 = passwordTwo.length<8;
     const pwMatch = passwordOne != passwordTwo;
 
     return (
@@ -174,7 +175,6 @@ authenticate = (username, firstName, lastName, email, passwordOne, usernameFound
 
         </Header>
 
-        {/* <Text style = {styles.titleText}> Sign Up </Text> */}
         <ScrollView contentContainerStyle={styles.container}>
 
           <Input

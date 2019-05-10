@@ -1,9 +1,8 @@
 import React from 'react';
 import { Text, StyleSheet, ScrollView, View, Alert, TextInput, Image, AlertIOS } from 'react-native';
 import { Button, Input } from 'react-native-elements';
-import { Container, Header, Left, Right, Body, Title } from "native-base";
+import { Header, Body} from "native-base";
 import * as firebase from 'firebase';
-import Modal from "react-native-modal";
 
 const INITIAL_STATE = {
   userN: "",
@@ -16,9 +15,19 @@ const INITIAL_STATE = {
   error: null
 };
 
+/**
+ * 
+ * @author nickhsiao, richardpham
+ * 
+ */
+export default class UpdateInfoScreen extends React.Component {
 
-export default class PasswordForgetScreen extends React.Component {
-
+  /**
+   * 
+   * constructor initializes variables and states
+   * 
+   * @param props properties object
+   */
   constructor(props) {
     super(props);
 
@@ -27,11 +36,13 @@ export default class PasswordForgetScreen extends React.Component {
     this.state = { ...INITIAL_STATE };
   }
 
-
+  /**
+   * 
+   * load user info
+   */
   componentWillMount() {
 
     let currentUser = firebase.auth().currentUser;
-
 
     firebase.database().ref(`UsersList/${currentUser.uid}`).on('value', function (snapshot) {
       snapshot.forEach(function (child) {
@@ -42,16 +53,19 @@ export default class PasswordForgetScreen extends React.Component {
     setTimeout(() => this.remove(), 200);
   }
 
+  /**
+   * 
+   * retrieve userInfo array, remove unnecessary user info, and set state
+   */
   remove = () => {
     userInfo.splice(0, 1);
     this.setState({ userN: userInfo[3].val(), firstN: userInfo[0].val(), lastN: userInfo[1].val(), emailN: firebase.auth().currentUser.email })
-    //userN = userInfo[3].val();
-    //firstN = userInfo[0].val();
-    //lastN = userInfo[1].val();
-    //emailN = firebase.auth().currentUser.email;
   }
 
-  //Authentication, from https://www.youtube.com/watch?v=ILlHA2kIuxs
+  /**
+   * 
+   * check if username is taken. 
+   */
   onSubmit = event => {
     const { userN, firstN, lastN, emailN } = this.state;
 
@@ -59,12 +73,10 @@ export default class PasswordForgetScreen extends React.Component {
 
     firebase.database().ref(`UsersList`).on('value', function (snapshot) {
       snapshot.forEach(function (child) {
-        console.log(child.val().username)
 
         if (usernameFound === false) {
           if (child.val().username.toUpperCase() === userN.toUpperCase() && child.val().userID != userInfo[2].val()) {
             usernameFound = true;
-            //Alert.alert("Username Is Already Taken", "Please Try Again");
           }
         }
 
@@ -74,6 +86,17 @@ export default class PasswordForgetScreen extends React.Component {
     setTimeout(() => this.authenticate(this.state.userN, this.state.firstN, this.state.lastN, this.state.emailN, usernameFound), 1000);
   }
 
+  
+  /**
+   * 
+   * checks if user info is valid.
+   * 
+   * @param userN the entered username
+   * @param firstN the entered first name
+   * @param lastN the entered last name
+   * @param email the entered email
+   * @param usernameFound boolean to check if a username exists
+   */
   authenticate = (userN, firstN, lastN, emailN, usernameFound) => {
 
 
@@ -86,18 +109,12 @@ export default class PasswordForgetScreen extends React.Component {
       return;
     }
     else {
-
-      console.log("THE INFO IS " + this.state.userN + " " + this.state.firstN + " " + this.state.lastN);
-
-      console.log("CURRENT EMAIL IS " + firebase.auth().currentUser.email);
-
       AlertIOS.prompt(
         'Enter Password',
         'To Confirm Changes',
         [
           {
             text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
             style: 'cancel',
           },
           {
@@ -113,9 +130,11 @@ export default class PasswordForgetScreen extends React.Component {
 
   };
 
-
   /**
-   * Change email, got help from https://medium.com/@ericmorgan1/change-user-email-password-in-firebase-and-react-native-d0abc8d21618
+   * 
+   * authenticate with inputted password, got help from https://medium.com/@ericmorgan1/change-user-email-password-in-firebase-and-react-native-d0abc8d21618
+   * 
+   * @return user credentials
    */
   reauthenticate = (currentPassword) => {
     var user = firebase.auth().currentUser;
@@ -125,8 +144,12 @@ export default class PasswordForgetScreen extends React.Component {
   }
 
   /**
-     * Change email, got help from https://medium.com/@ericmorgan1/change-user-email-password-in-firebase-and-react-native-d0abc8d21618
-     */
+   * 
+   * Change email, got help from https://medium.com/@ericmorgan1/change-user-email-password-in-firebase-and-react-native-d0abc8d21618
+   * 
+   * @param currentPassword the inputted password
+   * @param newEmail the inputted email
+   */
   changeEmail = (currentPassword, newEmail) => {
     this.reauthenticate(currentPassword).then(() => {
       var user = firebase.auth().currentUser;
@@ -145,20 +168,10 @@ export default class PasswordForgetScreen extends React.Component {
     }).catch((error) => { Alert.alert("Incorrect Password", "Please Try Again"); });
   }
 
-
-  emailUpdate(password) {
-
-    this.setState({ isHabitModalVisible: false });
-    this.reauthenticate(password).catch((error) => { console.log(error); });
-    this.changeEmail(password, this.state.emailN);
-
-
-    //console.log("password is " + password)
-
-  }
-
-
-
+  /**
+   * 
+   * used to set state of a value when value is changed
+   */
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -168,8 +181,6 @@ export default class PasswordForgetScreen extends React.Component {
     const { email, error } = this.state;
 
     const isInvalid = this.state.emailN === "" || this.state.stateChanged === false;
-
-    //var user = firebase.auth().currentUser;
 
     return (
       <View>
@@ -248,16 +259,9 @@ export default class PasswordForgetScreen extends React.Component {
             title="Update Info"
           />
 
-         
-
-
         </ScrollView>
       </View>
-
-
-
     )
-
   }
 }
 

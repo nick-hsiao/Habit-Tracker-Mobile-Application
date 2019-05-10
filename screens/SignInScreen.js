@@ -1,9 +1,8 @@
 
 import React from 'react';
-import { Text, StyleSheet, ScrollView, View, Alert, TextInput, Image } from 'react-native';
-//import { sanFranciscoWeights } from 'react-native-typography'
+import { StyleSheet, ScrollView, View, Alert, Image } from 'react-native';
 import { Button, Input } from 'react-native-elements';
-import { Container, Header, Left, Right, Body, Title } from "native-base";
+import { Header, Body } from "native-base";
 import * as firebase from 'firebase';
 
 const INITIAL_STATE = {
@@ -12,15 +11,31 @@ const INITIAL_STATE = {
   error: null
 };
 
+/**
+ * 
+ * @author nickhsiao, richardpham
+ * 
+ */
 export default class SignInScreen extends React.Component {
 
+  /**
+   * 
+   * constructor initializes variables and states
+   * 
+   * @param props properties object
+   */
   constructor(props) {
     super(props);
 
     this.state = { ...INITIAL_STATE };
   }
 
-  //Authentication, from https://www.youtube.com/watch?v=ILlHA2kIuxs
+  /**
+   * 
+   * uses the email and password entered to sign in. 
+   * 
+   * allows user to sign in, modified from https://www.youtube.com/watch?v=ILlHA2kIuxs at 10:55 via onLoginPress()
+   */
   onSubmit = event => {
     const { email, password } = this.state;
 
@@ -43,30 +58,28 @@ export default class SignInScreen extends React.Component {
         else if (error.code == 'auth/user-not-found') {
           Alert.alert("User Not Found", "Please Try Again");
         }
-
-        //Alert.alert(error.code);
-        //Alert.alert(error.message);
-
       });
 
 
     event.preventDefault();
 
     var user = firebase.auth().currentUser;
-    console.log(user)
 
     if (user != null) { this.props.navigation.navigate('Home'); }
 
 
   };
 
+
+  /**
+   * 
+   * Signs out of the account. Referenced from firebase API https://firebase.google.com/docs/auth/web/password-auth
+   */
   onSubmit2 = event => {
     firebase.auth().signOut().then(function () {
       // Sign-out successful.
-      console.log(firebase.auth.currentUser);
 
       Alert.alert("You have signed out.");
-      //navigate('Auth');
     }).catch(function (error) {
       // An error happened.
       Alert.alert("Sign Out Error");
@@ -78,18 +91,10 @@ export default class SignInScreen extends React.Component {
 
   };
 
-  _onPressButton() {
-    Alert.alert('Hello!')
-  }
-
-  handleName = (text) => {
-    this.setState({ username: text })
-  }
-
-  hello = (name) => {
-    Alert.alert(this.state.email + " test " + this.state.password);
-  }
-
+  /**
+   * 
+   * used to set state of a value when value is changed
+   */
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -107,19 +112,6 @@ export default class SignInScreen extends React.Component {
       password === "" ||
       email === "";
 
-    /*       if(firebase.auth().currentUser)
-          {
-              return (
-                <View style={{ flex: 1 }}>
-                <Text style = {styles.otherText}> You are already signed in </Text>
-                <Button style = {styles.button}
-      onPress = {this.onSubmit2}
-      title="Sign Out"
-    />
-                </View>
-              );
-          }
-        else  */
     return (
       <View>
         <Header transparent>
@@ -141,11 +133,9 @@ export default class SignInScreen extends React.Component {
 
 
         <ScrollView contentContainerStyle={styles.container}>
-          {/* <Text style = {styles.titleText}> SIGN IN </Text> */}
           <Input
             inputStyle={styles.inputStyle}
             errorStyle={styles.errorStyle}
-            //errorMessage = {isInvalid ? "Invalid Email" : ""}
             containerStyle={styles.containerStyle1}
             inputContainerStyle={styles.inputContainer}
             placeholder="Email"
