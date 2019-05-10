@@ -2,7 +2,6 @@ import React from 'react';
 import { ScrollView, View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { Button, CheckBox, Input, ButtonGroup, Slider, ButtonToolbar } from 'react-native-elements';
 import { Container } from "native-base";
-import Modal from "react-native-modal";
 import * as firebase from 'firebase';
 
 const INITIAL_STATE = {
@@ -21,9 +20,6 @@ const INITIAL_STATE = {
   reminders: false,
   error: null,
 };
-
-
-
 
 export default class HabitScreen extends React.Component {
   constructor() {
