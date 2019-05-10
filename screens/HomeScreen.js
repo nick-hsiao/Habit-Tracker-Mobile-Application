@@ -30,6 +30,8 @@ function addHabit(value) {
 }
 
 /**
+ * homes screen class, displays habits for current user, navigates to all other pages
+ * initial route of user already logged in
  * 
  * @author nickhsiao, richardpham
  */

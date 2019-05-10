@@ -16,9 +16,9 @@ const INITIAL_STATE = {
 };
 
 /**
+ * update info screen class, allows user to change info after revalidating credentials against firebase
  * 
  * @author nickhsiao, richardpham
- * 
  */
 export default class UpdateInfoScreen extends React.Component {
 

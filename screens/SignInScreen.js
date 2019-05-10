@@ -12,9 +12,9 @@ const INITIAL_STATE = {
 };
 
 /**
+ * sign in screen class, allows user to sign in and validate credentials against database
  * 
  * @author nickhsiao, richardpham
- * 
  */
 export default class SignInScreen extends React.Component {
 

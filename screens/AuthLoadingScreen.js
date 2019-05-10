@@ -10,31 +10,32 @@ import {
 } from 'react-native';
 import * as firebase from 'firebase';
 
+/**
+ * loading screen class, displays this page while app is retreiving user info from database
+ * 
+ * @author nickhsiao, richardpham
+ */
 export default class AuthLoadingScreen extends React.Component {
+  /**
+   * default constructor
+   * 
+   * @param {*} props properties object
+   */
   constructor(props) {
     super(props);
     this._bootstrapAsync();
   }
-  // componentDidMount(){
-  //   firebase.auth().onAuthStateChanged(user => {
-  //     this.props.navigation.navigate(user ? 'Home' : 'SignIn')
-  //   });
 
-  // }
-
-  // Fetch the token from storage then navigate to our appropriate place
+  /**
+   *  Fetch the token from storage then navigate to appropriate page
+   * 
+   */
   _bootstrapAsync = async () => {
     const userFound = await firebase.auth().onAuthStateChanged(user => {
       this.props.navigation.navigate(user ? 'Home' : 'SignIn')
     });
-
-
-    // This will switch to the App screen or Auth screen and this loading
-    // screen will be unmounted and thrown away.
-    //this.props.navigation.navigate(userFound ? 'Home' : 'Auth');
   };
 
-  // Render any loading content that you like here
   render() {
     return (
       <View style={{ marginTop: 280 }}>

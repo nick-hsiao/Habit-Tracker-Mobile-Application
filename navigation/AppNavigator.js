@@ -15,6 +15,11 @@ import SettingsScreen from '../screens/SettingsScreen';
 import UpdateInfoScreen from '../screens/UpdateInfoScreen';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 
+/**
+ * stack navigator allows for navigation between screens, sets up initial route
+ * 
+ * @author nickhsiao, richardpham
+ */
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   Settings: SettingsScreen,
@@ -26,7 +31,6 @@ const HomeStack = createStackNavigator({
 },
   {
     initialRouteName: 'Home',
-    //transitionConfig: () => flipY(700),
     defaultNavigationOptions: {
 
       header: null
@@ -43,11 +47,11 @@ const SignInStack = createStackNavigator({ SignIn: SignInScreen, SignUpScreen: S
 
 const AuthStack = createStackNavigator({ AuthLoading: AuthLoadingScreen },
   {
-    //transitionConfig: () => flipY(),
     defaultNavigationOptions: {
       header: null
     }
   });
+
 export default createAppContainer(createSwitchNavigator(
   {
     Auth: AuthStack,

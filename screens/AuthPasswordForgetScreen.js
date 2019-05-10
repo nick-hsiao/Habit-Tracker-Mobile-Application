@@ -9,14 +9,26 @@ const INITIAL_STATE = {
   error: null
 };
 
+/**
+ * password forget screen class, navigates to this page from sign in screen when no user is logged in
+ * 
+ * @author nickhsiao, richardpham
+ */
 export default class PasswordForgetScreen extends React.Component {
-
+  /**
+   * default constructor
+   * 
+   * @param {*} props properties object
+   */
   constructor(props) {
     super(props);
-
     this.state = { ...INITIAL_STATE };
   }
 
+  /**
+   * validates email then sends an email to reset password if valid
+   * 
+   */
   onSubmit = event => {
     const { email } = this.state;
 
@@ -38,7 +50,6 @@ export default class PasswordForgetScreen extends React.Component {
 
 
         console.log(error.code);
-        //Alert.alert(error);
       });
 
     event.preventDefault();
@@ -46,6 +57,10 @@ export default class PasswordForgetScreen extends React.Component {
 
   };
 
+  /**
+   * listener method for change in input
+   * 
+   */
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };

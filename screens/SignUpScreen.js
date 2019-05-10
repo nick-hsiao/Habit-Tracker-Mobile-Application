@@ -17,9 +17,9 @@ const INITIAL_STATE = {
 };
 
 /**
+ * sign up screen class, allows user to create account, account created on firebase
  * 
  * @author nickhsiao, richardpham
- * 
  */
 export default class SignUpScreen extends React.Component {
 
