@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, StyleSheet, ScrollView, View, Alert, TextInput, Image } from 'react-native';
+import { StyleSheet, ScrollView, View, Alert, Image } from 'react-native';
 import { Button, Input } from 'react-native-elements';
-import { Container, Header, Left, Right, Body, Title } from "native-base";
+import { Header, Body } from "native-base";
 import * as firebase from 'firebase';
 
 const INITIAL_STATE = {
@@ -9,15 +9,29 @@ const INITIAL_STATE = {
   error: null
 };
 
-
+/**
+ * password forget class, allows user to input their email. email will be sent to user to reset password
+ * 
+ * @author nickhsiao, richardpham
+ */
 export default class PasswordForgetScreen extends React.Component {
 
+  /**
+   * 
+   * constructor initializes variables and states
+   * 
+   * @param props properties object
+   */
   constructor(props) {
     super(props);
 
     this.state = { ...INITIAL_STATE };
   }
 
+  /**
+   * 
+   * once user submits email, a message will be sent to that email with a link to reset password
+   */
   onSubmit = event => {
     const { email } = this.state;
 
@@ -35,10 +49,6 @@ export default class PasswordForgetScreen extends React.Component {
         else if (error.code == 'auth/user-not-found') {
           Alert.alert("User Not Found", "Please Try Again");
         }
-
-
-        console.log(error.code);
-        //Alert.alert(error);
       });
 
     event.preventDefault();
@@ -46,6 +56,10 @@ export default class PasswordForgetScreen extends React.Component {
 
   };
 
+  /**
+   * 
+   * used to set state of a value when value is changed
+   */
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };

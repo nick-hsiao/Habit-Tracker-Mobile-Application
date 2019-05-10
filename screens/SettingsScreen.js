@@ -1,21 +1,44 @@
 import React from 'react';
-import { Image, Button, Text, View, StyleSheet, Alert } from 'react-native';
+import { Image, View, StyleSheet, Alert } from 'react-native';
 import { ListItem, Icon } from 'react-native-elements';
 import { Header, Body } from "native-base";
 import * as firebase from 'firebase';
 
+/**
+ * sign in screen class, allows user to sign in and validate credentials against database
+ * 
+ * @author nickhsiao, richardpham
+ */
+export default class SettingsScreen extends React.Component {
 
-export default class SettingsScreen2 extends React.Component {
-
+  /**
+   * 
+   * go to "forget password" page
+   */
   _forgotPassword = () => {
     this.props.navigation.navigate('PasswordForget');
   }
+
+  /**
+   * 
+   * go to "change password" page
+   */
   _changePassword = () => {
     this.props.navigation.navigate('PasswordChange')
   }
+
+  /**
+   * 
+   * go to "update info" page
+   */
   _updateInfo = () => {
     this.props.navigation.navigate('UpdateInfo')
   }
+
+  /**
+   * 
+   * signs out of the account. referenced from firebase API https://firebase.google.com/docs/auth/web/password-auth
+   */
   _signOut = event => {
     firebase.auth().signOut().then(function () {
       // Sign-out successful.
@@ -32,6 +55,10 @@ export default class SettingsScreen2 extends React.Component {
 
   };
 
+  /**
+   * 
+   * go to "home" page
+   */
   _goBack = () => {
     this.props.navigation.navigate('Home');
   }

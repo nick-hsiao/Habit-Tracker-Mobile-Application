@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, StyleSheet, ScrollView, View, Alert, TextInput, Image } from 'react-native';
-import { Container, Header, Left, Right, Body, Title } from "native-base";
+import { StyleSheet, ScrollView, View, Image } from 'react-native';
+import { Header, Body } from "native-base";
 import { Button, Input } from 'react-native-elements';
 import * as firebase from 'firebase';
 
@@ -12,15 +12,29 @@ const INITIAL_STATE = {
 
 
 
-
+/**
+ * password change class, allows user to change password
+ * 
+ * @author nickhsiao, richardpham
+ */
 export default class PasswordChangeScreen extends React.Component {
 
+  /**
+   * 
+   * constructor initializes variables and states
+   * 
+   * @param props properties object
+   */
   constructor(props) {
     super(props);
 
     this.state = { ...INITIAL_STATE };
   }
 
+  /**
+   * 
+   * updates password
+   */
   onSubmit = event => {
     const { passwordOne } = this.state;
 
@@ -34,10 +48,12 @@ export default class PasswordChangeScreen extends React.Component {
       });
 
     event.preventDefault();
-
-
   };
 
+  /**
+   * 
+   * used to set state of a value when value is changed
+   */
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -63,10 +79,7 @@ export default class PasswordChangeScreen extends React.Component {
             />
           </Body>
 
-
         </Header>
-
-
 
         <ScrollView contentContainerStyle={styles.container}>
 
@@ -95,21 +108,11 @@ export default class PasswordChangeScreen extends React.Component {
             onChange={this.onChange}
             onChangeText={(text) => this.setState({ passwordTwo: text })}
           />
-
-
           <Button style={styles.button}
             disabled={isInvalid}
             onPress={this.onSubmit}
             title="Confirm Change"
           />
-
-
-
-
-
-
-
-
         </ScrollView>
       </View>
     )
