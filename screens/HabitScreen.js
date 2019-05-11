@@ -98,7 +98,7 @@ export default class HabitScreen extends React.Component {
     var key = firebase.database().ref().push().key;
 
 
-    firebase.database().ref(`UsersList/${this.uid}/_habits/${key}`).set({
+    firebase.database().ref(`UsersList/${this.uid}/z_habits/${key}`).set({
       habitName,
       sunP,
       monP,

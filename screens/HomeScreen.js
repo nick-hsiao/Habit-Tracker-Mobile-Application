@@ -164,7 +164,7 @@ export default class HomeScreen extends React.Component {
     const DOUBLE_PRESS_DELAY = 300;
     if (this.lastTap && (now - this.lastTap) < DOUBLE_PRESS_DELAY) {
       var count1 = counter + 1;
-      firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/_habits/${habitid}`).update({
+      firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/z_habits/${habitid}`).update({
         count: count1
       })
       this.forceUpdate();
@@ -218,7 +218,7 @@ export default class HomeScreen extends React.Component {
 
           addHabit(null);
 
-          firebase.database().ref(`UsersList/${currentUser.uid}/_habits`).on('value', function (snapshot) {
+          firebase.database().ref(`UsersList/${currentUser.uid}/z_habits`).on('value', function (snapshot) {
             snapshot.forEach(function (child) {
 
               var edited = false;
@@ -296,7 +296,7 @@ export default class HomeScreen extends React.Component {
 
     var user = firebase.auth().currentUser
 
-    firebase.database().ref(`/UsersList/${user.uid}/_habits/${this.state.habitid}`).update({
+    firebase.database().ref(`/UsersList/${user.uid}/z_habits/${this.state.habitid}`).update({
       habitName: habitName1,
       sunP: sunP1,
       monP: monP1,
@@ -380,7 +380,7 @@ export default class HomeScreen extends React.Component {
    * @param {*} habitid specified habit object
    */
   _resetCounter(habitid) {
-    firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/_habits/${habitid}`).update({
+    firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/z_habits/${habitid}`).update({
       count: 0
     })
     this.forceUpdate();
@@ -398,7 +398,7 @@ export default class HomeScreen extends React.Component {
     }
     console.log("DELETING " + child.val().habitName);
 
-    firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/_habits/${child.val().habitid}`).set(null);
+    firebase.database().ref(`UsersList/${firebase.auth().currentUser.uid}/z_habits/${child.val().habitid}`).set(null);
     this._refresh();
 
   }

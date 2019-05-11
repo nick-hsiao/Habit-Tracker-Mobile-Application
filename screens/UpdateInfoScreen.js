@@ -47,7 +47,7 @@ export default class UpdateInfoScreen extends React.Component {
     firebase.database().ref(`UsersList/${currentUser.uid}`).on('value', function (snapshot) {
       snapshot.forEach(function (child) {
         userInfo.push(child);
-        count++;
+    
       })
     })
 
@@ -60,7 +60,7 @@ export default class UpdateInfoScreen extends React.Component {
    */
   remove = () => {
     
-    userInfo.splice(0, 1);
+    
     this.setState({ userN: userInfo[3].val(), firstN: userInfo[0].val(), lastN: userInfo[1].val(), emailN: firebase.auth().currentUser.email })
 
   }
