@@ -15,8 +15,6 @@ const INITIAL_STATE = {
   error: null
 };
 
-var count = 0;
-
 /**
  * update info screen class, allows user to change info after revalidating credentials against firebase
  * 
@@ -61,17 +59,9 @@ export default class UpdateInfoScreen extends React.Component {
    * retrieve userInfo array, remove unnecessary user info, and set state
    */
   remove = () => {
-
-    if(count == 5)
-    {
-      userInfo.splice(0, 1);
-      this.setState({ userN: userInfo[3].val(), firstN: userInfo[0].val(), lastN: userInfo[1].val(), emailN: firebase.auth().currentUser.email })
-    }
-    else
-    {
-      this.setState({ userN: userInfo[3].val(), firstN: userInfo[0].val(), lastN: userInfo[1].val(), emailN: firebase.auth().currentUser.email })
-    }
-
+    
+    userInfo.splice(0, 1);
+    this.setState({ userN: userInfo[3].val(), firstN: userInfo[0].val(), lastN: userInfo[1].val(), emailN: firebase.auth().currentUser.email })
 
   }
 
