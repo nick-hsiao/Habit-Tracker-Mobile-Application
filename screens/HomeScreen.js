@@ -264,7 +264,10 @@ export default class HomeScreen extends React.Component {
 
 
     })
-    this.forceUpdate();
+    setTimeout(()=> {this.forceUpdate()}, 2000);
+   
+
+    
   }
 
   /**
