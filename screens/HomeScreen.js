@@ -434,7 +434,7 @@ export default class HomeScreen extends React.Component {
                     size={25} />}
 
                   type='clear'
-                  onPress={() => this.props.navigation.navigate('Settings')} > //goes to Settings2 page
+                  onPress={() => this.props.navigation.navigate('Settings')} > 
                 </Button>
               </Left>
               <Body>
@@ -533,7 +533,7 @@ export default class HomeScreen extends React.Component {
                         type='clear' ></Button>
                     </View>
                     <Text style={styles.todayText}>{theHabit.val().goalPeriod === 0 ? 'Today:' :
-                      theHabit.val().goalPeriod === 1 ? 'This Week:' : 'This Month:'} {theHabit.val().count}/{theHabit.val().timesPerPeriod}
+                      theHabit.val().goalPeriod === 1 ? 'This Week:' : 'This Month:'} {theHabit.val().count}/{theHabit.val().timesPerPeriod} {theHabit.val().count >= theHabit.val().timesPerPeriod ? 'Done!' : ''}
                     </Text>
                     <Modal
                       contentContainerStyle={styles.modalContent}
