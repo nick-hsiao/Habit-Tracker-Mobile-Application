@@ -50,13 +50,14 @@ export default class SignUpScreen extends React.Component {
         if (usernameFound === false) {
           if (child.val().username === username) {
             usernameFound = true;
+            console.log(usernameFound);
 
           }
         }
       })
     });
 
-    setTimeout(()=>this.authenticate(username, firstName, lastName, email, passwordOne, usernameFound), 1000);
+    setTimeout(()=>this.authenticate(username, firstName, lastName, email, passwordOne, usernameFound), 2000);
   }
    
 
