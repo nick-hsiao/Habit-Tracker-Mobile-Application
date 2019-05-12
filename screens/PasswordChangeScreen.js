@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, ScrollView, View, Image } from 'react-native';
+import { Alert,StyleSheet, ScrollView, View, Image } from 'react-native';
 import { Header, Body } from "native-base";
 import { Button, Input } from 'react-native-elements';
 import * as firebase from 'firebase';
+
 
 const INITIAL_STATE = {
   passwordOne: "",
@@ -41,10 +42,12 @@ export default class PasswordChangeScreen extends React.Component {
     firebase.auth().currentUser.updatePassword(passwordOne)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
+        Alert.alert("Success","Password Changed");
         this.props.navigation.navigate('Home');
       })
       .catch(error => {
         this.setState({ error });
+        console.log(error);
       });
 
     event.preventDefault();

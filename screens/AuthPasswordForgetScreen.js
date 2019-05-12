@@ -37,6 +37,7 @@ export default class PasswordForgetScreen extends React.Component {
     firebase.auth().sendPasswordResetEmail(email)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
+        Alert.alert("Success","Please Check Your E-mail");
         this.props.navigation.navigate('SignIn');
       })
       .catch(error => {
