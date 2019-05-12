@@ -404,6 +404,10 @@ export default class HomeScreen extends React.Component {
   }
 
 
+  /**
+   * renders the screen, defines all user interface components and listeners for this screen
+   * 
+   */
   render() {
 
     const buttons = ['Daily', 'Weekly', 'Monthly']

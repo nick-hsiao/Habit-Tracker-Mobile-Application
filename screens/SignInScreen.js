@@ -100,6 +100,10 @@ export default class SignInScreen extends React.Component {
   };
 
 
+  /**
+   * renders the screen, defines all user interface components and listeners for this screen
+   * 
+   */
   render() {
 
     const {
@@ -189,7 +193,10 @@ export default class SignInScreen extends React.Component {
   }
 }
 
-
+/**
+ * styles sheet used to for styling and positioning of components and text
+ * 
+ */
 const styles = StyleSheet.create({
   container: {
     fontFamily: 'System',

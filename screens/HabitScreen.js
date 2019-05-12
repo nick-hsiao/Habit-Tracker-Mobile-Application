@@ -4,6 +4,10 @@ import { Button, CheckBox, Input, ButtonGroup, Slider, ButtonToolbar } from 'rea
 import { Container } from "native-base";
 import * as firebase from 'firebase';
 
+/**
+ * 
+ * initial state, initializes all variables for completing habits
+ */
 const INITIAL_STATE = {
   habitName: "",
   goalPeriod: 0,
@@ -21,7 +25,16 @@ const INITIAL_STATE = {
   error: null,
 };
 
+/**
+ * create a new habit screen class, allows user to create a new habit and add it to the database
+ * 
+ * @author nickhsiao, richardpham
+ */
 export default class HabitScreen extends React.Component {
+  /**
+   * default constructor, initialize variables and state
+   * 
+   */
   constructor() {
     super()
     this.state = {
@@ -39,26 +52,45 @@ export default class HabitScreen extends React.Component {
   user = firebase.auth().currentUser;
   uid = this.user.uid;
 
+  /**
+   * used to update index of goal period variable
+   * 
+   * @param {*} goalPeriod the goal period defined as 0,1 or 2 to indicated day,week or month
+   */
   updateIndex(goalPeriod) {
     this.setState({ goalPeriod })
   }
 
+  /**
+   * navigation options, title
+   * 
+   */
   static navigationOptions = {
     title: '',
   };
 
-
-  _toggleModal = () =>
-    this.setState({ isModalVisible: !this.state.isModalVisible });
-
+  /**
+   * called when user clicks reminder button, sets reminder state
+   * 
+   */
   _toggleCheck = () => {
     this.setState({ checked: !this.state.checked });
     this.setState({ reminders: !this.state.reminders });
   }
+
+  /**
+   * set the habit's name
+   * 
+   * @param text name parsed from input component
+   */
   _handleName = (text) => {
     this.setState({ habitName: text })
   }
 
+  /**
+   * set the state of the trackers
+   * 
+   */
   _onSunPress = () => {
     this.setState({ sunP: this.state.sunP === 0 ? 1 : 0 });
   }
@@ -80,20 +112,24 @@ export default class HabitScreen extends React.Component {
   _onSatPress = () =>
     this.setState({ satP: this.state.satP === 0 ? 1 : 0 });
 
-  _printHabit = () => {
-    console.log(this.state.sunP);
-    console.log(this.state.monP);
-    console.log(this.state.tueP);
-    console.log(this.state.wedP);
-    console.log(this.state.thuP);
-    console.log(this.state.friP);
-    console.log(this.state.satP);
-  }
-
-
+  /**
+   * called when user saves habits, takes all the variables and pushes to database creating new habit object under current user's id
+   * 
+   * @param habitName habit name
+   * @param sunP sunday tracker
+   * @param monP monday tracker
+   * @param tueP tuesday tracker
+   * @param wedP wednesday tracker
+   * @param thuP thursday tracker
+   * @param friP friday tracker
+   * @param satP saturday tracker
+   * @param timesPerPeriod times per goal period
+   * @param reminders boolean for reminders
+   * @param goalPeriod goal period
+   * @param count initialized to 0
+   * 
+   */
   writeHabitData = (habitName, sunP, monP, tueP, wedP, thuP, friP, satP, timesPerPeriod, reminders, goalPeriod, count) => {
-
-    //var uid = authUser.user.uid;
 
     var key = firebase.database().ref().push().key;
 
@@ -136,7 +172,10 @@ export default class HabitScreen extends React.Component {
 
   }
 
-
+  /**
+   * renders the screen, defines all user interface components and listeners for this screen
+   * 
+   */
   render() {
 
     const buttons = ['Daily', 'Weekly', 'Monthly']
@@ -270,7 +309,10 @@ export default class HabitScreen extends React.Component {
 }
 
 
-
+/**
+ * styles sheet used to for styling and positioning of components and text
+ * 
+ */
 const styles = StyleSheet.create({
   titleText: {
     fontFamily: 'System',

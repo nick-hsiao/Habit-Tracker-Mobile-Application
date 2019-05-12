@@ -36,6 +36,10 @@ export default class AuthLoadingScreen extends React.Component {
     });
   };
 
+  /**
+   * renders the screen, defines all user interface components and listeners for this screen
+   * 
+   */
   render() {
     return (
       <View style={{ marginTop: 280 }}>

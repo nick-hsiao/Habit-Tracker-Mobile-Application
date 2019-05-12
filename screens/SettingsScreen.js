@@ -63,6 +63,10 @@ export default class SettingsScreen extends React.Component {
     this.props.navigation.navigate('Home');
   }
 
+  /**
+   * renders the screen, defines all user interface components and listeners for this screen
+   * 
+   */
   render() {
     const list = [
       {
@@ -151,6 +155,10 @@ export default class SettingsScreen extends React.Component {
   }
 }
 
+/**
+ * styles sheet used to for styling and positioning of components and text
+ * 
+ */
 const styles = StyleSheet.create({
   titleText: {
     fontSize: 20,

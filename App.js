@@ -67,6 +67,10 @@ export default class App extends React.Component {
   };
 }
 
+/**
+ * styles sheet used to for styling and positioning of components and text
+ * 
+ */
 const styles = StyleSheet.create({
   container: {
     flex: 1,

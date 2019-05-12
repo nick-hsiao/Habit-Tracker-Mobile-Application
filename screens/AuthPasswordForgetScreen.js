@@ -65,6 +65,10 @@ export default class PasswordForgetScreen extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  /**
+   * renders the screen, defines all user interface components and listeners for this screen
+   * 
+   */
   render() {
 
     const { email, error } = this.state;
@@ -120,6 +124,10 @@ export default class PasswordForgetScreen extends React.Component {
   }
 }
 
+/**
+ * styles sheet used to for styling and positioning of components and text
+ * 
+ */
 const styles = StyleSheet.create({
   container: {
     fontFamily: 'System',

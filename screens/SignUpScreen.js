@@ -133,6 +133,10 @@ authenticate = (username, firstName, lastName, email, passwordOne, usernameFound
   };
 
 
+  /**
+   * renders the screen, defines all user interface components and listeners for this screen
+   * 
+   */
   render() {
 
     const {
@@ -272,6 +276,10 @@ authenticate = (username, firstName, lastName, email, passwordOne, usernameFound
   }
 }
 
+/**
+ * styles sheet used to for styling and positioning of components and text
+ * 
+ */
 const styles = StyleSheet.create({
   container: {
     fontFamily: 'System',
