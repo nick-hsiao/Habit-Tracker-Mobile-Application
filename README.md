@@ -1,5 +1,4 @@
 # habittracker
-133-app-project
 
 Please refer to instructions.pdf for installation and use instructions. Demo is available at the link below.
 
